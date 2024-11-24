@@ -29,5 +29,5 @@ theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : he
   rw [height, Order.height]
   simp_all
   intro ltseries relseries
-
+  sorry
   -- Associated primes, Krull's principal ideal theorem,
