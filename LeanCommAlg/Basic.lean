@@ -57,10 +57,11 @@ lemma singleton_of_minimal_prime [h : I.IsPrime] :
 lemma height_zero_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → height I = 0 := by
   intro hmin
-  rcases hmin with ⟨hl, hr⟩
-  dsimp at hr
   have : {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := by
     apply singleton_of_minimal_prime
+    apply hmin
+  rcases hmin with ⟨hl, hr⟩
+  dsimp at hr
   rw [height, Order.height, this]
   simp
   intros lt hy
