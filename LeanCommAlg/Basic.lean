@@ -1,4 +1,4 @@
-import Mathlib.AlgebraicGeometry.PrimeSpectrum.Maximal
+import Mathlib.AlgebraicGeometry.PrimeSpectrum.Basic
 import Mathlib.RingTheory.Ideal.Basic
 import Mathlib.RingTheory.Ideal.MinimalPrime
 import Mathlib.RingTheory.Ideal.Operations
@@ -53,17 +53,35 @@ noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
 lemma height_zero_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → height I = 0 := by
   intro hmin
-  have : {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := by
-    apply singleton_of_minimal_prime
-    apply hmin
-  rcases hmin with ⟨hl, hr⟩
-  dsimp at hr
-  rw [height, Order.height, this]
+  rw [height, Order.height]
   simp_all
   intros lt hy
   rw [RelSeries.length_eq_zero]
-  sorry
+  . case _ =>
+    intro set₁ h₁ set₂ h₂
+    simp_all
+    specialize hy ⟨I, h⟩
+    apply Set.ext
+    have this : {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := singleton_of_minimal_prime I hmin
+    have set₁unique : set₁ = {⟨I, h⟩} := by
+      sorry
+    have set₂unique : set₂ = {⟨I, h⟩} := by
+      sorry
+    simp [set₁unique, set₂unique]
+  . case _ =>
+    intro prime_spectrum_set h
+    rcases h with ⟨h1, h2⟩
+    contradiction
 
+#check IsMin
+
+/-
+I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
+-/
+lemma height_le_prime_of_minimal_prime (J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
+    J ∈ I.minimalPrimes → height I ≤ height J  := by
+  intro hmin
+  sorry
 
 theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : height I ≤ 1 := by
   rw [height, Order.height]
