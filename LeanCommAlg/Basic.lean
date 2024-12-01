@@ -23,7 +23,7 @@ noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
 
 #check height
 
-lemma singleton_of_minimal_prime [h : I.IsPrime] :
+@[simp] lemma singleton_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := by
   intro hmin
   rcases hmin with ⟨hl, hr⟩
@@ -38,20 +38,17 @@ lemma singleton_of_minimal_prime [h : I.IsPrime] :
     apply le_antisymm hJ this
   . intro hJ
     apply le_iff_lt_or_eq.mpr; right; apply hJ
-    
--- Minimal prime proof
-theorem minimal_prime_IsMin
-    (I : Ideal R) (P : Ideal R) (Pmin : P ∈ Ideal.minimalPrimes I) : IsMin P := by
-  rw [Ideal.minimalPrimes] at Pmin
-  rcases Pmin with ⟨hPrime, hMinimal⟩
-  intros Q hQ
-  have QPrime : Q.IsPrime := by
-    sorry
-  have IleQ : I ≤ Q := by
-    sorry
-  specialize hMinimal ?_
-  apply Q; simp [IleQ, QPrime];
-  exact hMinimal (by assumption)
+
+@[simp] theorem minimal_prime_is_min_over_I
+    (I P : Ideal R) (hP : P ∈ Ideal.minimalPrimes I) :
+    ∀ Q : Ideal R, Q.IsPrime → I ≤ Q → Q ≤ P → Q = P := by
+  rw [Ideal.minimalPrimes] at hP
+  rcases hP with ⟨hPPrime, hPMinimal⟩
+  intro Q a IQ QP
+  simp_all
+  ext x; constructor
+  · intro xQ; apply QP xQ
+  · intro xP; exact hPMinimal a IQ QP xP
 
 lemma height_zero_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → height I = 0 := by
@@ -62,7 +59,7 @@ lemma height_zero_of_minimal_prime [h : I.IsPrime] :
   rcases hmin with ⟨hl, hr⟩
   dsimp at hr
   rw [height, Order.height, this]
-  simp
+  simp_all
   intros lt hy
   rw [RelSeries.length_eq_zero]
   sorry
