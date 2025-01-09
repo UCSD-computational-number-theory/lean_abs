@@ -75,6 +75,27 @@ lemma height_zero_of_minimal_prime [h : I.IsPrime] :
 
 #check IsMin
 
+#check I
+
+lemma height_zero_of_minimal_prime' [h : I.IsPrime] :
+    I ∈ minimalPrimes R → height I = 0 := by
+
+  intros Imin
+  rcases Imin with ⟨bot_le_I, y_minimal⟩
+  simp_all
+  by_contra height_neq_0
+  simp [height] at *
+  -- have : {J : PrimeSpectrum R | J.asIdeal ≤ I} ≠ ∅ := by
+  --   intro h
+  --   apply height_neq_0
+  --   exact h
+  have nonempty_m : Nonempty {J : PrimeSpectrum R | J.asIdeal ≤ I} := by
+    exact Set.nonempty_iff_ne_empty'.mpr height_neq_0
+  let J := Classical.choice nonempty_m
+  apply Nonempty.elim nonempty_m
+  simp; intro a
+  sorry
+
 /-
 I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
 -/
