@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  MathJax = { 
+    tex: {
+		    inlineMath: [['$','$'], ['\\(','\\)']]
+	} }
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<meta name="generator" content="plasTeX" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The generalized Dirichlet divisor problem</title>
+<link rel="prev" href="sect0012.html" title="Proof of Auslander-Buchbaum-Serre" />
+<link rel="up" href="index.html" title="Blueprint for the Adjunction Formula" />
+<link rel="stylesheet" href="styles/theme-white.css" />
+<link rel="stylesheet" href="styles/blueprint.css" />
+<link rel="stylesheet" href="styles/amsthm.css" />
+<link rel="stylesheet" href="styles/extra_styles.css" />
+</head>
+
+<body>
+<header>
+<svg  id="toc-toggle" class="icon icon-list-numbered "><use xlink:href="symbol-defs.svg#icon-list-numbered"></use></svg>
+<h1 id="doc_title"><a href="index.html">Blueprint for the Adjunction Formula</a></h1>
+</header>
+
+<div class="wrapper">
+<nav class="toc">
+<ul class="sub-toc-0">
+<li class="">
+  <a href="sect0001.html"><span class="toc_ref">1</span> <span class="toc_entry">Auslander-Buchsbaum-Serre Theorem</span></a>
+  <span class="expand-toc">▶</span>
+  <ul class="sub-toc-1">
+     <li class="">
+  <a href="sect0002.html"><span class="toc_ref">1.1</span> <span class="toc_entry">Nakayama’s Lemma and Corollaries</span></a>
+ </li>
+<li class="">
+  <a href="sect0003.html"><span class="toc_ref">1.2</span> <span class="toc_entry">Projective Resolutions</span></a>
+ </li>
+<li class="">
+  <a href="sect0004.html"><span class="toc_ref">1.3</span> <span class="toc_entry">Prime Avoidance and Variants</span></a>
+ </li>
+<li class="">
+  <a href="sect0005.html"><span class="toc_ref">1.4</span> <span class="toc_entry">Dimension Theory</span></a>
+ </li>
+<li class="">
+  <a href="sect0006.html"><span class="toc_ref">1.5</span> <span class="toc_entry">Regular elements and sequences</span></a>
+ </li>
+<li class="">
+  <a href="sect0007.html"><span class="toc_ref">1.6</span> <span class="toc_entry">Support Theory</span></a>
+ </li>
+<li class="">
+  <a href="sect0008.html"><span class="toc_ref">1.7</span> <span class="toc_entry">Selected Results on Primary Decomposition</span></a>
+ </li>
+<li class="">
+  <a href="sect0009.html"><span class="toc_ref">1.8</span> <span class="toc_entry">Associated Primes</span></a>
+ </li>
+<li class="">
+  <a href="sect0010.html"><span class="toc_ref">1.9</span> <span class="toc_entry">Depth and Regular Sequences</span></a>
+ </li>
+<li class="">
+  <a href="sect0011.html"><span class="toc_ref">1.10</span> <span class="toc_entry">Auslander-Buchsbaum Formula</span></a>
+ </li>
+<li class="">
+  <a href="sect0012.html"><span class="toc_ref">1.11</span> <span class="toc_entry">Proof of Auslander-Buchbaum-Serre</span></a>
+ </li>
+
+  </ul>
+ </li>
+<li class=" active current">
+  <a href="divisor-chapter.html"><span class="toc_ref">1</span> <span class="toc_entry">The generalized Dirichlet divisor problem</span></a>
+ </li>
+<li ><a href="dep_graph_section_1.html">Section 1 graph</a></li>
+</ul>
+</nav>
+
+<div class="content">
+<div class="content-wrapper">
+
+
+<div class="main-text">
+<h1 id="divisor-chapter">1 The generalized Dirichlet divisor problem</h1>
+
+<div class="definition_thmwrapper theorem-style-definition" id="divisor-def">
+  <div class="definition_thmheading">
+    <span class="definition_thmcaption">
+    Definition
+    </span>
+    <span class="definition_thmlabel">0.0.1</span>
+    <span class="definition_thmtitle">Divisor sum exponents</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#divisor-def">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="definition_thmcontent">
+  <p> Let \(k \geq 1\) be a fixed integer. Then, \(\alpha _k\) is the best (fixed) exponent for which one has the asymptotic </p>
+<div class="displaymath" id="a0000000059">
+  \[  \sum _{n \leq x} d_k(n) = x P_{k-1}(\log x) + O(x^{\alpha _k+o(1)}) \]
+</div>
+<p> for unbounded \(x {\gt} 0\), where \(P\) is an explicit polynomial of degree \(k-1\) and \(d_k(n) := \sum _{n_1 \dots n_k=n} 1\) is the \(k^{\mathrm{th}}\) divisor function. The implied constant may depend on \(k\). </p>
+
+  </div>
+</div>
+<p>Of course, one can also give a non-asymptotic definition: \(\alpha _k\) is the least exponent such that for all \(\eps {\gt} 0\) there exists \(C {\gt} 0\) such that </p>
+<div class="displaymath" id="a0000000060">
+  \[  |\sum _{n \leq x} d_k(n) - x P_{k-1}(\log x)| \leq C x^{\alpha _k + \eps } \]
+</div>
+<p> for all \(x \geq C\). </p>
+<p>In the case \(k = 1\), the problem is trivial. In particular: </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="divisor-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.2</span>
+    <span class="lemma_thmtitle">\(d_1\) exponent</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#divisor-1">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000061"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _1=0\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000061">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>Follows from \(\sum _{n \le x}1 = x + O(1)\). </p>
+
+  </div>
+</div>
+<p>On the other hand, the value of \(\alpha _k\) is an open problem for all \(k \ge 2\). Unconditionally, the following lower-bound on \(\alpha _k\) is known to hold. </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="divisor-lower">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.3</span>
+    <span class="lemma_thmtitle">Lower bound on \(\alpha _k\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#divisor-lower">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000062"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> For all \(k \geq 1\), one has </p>
+<div class="displaymath" id="a0000000063">
+  \[  \alpha _k \geq \frac{1}{2} - \frac{1}{2k}.  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000062">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Hardy <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<p>Multiple authors <b class="bf">[give cite]</b> have refined Hardy’s result but only in the \(o(1)\) term in the exponent. It is conjectured that this lower bound on \(\alpha _k\) is in fact an equality <span class="cite">
+	[
+</span>. Amongst other consequences, this conjecture implies the Lindelöf hypothesis <span class="cite">
+	[
+</span>. </p>
+<div class="conjecture_thmwrapper theorem-style-plain" id="a0000000064">
+  <div class="conjecture_thmheading">
+    <span class="conjecture_thmcaption">
+    Conjecture
+    </span>
+    <span class="conjecture_thmlabel">0.0.4</span>
+    <span class="conjecture_thmtitle">Generalised Dirichlet divisor problem conjecture</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#a0000000064">#</a>
+    
+    
+    
+        </div>
+  </div>
+  <div class="conjecture_thmcontent">
+  <p> For all \(k \geq 1\), one has </p>
+<div class="displaymath" id="a0000000065">
+  \[  \alpha _k = \frac{1}{2} - \frac{1}{2k}.  \]
+</div>
+
+  </div>
+</div>
+<p>The remainder of this chapter focuses on upper bounds on \(\alpha _k\). The following series of lemmas record the sharpest known estimates. </p>
+<div class="theorem_thmwrapper theorem-style-plain" id="divisor-2-bound">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.0.5</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#divisor-2-bound">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p><span class="cite">
+	[
+</span> One has \(\alpha _2 \leq \alpha ^* = 0.314483\ldots \), where \(\alpha ^*\) is the solution to the equation </p>
+<div class="displaymath" id="a0000000066">
+  \[  \frac{8}{25}\alpha - \frac{(\sqrt{2(1+14\alpha )} - 5\sqrt{-1+8\alpha })^2}{200} + \frac{51}{200} = \alpha  \]
+</div>
+<p> on the interval \(\alpha \in [0.3, 0.35]\). </p>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="divisor-kolesnik">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.0.6</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#divisor-kolesnik">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p><span class="cite">
+	[
+</span> One has \(\alpha _3 \leq 43/96\). </p>
+
+  </div>
+</div>
+<p>For larger \(k\), estimates typically make use of the following relationship with zeta-moments. </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="mas">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.7</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#mas">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000067"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> Let \(k \geq 2\) be an integer. If \(M(\sigma ,k) = 1\) then \(\alpha _k \leq \sigma \). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000067">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<p>Using Lemma <a href="divisor-chapter.html#mas">0.0.7</a>, the following bounds were obtained: </p>
+<div class="theorem_thmwrapper theorem-style-plain" id="heathbrown-alpha-1981">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.0.8</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#heathbrown-alpha-1981">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+          <li><a href="divisor-chapter.html#mas">Lemma 0.0.7</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p><span class="cite">
+	[
+</span> For \(4 \le k \le 8\), one has </p>
+<div class="displaymath" id="a0000000068">
+  \[  \alpha _k \leq \frac{3k-4}{4k}.  \]
+</div>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="ivic-alpha-1989">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.0.9</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#ivic-alpha-1989">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p><span class="cite">
+	[
+</span> One has </p>
+<div class="displaymath" id="a0000000069">
+  \begin{align*}  \alpha _{10} \le 27/40,\qquad \alpha _{11} & \le 0.6957,\qquad \alpha _{12} \le 0.7130,\qquad \alpha _{13} \le 0.7306,\\ \alpha _{14} \le 0.7461,\qquad \alpha _{15} & \le 0.75851,\qquad \alpha _{16} \le 0.7691,\qquad \alpha _{17} \le 0.7785,\\ \alpha _{18} \le 0.7868,\qquad \alpha _{19} & \le 0.7942,\qquad \alpha _{20} \le 0.8009. \end{align*}
+</div>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="ivic-alpha">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.0.10</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#ivic-alpha">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#mas">Lemma 0.0.7</a></li>
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p><span class="cite">
+	[
+</span> One can bound \(\alpha _k\) by </p>
+<div class="displaymath" id="a0000000070">
+  \begin{align*}  (3k-4)/4k &  \hbox{ for } 4 \leq k \leq 8 \\ 35/54 &  \hbox{ for } k = 9 \\ 41/60 &  \hbox{ for } k = 10 \\ 7/10 &  \hbox{ for } k = 11 \\ (k-2)/(k+2) &  \hbox{ for } 12 \leq k \leq 25 \\ (k-1)/(k+4) &  \hbox{ for } 26 \leq k \leq 50 \\ (31k-98)/32k &  \hbox{ for } 51 \leq k \leq 57 \\ (7k-34)/7k &  \hbox{ for } k \geq 58. \end{align*}
+</div>
+
+  </div>
+</div>
+<div class="theorem_thmwrapper theorem-style-plain" id="bellotti">
+  <div class="theorem_thmheading">
+    <span class="theorem_thmcaption">
+    Theorem
+    </span>
+    <span class="theorem_thmlabel">0.0.11</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#bellotti">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="theorem_thmcontent">
+  <p> <span class="cite">
+	[
+</span> For integer \(k \ge 30\), one has </p>
+<div class="displaymath" id="a0000000071">
+  \[  \alpha _k \leq 1 - 1.421(k - 1.18)^{-2/3}.  \]
+</div>
+<p> Moreover, \(\alpha _k \leq 1 - 1.889k^{-2/3}\) for sufficiently large \(k\). </p>
+
+  </div>
+</div>
+<p>For completeness we record the historical progression in bounds for \(\alpha _k\). </p>
+<div class="lemma_thmwrapper theorem-style-plain" id="piltz-alpha">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.12</span>
+    <span class="lemma_thmtitle">Piltz bound</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#piltz-alpha">#</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> For \(k \ge 1\), one has </p>
+<div class="displaymath" id="a0000000072">
+  \[  \alpha _k \le 1 - \frac{1}{k}.  \]
+</div>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="voronoi-alpha">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.13</span>
+    <span class="lemma_thmtitle">Voronoi, Landau bound</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#voronoi-alpha">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000073"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> For \(k \ge 2\), one has </p>
+<div class="displaymath" id="a0000000074">
+  \[  \alpha _k \leq 1 - \frac{2}{k + 1}.  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000073">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Voronoi <span class="cite">
+	[
+</span> for \(k = 2\) and Landau <span class="cite">
+	[
+</span> for \(k \ge 3\). </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="hl-alpha">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.14</span>
+    <span class="lemma_thmtitle">Hardy–Littlewood bound</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#hl-alpha">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000075"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> For \(k \ge 4\), one has </p>
+<div class="displaymath" id="a0000000076">
+  \[  \alpha _k \leq 1 - \frac{3}{k + 2}.  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000075">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See <span class="cite">
+	[
+</span>. The original proof relied on the assumption that \(\mu (1/2) \le 1/6\) which was published later. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="vdc-alpha-1">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.15</span>
+    <span class="lemma_thmtitle">van der Corput first bound on \(\alpha _2\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#vdc-alpha-1">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000077"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 33/100\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000077">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See van der Corput <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="vdc-alpha-2">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.16</span>
+    <span class="lemma_thmtitle">van der Corput second bound on \(\alpha _2\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#vdc-alpha-2">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000078"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 27/82\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000078">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See van der Corput <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="walfisz-alpha-3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.17</span>
+    <span class="lemma_thmtitle">Walfisz bound on \(\alpha _3\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#walfisz-alpha-3">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000079"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _3 \le 43/87\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000079">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Walfisz <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="atkinson-alpha-3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.18</span>
+    <span class="lemma_thmtitle">Atkinson bound on \(\alpha _3\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#atkinson-alpha-3">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000080"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _3 \le 37/75\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000080">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Atkinson <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="richert-alpha-2">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.19</span>
+    <span class="lemma_thmtitle">Richert, Tsung bound</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#richert-alpha-2">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000081"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 15/46\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000081">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>Proved independently by Chih <span class="cite">
+	[
+</span> and Richert <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="yuh-alpha-3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.20</span>
+    <span class="lemma_thmtitle">Yüh bound on \(\alpha _3\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#yuh-alpha-3">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000082"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _3 \le 14/29\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000082">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Yüh <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="yuh-wu-alpha-3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.21</span>
+    <span class="lemma_thmtitle">Yüh–Wu bound on \(\alpha _3\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#yuh-wu-alpha-3">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000083"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _3 \le 8/17\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000083">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Yüh–Wu <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="chen-alpha-3">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.22</span>
+    <span class="lemma_thmtitle">Chen bound on \(\alpha _3\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#chen-alpha-3">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000084"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _3 \le 5/11\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000084">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Chen <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="kolesnik-alpha-2-first">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.23</span>
+    <span class="lemma_thmtitle">Kolesnik first bound on \(\alpha _2\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#kolesnik-alpha-2-first">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000085"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 12/37\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000085">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Kolesnik <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="kolesnik-alpha-2-second">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.24</span>
+    <span class="lemma_thmtitle">Kolesnik second bound on \(\alpha _2\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#kolesnik-alpha-2-second">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000086"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 346/1067\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000086">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Kolesnik <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="kolesnik-alpha-3-first">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.25</span>
+    <span class="lemma_thmtitle">Kolesnik first bound on \(\alpha _3\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#kolesnik-alpha-3-first">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000087"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _3 \le 43/96\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000087">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Kolesnik <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="kolesnik-alpha-2-third">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.26</span>
+    <span class="lemma_thmtitle">Kolesnik third bound on \(\alpha _2\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#kolesnik-alpha-2-third">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000088"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 35/108\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000088">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Kolesnik <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="huxley-alpha">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.27</span>
+    <span class="lemma_thmtitle">Huxley bound</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#huxley-alpha">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000089"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> One has \(\alpha _2 \le 131/416\). </p>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000089">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Huxley <span class="cite">
+	[
+</span> <b class="bf">TODO: link this up with exponential sum bounds?</b> </p>
+
+  </div>
+</div>
+<div class="lemma_thmwrapper theorem-style-plain" id="hb-alpha-large">
+  <div class="lemma_thmheading">
+    <span class="lemma_thmcaption">
+    Lemma
+    </span>
+    <span class="lemma_thmlabel">0.0.28</span>
+    <span class="lemma_thmtitle">Heath-Brown bound for large \(k\)</span>
+    <div class="thm_header_extras">
+
+        </div>
+    <div class="thm_header_hidden_extras">
+
+    <a class="icon proof" href="divisor-chapter.html#hb-alpha-large">#</a>
+    
+    <a class="icon proof" href="divisor-chapter.html#a0000000090"><svg  class="icon icon-cogs "><use xlink:href="symbol-defs.svg#icon-cogs"></use></svg>
+</a>
+    
+    
+    <button class="modal"><svg  class="icon icon-mindmap "><use xlink:href="symbol-defs.svg#icon-mindmap"></use></svg>
+</button>
+        <div class="modal-container">
+      <div class="modal-content">
+        <header>
+          <h1>Uses</h1>
+          <button class="closebtn"><svg  class="icon icon-cross "><use xlink:href="symbol-defs.svg#icon-cross"></use></svg>
+</button>
+        </header>
+        
+        <ul class="uses">
+          
+          <li><a href="divisor-chapter.html#divisor-def">Definition 0.0.1</a></li>
+          
+        </ul>
+    
+      </div>
+    </div>
+
+    
+    
+        </div>
+  </div>
+  <div class="lemma_thmcontent">
+  <p> For any \(k \ge 1\), one has </p>
+<div class="displaymath" id="a0000000091">
+  \[  \alpha _k \le 1 - 0.849k^{-2/3}.  \]
+</div>
+
+  </div>
+</div>
+<div class="proof_wrapper" id="a0000000090">
+  <div class="proof_heading">
+    <span class="proof_caption">
+    Proof
+    </span>
+    <span class="expand-proof">▼</span>
+  </div>
+  <div class="proof_content">
+  <p>See Heath-Brown <span class="cite">
+	[
+</span>. </p>
+
+  </div>
+</div>
+
+</div> <!--main-text -->
+</div> <!-- content-wrapper -->
+</div> <!-- content -->
+</div> <!-- wrapper -->
+
+<nav class="prev_up_next">
+  <a href="sect0012.html" title="Proof of Auslander-Buchbaum-Serre"><svg  class="icon icon-arrow-left "><use xlink:href="symbol-defs.svg#icon-arrow-left"></use></svg>
+</a>
+  <a href="index.html" title="Blueprint for the Adjunction Formula"><svg  class="icon icon-arrow-up "><use xlink:href="symbol-defs.svg#icon-arrow-up"></use></svg>
+</a>
+</nav>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plastex.js"></script>
+<script type="text/javascript" src="js/svgxuse.js"></script>
+</body>
+</html>
