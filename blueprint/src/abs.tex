@@ -1,0 +1,1138 @@
+adfe develop some 
+homological and element-wise machinery
+from Commutative Algebra, culminating 
+in the proof of the Auslander-Buchsbaum-Serre 
+theorem, and 
+the corollary that the condition of being 
+a regular ring localizes. 
+This corollary is crucial for our proof of adjunction.
+
+We follow Bruns-Herzog almost exclusively.
+
+The current version of this blueprint is incomplete--this
+reflects the fact that we have not yet chosen which proof
+of Auslander-Buchsbaum-Serre to formalize.
+
+In particular, there are two detailed by Bruns-Herzog:
+one uses a fact about Cohen-Macaulay rings for the forward
+direction, and a theorem of Ferrand-Vasconcelos for the
+reverse direction. 
+The other uses Koszul homology and some facts about Tor
+for the forward direction, and a statement of Serre 
+on DG-algebras for the reverse direction.
+We can basically pick and choose which proof we want to use
+for each direction.
+
+%TODO: Bring all Nakayama corollaries 
+%      here into section one, prove them,
+%      and then add references to the correct
+%      corollaries anywhere that 'nakayama' or 'Nakayama'
+%      appears in this document.
+
+
+\subsection{Nakayama's Lemma and Corollaries}
+
+\begin{lemma}[Nakayama's Lemma]
+  \label{lem:nakayama}
+  State Nakayama's Lemma here.
+\end{lemma}
+
+\begin{proof}
+  The proof of this is already in Mathlib
+\end{proof}
+
+\begin{corollary}
+  \label{cor:local_maximal_gereating_set_basis_residue}
+  \uses{lem:nakayama}
+  Let $(R,\mathfrak{m},k)$ be a local ring. 
+  Let $M$ be an $R$-module.
+  If the elements $x_1, \ldots, x_n$ are elements in
+  $M$ that form a basis in the projection 
+  $M / \mathfrak{m} M$, then $x_1, ldots, x_n$ generate $M$.
+\end{corollary}
+
+\begin{proof}
+  See Atiyah-MacDonald Corollary 2.8
+\end{proof}
+
+The following lemma is used by user6:
+
+\begin{lemma} \label{lem:fin_gen_proj_over_local_is_free}
+  \uses{cor:local_maximal_gereating_set_basis_residue}
+	A finitely generated projective module 
+	over a regular local ring is free
+\end{lemma}
+
+\begin{proof}
+	A proof of this theorem can be pieced together from this
+	stack exchange answer:
+	https://math.stackexchange.com/questions/3362463/projective-modules-over-local-rings-are-free-matsumuras-proof
+	This proof needs
+	\begin{itemize}
+		\item Nakayama's lemma
+		\item Equivalent definitions of projective modules
+	\end{itemize}
+\end{proof}
+
+\begin{lemma}
+  \label{lem:surj_endo_is_isom}
+  \uses{cor:local_maximal_gereating_set_basis_residue}
+  Let $f : M \to M$ be a surjection of modules 
+  (over a local ring?).
+  Then $f$ is an isomorphism.
+\end{lemma}
+
+\begin{proof}
+
+  I think this uses the Corollary 2.8 version of Nakayama's Lemma
+\end{proof}
+
+
+\subsection{Projective Resolutions}
+
+\begin{definition}
+  \label{def:projv_resl}
+  Let $R$ be a ring. 
+  Let $M$ be an $R$-module.
+  A projective resolution of $M$ over $R$
+  Is an exact sequence
+  \[
+    \ldots \to P^2 \to P^1 \to P^0 \to M \to 0
+  \].
+  That is to say, a projective resolution is a
+  quasi-isomorphism of complexes between the 
+  inclusion of $M$ into chain complexes over $R$
+  (i.e. the complex which has $M$ in degree zero,
+  trivial everywhere else, with trivial maps)
+  and a bounded—below complex whose
+  components are projective $R$-modules.
+\end{definition}
+
+\begin{definition}
+  \label{def:free_resl}
+  \uses{def:projv_resl}
+  A free resolution of $M$ over $R$ is 
+  a projective resolution whose components
+  $P^i$ are free.
+\end{definition}
+
+\begin{definition}
+  \label{def:length_of_resl}
+  \uses{def:projv_resl}
+  The length of a projective
+  resolution $P_\cdot$ is 
+  the highest $i$ such that $P^i$
+  is nonzero.
+  If there exists no such $i$, the
+  length is infinity
+\end{definition}
+
+\begin{definition}
+  \label{def:projdim}
+  \uses{def:length_of_resl}
+  Let $M$ be an $R$-module. 
+  Then $\projdim M$ is the minimum 
+  length of a projective resolution of $M$.
+  It lives in the set $\mathbb{N} \cap \infty$.
+\end{definition}
+
+\begin{lemma}
+  \label{lem:finite_resl_implies_finite_projdim}
+  \uses{def:projdim}
+  If there exists a projective resolution of
+  $M$ with finite length, then 
+  $\projdim M < \infty$.
+\end{lemma}
+
+\begin{proof}
+  Expand definitions, use the definition of minimum.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:min_resl_has_min_length}
+  Any resolution of $M$ over $R$ has 
+  length at least that of the minimal resolution.
+\end{lemma}
+
+\begin{proof}
+  Expand definitions, use definition of minimum
+\end{proof}
+
+\begin{proposition}
+  \label{prop:existence_min_free_resl}
+  \uses{def:free_resl,def:projdim}
+  There exists a free resolution $F_\cdot$
+  of $M$ such that length of $F_\cdot$
+  is equal to the projective dimension of $M$.
+\end{proposition}
+
+\begin{proof}
+  One has the generators-relations explicit construction,
+  which should eventually get its own definition.
+  Then one has to show that this is indeed minimal among
+  projective resolutions, which I don't remember how to do
+  the top of my head.
+\end{proof}
+
+%\begin{lemma}
+%  \label{lem:projdim_len_minimal_free}
+%  Let $R$ be a local noetherian ring, 
+%  and $M$ be an $R$-module.
+%  Then $\projdim M$ is equal to the length
+%  of a minimal free resolution of $M$.
+%\end{lemma}
+
+\begin{definition}
+  \label{def:globdim}
+  \uses{def:projdim}
+  The global dimension of a ring $R$
+  is the supremum over all $R$-modules
+  of $\projdim M$.
+\end{definition}
+
+% MARK - localization and resolutions
+
+\begin{lemma}
+  \label{lem:loczn_exact}
+  Localization by a multiplicative set is an exact functor.
+\end{lemma}
+
+\begin{lemma}
+  \label{lem:loczn_of_resl_is_resl}
+  \uses{lem:loczn_exact}
+  Let $M$ be an $R$-module.
+  Let $S$ be a multiplicative set.
+  Let $\ldots \to A_2 \to A_1 \to A_0 \to M \to 0$
+  be a free resoltion of $M$.
+  Then
+  $\ldots S^{-1}(A_2) \to S^{-1}(A_1) \to S^{-1}(A_0) \to S^{-1}M \to 0$
+  is a free resolution of $S^{-1}M$.
+\end{lemma}
+
+
+% TODO: figure out what we "really want to prove" with localizations and resolutions
+%         this is kind of a cop-out
+
+\subsection{Prime Avoidance and Variants}
+
+Before we get too far, we present the prime avoidance lemma, which will be used
+repeatedly during the rest of the blueprint.
+
+\begin{lemma}
+    [Prime Avoidance]
+    \label{lem:prime_avoidance}
+    (See BH 1.2.2)
+    Let \(R\) be a ring, and \(\mathfrak{p}_{1}, \ldots, \mathfrak{p}_{m}\)
+    be prime ideals.
+    Let \(M\) be an \(R\)-module, and let \(x_{1}, \ldots, x_{n} \in M\).
+    Let \(N\) be the submodule generated by \(x_{1}, \ldots, x_{n}\).
+
+    If \(N_{\mathfrak{p}_{j}} \not\subset \mathfrak{p}_{j}M_{\mathfrak{p}_{j}}\) for
+    all \(j \in \{1, \ldots, m\}\), then there exist
+    \(a_{2}, \ldots, a_{n} \in R\) such that
+    \(x_{1} + \sum_{i=2}^{n} a_{i}x_{i} \not\in \mathfrak{p}_{j} M_{\mathfrak{p}_{j}} \)
+    for all \(j \in \{1, \ldots, m\}\).
+\end{lemma}
+
+\begin{proof}
+    See BH 1.2.2
+\end{proof}
+
+\begin{corollary}
+    \label{cor:prime_avoidance_ring}
+    Let \(R\) be a ring, and \(\mathfrak{p}_{1}, \ldots, \mathfrak{p}_{m}\)
+    be prime ideals. 
+    Let \(I\) be a finitely generated ideal of \(R\).
+    Then if \(I \not\subset \mathfrak{p}_{j}\) for all
+    \(j \in \{1, \ldots, m\}\),
+    then there exists an \(x \in I\)
+    such that \(x \not\in \mathfrak{p}_{j}\) for all \(j\).
+\end{corollary}
+
+\begin{proof}
+    \uses{lem:prime_avoidance}
+    Take \(M = R\) in the previous theorem.
+    Using the correspondence theorem for localizations, 
+    the condition \(I_{\mathfrak{p}_{j}} \not\subset \mathfrak{p}_{j}R_{\mathfrak{p}_{j}}\)
+    is the same as \(I \not\subset \mathfrak{p}_{j}\).
+\end{proof}
+
+We also have a few variants (see wikipedia page for "Prime Avoidance")
+
+\begin{lemma}
+    Let \(E\) be an additive subgroup of \(R\) which is multiplicatively closed.
+    Let \(I_{1}, \ldots, I_{n}\) be ideals such that \(I_{3}, \ldots, I_{n}\) are prime.
+    Then if \(E\) is not contained in any one of the \(I_{j}\), then \(E\) is not
+    contained in their union.
+\end{lemma}
+
+\begin{lemma}
+    Let \(R\) be a ring and \(\mathfrak{p}_{1}, \ldots, \mathfrak{p}_{m}\)
+    be prime ideals.
+    Let \(x\) be some element of \(R\) and let \(J\) be an ideal.
+    Define \(I := (x) + J\).
+    If \(I \not\subset \mathfrak{p}_{j}\) for all \(j\),
+    then
+    there exists some \(y \in J\) such that
+    \(x + y \not\in \mathfrak{p}_{j}\) for all \(j\)
+\end{lemma}
+\begin{lemma}
+    Let \(\mathfrak{p}_{1}, \ldots, \mathfrak{p}_{n}\) be prime ideals.
+    Let \(I\) be an ideal contained in in their union.
+    Then \(I \subset \mathfrak{p}_{i}\) for some \(i\).
+\end{lemma}
+
+\begin{proof}
+    This is a weaker statement then both of the two above it.
+\end{proof}
+
+\begin{lemma}
+    Let \(I_{1}, \ldots, I_{n}\) be ideals, let \(\mathfrak{p}\) be a
+    prime ideal containing the intersection of them all.
+    Then \(I_{i} \subset \mathfrak{p}\) for some \(i\).
+    If \(\mathfrak{p}\) is exactly the intersection, then
+    \(I_{i} = \mathfrak{p}\) for some \(i\).
+\end{lemma}
+
+\subsection{Dimension Theory}
+
+A dimension theory normally takes the form of 
+a theorem which says that two notions of dimension
+are the same. 
+
+Following the Appendix of Bruns-Herzog, we will use two 
+notions, one related to the
+\textit{lengths a systems of parameters} and one 
+related to the \textit{heights of prime ideals}. 
+We have not defined these terms, so we will do so first, and then
+prove out theorem.
+
+As our main tool, we use Krull's Principal Ideal Theorem
+(aka the Hauptidealsatz). 
+One can also use Hilbert Polynomials, see Atiyah-MacDonald.
+
+
+Now, we can start to define dimension.
+
+\begin{definition}
+  \label{def:height_prime_ideal}
+  Let $R$ be a ring, and $\mathfrak{p}$
+  be a prime ideal in $R$.
+  Then the height of $\mathfrak{p}$ is the sup of
+  the lengths of chains
+  \[
+    \mathfrak{p} = \mathfrak{p}_0 \supset \mathfrak{p}_1 \supset \dots \supset \mathfrak{p}_n
+   . \]
+\end{definition}
+
+
+\newcommand{\height}{\operatorname{height}}
+
+
+\begin{definition}
+    \label{def:height_arbitrary_ideal}
+    \uses{def:height_prime_ideal}
+    The height of an ideal \(I \subset R\)
+    is the infimum of the heights of
+    prime ideals containing \(I\).
+\end{definition}
+    
+Sanity lemma: this definition of height agrees
+with the previous when \(I\) is prime (all by def).
+
+\begin{definition}
+    \label{def:krull_dim_ring}
+    \uses{def:height_prime_ideal}
+    The Krull dimension of the \(R\)
+    is the supremum of heights of prime
+    ideals \(\mathfrak{p} \subset R\).
+    %In particular, \(\dim R = \height (0)\).
+    % the above is not true
+\end{definition}
+    
+The following is a nice sanity check lemma.
+    
+\begin{lemma}
+    \label{lem:dim_local_eq_height_prime}
+    \uses{def:height_prime_ideal,def:krull_dim_ring}
+    Let \(R\) a ring and \(\mathfrak{p}\) a
+    prime ideal, then
+    \[
+    \dim R_{\mathfrak{p}} = \height \mathfrak{p}
+    \]
+\end{lemma}
+    
+\begin{proof}
+    This is a ``straightforward'' application of the
+    correspondance theorem for localizations.
+\end{proof}
+    
+\begin{definition}
+    \label{def:primary_ideal}
+    An ideal \(I\) is \(\mathfrak{p}\)-primary if it's
+    radical is equal to \(\mathfrak{p}\).
+\end{definition}
+
+\begin{definition}
+    \label{def:min_len_gen_set_maximal}
+    \uses{def:primary_ideal}
+    Let \((R,\mathfrak{m},k)\) be a local (noetherian?) ring.
+    Let \(\nu(R)\)
+    be the minimum of the lengths of generating sets of  
+    \(\mathfrak{m}\)-primary ideals.
+\end{definition}
+
+Now we state Krull's height theorem and its (partial) converse.
+
+
+
+\begin{theorem}
+    \label{thm:krull_principal_ideal}
+    \uses{cor:local_maximal_gereating_set_basis_residue,def:height_prime_ideal}
+    Let \(R\) be a noetherian ring, 
+    and \(I\) a prinicpal ideal.
+    Then each minimal prime ideal over \(I\) 
+    (i.e. minimal among primes containing I)
+    has height at most 1.
+\end{theorem}
+
+\begin{proof}
+    See the Wikipedia page about Krull's principal ideal theorem
+    (recieved June 27 2023) for a detailed proof,
+    it uses passing to the quotient and the definition of
+    Artinian rings.
+\end{proof}
+
+\begin{theorem}
+    \label{thm:krull_height}
+    \uses{thm:krull_principal_ideal}
+    Let \(I = (x_{1}, \ldots, x_{n})\) be an ideal. 
+    Then each minimal prime over \(I\) has height
+    at most \(n\).
+\end{theorem}
+
+\begin{proof}
+    Use Krull's prinipal ideal and induct on the 
+    number of elements, see Wikipedia for details.
+\end{proof}
+
+\begin{theorem}
+    \label{thm:genset_of_any_height_of_noetherian_height_n}
+    \uses{def:height_arbitrary_ideal,cor:prime_avoidance_ring}
+    Let \(R\) a noetherian ring, and \(I\) a proper 
+    ideal of height \(n\).
+    Then for all \(1 \leq i \leq n\),
+    there exist elements \(x_{1}, \ldots, x_{i}\)
+    such that
+    \(\height (x_{1}, \ldots, x_{i}) = i\).
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:krull_height}
+    We will successively apply prime avoidance.
+
+    Base case: 
+    \(I\) is not contained in any minimal prime of \(R\),
+    otherwise \(I\) would have height zero (if I had height
+    zero, we're already done).
+    By prime avoidance, we can pick an element \(x_{1}\) which is
+    not in any minimal prime. 
+    Thus, any prime containing \(x_{1}\) must also contain a minimal prime, so
+    all such primes have height at least 1.
+    
+    Pick a prime which is minimal among those containing \((x_{1})\)
+    (equivalently, pick one which is minimal in the ring \(R / (x_{1})\)).
+    By the above discussion, it must have height at least one. 
+    By Krull's principal ideal/height theorem, it must have at most height 1,
+    and we conclude it has height 1.
+
+    Inductive step:
+    Copy-paste the previous discussion, with "zero" replaced by "\(n-1\)",
+    "1" replaced by "\(n\)", and "minimal prime of \(R\) " replaced by
+    "minimal prime containing \((x_{1}, \ldots, x_{i-1})\)", 
+    "\(x_{1}\)" replaced by "\(x_{i}\)", and
+    "\((x_{1})\) replaced by \((x_{1}, \ldots, x_{i})\)".
+   
+\end{proof}
+
+
+\begin{theorem}
+    [Dimension Theorem]
+    \label{thm:dimension_theorem}
+    \uses{lem:dim_local_eq_height_prime,thm:krull_height,thm:genset_of_any_height_of_noetherian_height_n}
+    Let \((R,\mathfrak{m},k)\) be a local noetherian ring.
+    Let \(n \in \mathbb{N}\).
+    Then the following are equivalent
+    \begin{enumerate}[(a)]
+        \item \(\dim R = n\)
+        \item \(\height \mathfrak{m} = n\)
+        \item \(\nu(R) = n\).
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    The equivalence of (a) and (b) is
+    Lemma \ref{lem:dim_local_eq_height_prime}
+    applied to the situation of a local ring.
+    The directions of (b) \(\iff\) (c) are given
+    by Theorems \ref{thm:krull_height} and
+    \ref{thm:genset_of_any_height_of_noetherian_height_n},
+    respectively.
+\end{proof}
+
+
+%\begin{definition}
+%  \label{def:dim_module}
+%  The krull dimension of a module 
+%  is the supremum of the lengths
+%  of chains of prime submodules.
+%\end{definition}
+%
+%\begin{definition}
+%  \label{def:dim_ring}
+%  Krull dim of ring (prime ideals
+%  are prime submodules, might need 
+%  to show this)
+%\end{definition}
+
+\newcommand{\Assoc}{\operatorname{Assoc}}
+\newcommand{\Ann}{\operatorname{Ann}}
+
+\begin{theorem}
+    \label{thm:quotient_regular_sub_dim_1}
+    Let \(R\) be a ring, and \(M\) an \(R\)-module.
+    Let \(x\) be an \(M\)-regular element.
+    Then \(\dim M / xM \leq \dim M - 1\).
+\end{theorem}
+
+\begin{proof}
+    \uses{def:krull_dim_ring}
+    As \(x\) is \(M\)-regular, we have that
+    \(x \notin \mathfrak{p}\) for all
+    \(p \in  \Assoc M\),
+    otherwise there would be \(M\)-torsion.
+    
+    By definition, \(\dim M = \dim R / \Ann M\).
+    The associated primes of \(M\) are the same
+    as the minimal primes in \(R / \Ann M\),
+    so \(x\) is not contained in any such prime.
+    But then, any chain of prime ideals in 
+    \((R / \Ann M) / (x)\) lifts to a chain in
+    \(R / \Ann M\) of ideals which contain \((x)\).
+    But then the smallest ideal in the chain 
+    is not minimal since it contains \(x\), so
+    we can extend it to a minimal prime.
+\end{proof}
+
+\begin{corollary}
+  \label{cor:quotient_non_minimal_sub_dim_1}
+  Let $x \in R$ be an element which is not in any 
+  minimal prime ideal.
+  Then $\dim R / (x) \leq \dim R - 1$
+\end{corollary}
+
+\begin{proof}
+  \uses{thm:quotient_regular_sub_dim_1}
+
+  Take $M = R$ in the previous theorem.
+\end{proof}
+
+
+Other dimension theory necessary? Probably?
+
+\subsection{Regular elements and sequences}
+
+\begin{definition}
+  \label{def:reg_elt}
+  Let $M$ be an $R$-module.
+  An element $x \in R$ is $M$-regular if it does 
+  not annihilate any element in $M$.
+  In colon notation, it is non a member of the ideal
+  $( 0 : M )$.
+  If $x$ is an $R$-regular element, we simply say it is 
+  a regular element.
+\end{definition}
+
+\begin{definition}
+  \label{def:weak_reg_seq}
+  \uses{def:reg_elt}
+  Let $M$ be an $R$-module.
+  Then a weak $M$-regular sequence
+  is a sequence $x_1, \ldots, x_n$ 
+  with $x_i \in R$ for all $i$,
+  such that 
+  $x_i$ is a
+  $M / (x_1, \ldots, x_{i-1}) M$-regular
+  element for all $i$.
+  If $M = R$, we say that $x_1, \ldots, x_n$
+  is a weak regular sequence. 
+\end{definition}
+
+\begin{definition}
+  \label{def:reg_seq}
+  \uses{def:weak_reg_seq}
+  Let $M$ be an $R$-module.
+  An $M$-regular sequence is a weak $M$-regular sequence
+  such that $M / (x_1, \ldots, x_n) M \neq 0$.
+  If $M = R$, we simply call this a regular sequence.
+\end{definition}
+
+
+\begin{definition}
+  \label{def:reg_loc}
+  A local ring $R$ is regular if 
+  $\mathfrak{m}$ is generated by a system of parameters.
+\end{definition}
+
+The following is a nice sanity check lemma.
+
+\begin{lemma}
+    \label{lem:reg_maximal_dim_generators}
+    \(R\) is regular if and only if 
+    the minimal number of generators of its maximal
+    ideal is equal to the (Krull) dimension of \(R\)
+\end{lemma}
+
+\begin{proof}
+    \uses{thm:dimension_theorem}
+    This follows by unwinding the definition 
+    and using the dimension theorem 
+    (the length of a system of paramaters is \(\nu(R)\)
+    by definition).
+\end{proof}
+
+\begin{definition}
+  \label{def:reg_ring}
+  \uses{def:reg_loc}
+  A ring $R$ is regular if 
+  $R_{\mathfrak{p}}$ is regular
+  for every $\mathfrak{p} \in R$.
+\end{definition}
+
+\begin{proposition}
+  \label{prop:reg_def_equiv}
+  \uses{def:reg_loc}
+  The following are equivalent
+  Firstly, $R$ is regular.
+  Secondly, the zariski cotangent space
+  is a vector space of dimension $\dim R$.
+\end{proposition}
+
+\begin{proof}
+  See in \verb|adjunction_blob.txt|
+\end{proof}
+
+\begin{lemma}
+  \label{lem:reg_int_dom}
+  \uses{def:reg_loc}
+  Every regular ring is an integral domain.
+\end{lemma}
+
+\begin{proof}
+  \uses{cor:local_maximal_gereating_set_basis_residue}
+
+  See BH 2.2.3
+
+\end{proof}
+
+\begin{proposition}[BH 2.2.4]
+  \label{prop:reg_quot_sys_param}
+  Let $R$ be a regular local ring. 
+  Then $R / I$ is regular local if and only if 
+  $I$ is generated by a (regular) system of parameters
+  (I.e. a generating set for $\mathfrak{m}$).
+\end{proposition}
+
+\begin{proof}
+  \uses{lem:reg_int_dom}
+  This proof uses the following facts:
+
+  * a Nakayama corollary
+  
+  * the fact that regular rings are integral domains
+
+  * the fact that you can't have a proper containment
+    of integral domains with the same dimension
+\end{proof}
+
+\begin{proposition}
+  \label{prop:reg_loc_maximal_reg_seq}
+  \uses{def:reg_loc,def:reg_seq}
+  A local ring $R$ is regular if and only if
+  its maximal ideal is generated by a regular sequence.
+\end{proposition}
+
+\begin{proof}
+  \uses{lem:reg_int_dom,
+    thm:reg_seq_part_of_sys_param,
+    lem:reg_maximal_dim_generators,
+    prop:reg_quot_sys_param
+  }
+  See Bruns-Herzog 2.2.5. This uses BH 2.2.4 
+  (which is Proposition \ref{prop:reg_quot_sys_param}) for the forward
+  direction,
+  and for the reverse direction, we use BH 1.2.12 
+  (aka Theorem \ref{thm:reg_seq_part_of_sys_param}) 
+  and the fact that
+  the minimal number of generators for $\mathfrak{m}$ is at least
+  $\dim R$, which is Lemma \ref{lem:reg_maximal_dim_generators}.
+\end{proof}
+
+\subsection{Support Theory}
+
+\begin{definition}
+  \label{def:annihilator}
+  The annihilator of a module M is the ideal
+  of elements $r \in R$ such that $rm = 0$ for 
+  all $m \in M$.
+\end{definition}
+
+\begin{definition}
+  \label{def:support_module}
+  The support of a module is the set of prime ideals
+  $\mathfrak{p} \ins R$ such that 
+  $M_{\mathfrak{p}} \neq 0$.
+\end{definition}
+
+\begin{lemma}
+  \label{lem:annihilator_zero_locus_support}
+  \uses{def:annihilator,def:support_module}
+  The zero locus of the annihilator of a module
+  is the same as the support of that module.
+  I.e. the set of prime ideals containing the 
+  $\Ann_R(M)$ is the support of $M$.
+\end{lemma}
+
+\begin{proof}
+  omitted for now
+\end{proof}
+
+\subsection{Selected Results on Primary Decomposition}
+
+\begin{definition}
+    \label{def:primary}
+    Given a prime ideal \(\mathfrak{p}\) of the ring \(R\),
+    an ideal \(I\) is \(\mathfrak{p}\)-primary if
+    for all \(x, y \in I\), either \(x \in I\) or \(y^n \in I\)
+    for some \(n\).
+    (This is already in mathlib)
+\end{definition}
+
+\begin{lemma}
+    \label{lem:radical_isPrime_of_isPrimary}
+    \uses{def:primary}
+    If \(\mathfrak{q}\) is a primary ideal, then
+    \(\sqrt{q}\) is a prime ideal.
+\end{lemma}
+
+\begin{proof}
+
+\end{proof}
+
+\begin{lemma}
+    \label{lem:isPrimary_inf_finset}
+    \uses{def:primary}
+    Let \(I_{1}, \ldots, I_{n}\) be \(\mathfrak{p}\)-primary ideals.
+    Then their intersection is \(\mathfrak{p}\)-primary.
+\end{lemma}
+
+\begin{proof}
+    ``isPrimary_inf'' in mathlib is this but for only two ideals,
+    so just use induction.
+\end{proof}
+
+\begin{definition}
+    \label{def:primary_decomp}
+    \uses{def:primary}
+    A primary decomposition of an ideal \(I \subset R\) is
+    an expression of \(I\) as an intersection of primary ideals,
+    that is a collection of ideals
+    \(\mathfrak{q}_{i}\), \(1 \leq i \leq n\),
+    such that
+    \[
+    I = \bigcap_{i=1}^{n} \mathfrak{q}_{i} 
+    .\]
+\end{definition}
+
+\begin{definition}
+    \label{def:decomposable}
+    \uses{def:primary_decomp}
+    An ideal \(I\) is decomposable there exists a primary decomposition
+    with intersection \(I\).
+\end{definition}
+
+\begin{definition}
+    \label{def:minimal_primary_decomp}
+    \uses{def:primary_decomp}
+    A minimal primary decomposition is a primary decomposition such that
+    \begin{enumerate}[(i)]
+        \item The ideals \(\sqrt{\mathfrak{q}_{i}}\) are distinct
+        \item
+            \[
+            \bigcap_{i \neq j}^{} \mathfrak{q}_{j} \not\subset \mathfrak{q}_{i} 
+            \]
+            for all \(1 \leq i \leq n\).
+    \end{enumerate}
+\end{definition}
+
+
+\begin{lemma}
+    \label{lem:has_minimal_primary_decomp_of_decomposable}
+    \uses{def:decomposable}
+    Any decomposable ideal has a minimal primary decomposition
+\end{lemma}
+
+\begin{proof}
+    \uses{lem:isPrimary_inf_finset}
+    Reduce to the case where there is a single prime ideal per
+    primary ideal by lemma \ref{lem:isPrimary_inf_finset},
+    and then if there are any superflous terms breaking condition
+    (ii), remove them.
+\end{proof}
+
+
+\begin{theorem}
+    [First Uniqueness Theorem for Primary Decomposition]
+    \label{thm:first_uniqueness_primary_decomposition}
+    \uses{lem:has_minimal_primary_decomp_of_decomposable, lem:prime_avoidance}
+
+\end{theorem}
+
+\begin{proof}
+    See Atiyah-MacDonald, Theorem 4.5
+\end{proof}
+
+
+
+\subsection{Associated Primes}
+
+
+\begin{proposition}
+  \label{prop:assoc_primes_def_equiv}
+  Let $R$ a ring, and $M$ an $R$-module.
+  Let $\mathfrak{p}$ be a prime ideal, 
+  then 
+  the following are equivalent:
+  \begin{enumerate}[label=(\roman*)]
+  \item $\mathfrak{p} = \Ann_R (m)$ for some element $m \in M$.
+  \item $R / \mathfrak{p}$ embeds into $M$.
+      % \item something about prime submodules
+  \end{enumerate}
+\end{proposition}
+
+\begin{definition}
+  \label{def:assoc_primes}
+  \uses{prop:assoc_primes_def_equiv}
+  The set $\Assoc_R (M)$ is the set of
+  primes satisfying the preivious proposition
+\end{definition}
+
+\begin{proposition}
+  \label{prop:assoc_primes_in_support}
+  \uses{lem:annihilator_zero_locus_support}
+  The associated primes of $M$ are in the
+  support of $M$.
+\end{proposition}
+
+\begin{lemma}
+  \label{lem:assoc_iff_minimal_in_support}
+  \uses{prop:assoc_primes_in_support}
+  The assocated primes of $M$ are precisely
+  the primes which are minimal in the support of $M$.
+\end{lemma}
+
+% Do we need other things about associated primes?
+% relation to primary decomposition?
+% associated primes are minimal?
+
+\begin{lemma}
+  \label{lem:assoc_prime_zero_divisor}
+  \uses{thm:first_uniqueness_primary_decomposition}
+  An element $x \in R$ is a zero-divisor iff
+  it is in an associated prime.
+  (geometrically, it vanishes at an associated point)
+\end{lemma}
+
+
+
+\subsection{Depth and Regular Sequences}
+
+This mostly follows Bruns-Herzog 1.2.
+We are building up to Bruns-Herzog 1.2.12.
+
+Actually maybe we don't need depth??
+
+\begin{definition}
+  \label{def:depth}
+  The depth of a module $M$ is . . . 
+\end{definition}
+
+\begin{theorem}[BH 1.2.12]
+  \label{thm:reg_seq_part_of_sys_param}
+  \uses{def:reg_seq,cor:quotient_non_minimal_sub_dim_1,lem:assoc_prime_zero_divisor}
+  Any regular sequence is part of a system of parameters
+\end{theorem}
+
+\begin{proof}
+  %\uses{def:reg_seq,cor:quotient_non_minimal_sub_dim_1,lem:assoc_prime_zero_divisor}
+  \uses{thm:dimension_theorem,
+      lem:assoc_prime_zero_divisor,
+      lem:prime_avoidance,
+      lem:assoc_iff_minimal_in_support}
+
+    This is 
+    from BH chapter 1, and uses associated primes.
+    It also uses the definition of dimension of a module,
+    
+    Let \(x \in \mathfrak{m}\) an \(M\)-regular element.
+    As \(x \in R\) is \(M\)-regular,  
+    it is not in any associated prime (Lemma \ref{lem:assoc_prime_zero_divisor}).
+    
+    Then, as the associated primes are minimal among the primes
+    that contain the annihilator (which is the support),
+    we have that the previous statement implies that
+    \[
+    \dim M / xM \leq \dim M - 1
+    \] 
+    by corollary \ref{cor:quotient_non_minimal_sub_dim_1}
+    
+    By dimension theory (see BH A.4), this inequality is an equality.
+    
+    Given a regular sequence, iterate this process. 
+    %sketchy:
+    Once we get to the end of this process, we can extend this sequence
+    (by prime avoidance?)
+    to a sequence of
+    %end sketchy
+    % I think the sketchy part, even if it's true, is not the most efficient way of doing this.
+    \(\dim M\) elements, by definition (of system of parameters) we have a system of
+    parameters for M.
+
+\end{proof}
+
+
+\subsection{Auslander-Buchsbaum Formula}
+
+\begin{lemma}
+  \label{lem:module_assoc_maximal_tensor_free_summand}
+  BH 1.3.4
+\end{lemma}
+
+\begin{proof}
+  \uses{prop:assoc_primes_def_equiv}
+  Uses
+
+  * def of associated primes
+
+  * a fact about associated primes giving and embedding
+
+  * some facts about commutative squares (maybe already in lean?)
+
+  * tensor products of modules
+
+  * Nakayama (a corollary, like Atiyah-MacDonald 2.8 
+    but uses maps, might just follow from AM 2.8)
+\end{proof}
+
+\begin{lemma}
+  \label{lem:projdim_preserved_quotient_reg_elt}
+  BH 1.3.5
+\end{lemma}
+
+\begin{proof}
+  This uses 
+
+  * BH 1.1.5
+
+  * The "tor" characterization of projective dimension
+
+\end{proof}
+
+\begin{theorem}
+  \label{thm:auslander_buchsbaum_formula}
+  depth + projdim = depth
+\end{theorem}
+
+\begin{proof}
+  \uses{
+    lem:module_assoc_maximal_tensor_free_summand,
+    lem:projdim_preserved_quotient_reg_elt,
+  }
+\end{proof}
+
+
+%TODO: figure out if we will actually use this.
+
+%\subsection{Cohen-Macaulay Rings}
+%
+%
+%Let $(R,\mathfrak{m},k)$ be a noetherian local ring.
+%
+%\begin{definition}
+%  \label{def:local_cm}
+%  \uses{def:depth}
+%  An $R$-module $M$ is 
+%  Cohen-Macaulay if $\depth M = \dim M$.
+%  We say that $R$ is a Cohen-Macaulay ring if
+%  $R$ is Cohen-Macaulay as a module.
+%\end{definition}
+%
+%\begin{definition}
+%  \label{def:maxml_local_cm}
+%  \uses{def:dim_module}
+%  $M$ is maximal Cohen-Macaulay if 
+%  it has $\dim M = \dim R$.
+%\end{definition}
+%
+%Now, let $R$ be an arbitrary noetherian ring.
+%
+%\begin{definition}
+%  \label{def:cm}
+%  \uses{def:support_module,def:local_cm}
+%  $M$ is Cohen-Macaulay if 
+%  $M_\mathfrak{m}$ is for all maximal
+%  ideals $\mathfrak{m}$ in the support of $M$.
+%\end{definition}
+%
+%\begin{corollary}
+%  \label{cor:zero_is_cm}
+%  \uses{def:cm}
+%  The zero module is Cohen-Macaulay.
+%\end{corollary}
+%
+%\begin{definition}
+%  \label{def:maxml_cm}
+%  \uses{def:maxml_local_cm}
+%  $M$ is maximal Cohen-Macaulay if 
+%  if $M_\mathfrak{m}$ is for all 
+%  maximal ideals $\mathfrak{m}$.
+%  I.e. there is no support condition as before.
+%\end{definition}
+%
+%\begin{theorem}
+%  [BH 2.1.2]
+%  \label{thm:cm_reg_seq_iff_sys_param}
+%  Let $M$ be a Cohen-Macaulay $R$-module.
+%  Then $x_1, \ldots, x_n$ is a regular sequence
+%  if and only if it is part of a system of parameters.
+%\end{theorem}
+%
+%\begin{proof}
+%  \uses{
+%    prop:assoc_primes_in_support,
+%  }
+%  Uses
+%  
+%  * BH 1.2.13
+%
+%  * the fact that the associated primes are in the support
+%
+%  * some stuff about depth and grade and dimension
+%
+%  * 1.6.19
+%
+%  OR, use hochster's proof in
+%  http://www.math.lsa.umich.edu/~hochster/615W14/CM.pdf
+%\end{proof}
+%
+%\begin{proposition}
+%  \label{prop:cm_syzygy}
+%  Let $R$ be Cohen-Macaulay.
+%  Then any dth syzygy module is a maximal cohen-macaulay or zero
+%
+%\end{proposition}
+%
+%\begin{proof}
+%  https://math.stackexchange.com/questions/159390/bruns-herzog-problem-2-1-26-page-64
+%\end{proof}
+
+\subsection{Proof of Auslander-Buchbaum-Serre}
+
+
+
+\begin{lemma}
+  \label{lem:reg_implies_finite_global}
+  \uses{def:globdim}
+  Let $R$ be a regular local ring.
+  Then $R$ has finite global dimension.
+  That is, any finitely generated module $R$ has finite
+  projective dimension.
+\end{lemma}
+
+\begin{proof}
+  %TODO
+\end{proof}
+
+\begin{theorem}
+  [Ferrand-Vasconcelos, BH 2.2.8]
+  \label{thm:ferrand_vasconcelos}
+  \uses{def:reg_seq,def:projdim}
+
+  Let $(R,\mathfrak{m},k)$ be a local noetherian ring.
+  Let $I$ be a nonzero ideal with finite projective dimension.
+  If $I / I^2$ is a free $R$-module, 
+  then $I$ is generated by a regular sequence.
+\end{theorem}
+
+\begin{proof}
+  Since $I$ has finite projective dimension, it has a finite free
+  resolution.
+  Thus, by 1.4.6 it has must have an $R$-regular element $x$.
+  . . . finish the proof . . . 
+\end{proof}
+
+% MARK: Auslander-Buchsbaum-Serre (the goal)
+
+\begin{theorem}[Auslander-Buchsbaum-Serre Criterion, BH 2.2.7]
+  \label{thm:auslander_buchsbaum_serre}
+  Let $(R,\mathfrak{m},k$ be a noetherian local ring.
+  The following are equivalent:
+  \begin{enumerate}[label=(\roman*)]
+    \item $R$ is regular.
+    \item $R$ has finite global dimension.
+    \item $\projdim k < \infty$
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  \uses{
+    lem:reg_implies_finite_global,
+    thm:ferrand_vasconcelos,
+    prop:reg_loc_maximal_reg_seq
+  }
+
+  (i) $\implies$ (ii) is precisely Lemma \ref{lem:reg_implies_finite_global}
+
+  (ii) $\implies$ (iii) follows by applying the definition of global dimension with $M=k$
+
+  (iii) $\implies$ (i) is a special case of Theorem \ref{thm:ferrand_vasconcelos},
+  using \ref{prop:reg_loc_maximal_reg_seq} to 
+  conclude regularity.
+
+  \ref{thm:ferrand_vasconcelos}.
+\end{proof}
+
+\begin{theorem}[Regular Rings Localize, BH 2.2.9]
+
+  \label{thm:regular_rings_localize}
+  Let $R$ be a regular local ring, and let
+  $\mathfrak{p}$ be a prime ideal in $R$.
+  Then $R_{\mathfrak{p}}$ is a regular local ring.
+\end{theorem}
+
+% probably we want to carry around the dimension n
+
+\begin{proof}
+  \uses{thm:auslander_buchsbaum_serre,prop:existence_min_free_resl,lem:loczn_of_resl_is_resl,lem:min_resl_has_min_length}
+  By Auslander-Buchsbaum-Serre, it is enough to show that 
+  $R_{\mathfrak{p}} / \mathfrak{p}R_{\mathfrak{p}}$ has finite projective dimension.
+  Also by Auslander-Buchsbaum-Serre, we know that 
+  $k = R / \mathfrak{m}$ has finite projective dimension.
+  Then $k$ has a minimal free resolution of finite length by
+  Proposition \ref{existence_min_free_resl}.
+  By the fact that the loclization of a resolution is a resolution,
+  We get a finite resolution for 
+  $R_{\mathfrak{p}} / \mathfrak{p}R_{\mathfrak{p}}$,
+  thus any minimal resolution is also finite, giving us what we want.
+
+\end{proof}

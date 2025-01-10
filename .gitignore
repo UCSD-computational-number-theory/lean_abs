@@ -2,3 +2,5 @@
 .venv/
 
 *.fls
+blueprint/web/
+
