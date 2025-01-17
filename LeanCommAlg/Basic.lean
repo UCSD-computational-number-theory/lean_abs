@@ -15,8 +15,13 @@ variable (I : Ideal R)
 
 #check Ideal.IsPrime
 
-noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
-  Order.height {J : PrimeSpectrum R | J.asIdeal ≤ I}
+-- noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
+--   Order.height {J : PrimeSpectrum R | J.asIdeal ≤ I}
+
+
+noncomputable def height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
+  let ps : PrimeSpectrum R := ⟨p, hp⟩
+  Order.height ps
 
 -- noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
 --   Order.height (fun _ : PrimeSpectrum R => I)
@@ -52,49 +57,60 @@ noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
 
 lemma height_zero_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → height I = 0 := by
-  intro hmin
-  rw [height, Order.height]
-  simp_all
-  intros lt hy
-  rw [RelSeries.length_eq_zero]
-  . case _ =>
-    intro set₁ h₁ set₂ h₂
-    simp_all
-    specialize hy ⟨I, h⟩
-    apply Set.ext
-    have this : {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := singleton_of_minimal_prime I hmin
-    have set₁unique : set₁ = {⟨I, h⟩} := by
-      sorry
-    have set₂unique : set₂ = {⟨I, h⟩} := by
-      sorry
-    simp [set₁unique, set₂unique]
-  . case _ =>
-    intro prime_spectrum_set h
-    rcases h with ⟨h1, h2⟩
-    contradiction
-
-#check IsMin
-
-#check I
-
-lemma height_zero_of_minimal_prime' [h : I.IsPrime] :
-    I ∈ minimalPrimes R → height I = 0 := by
 
   intros Imin
   rcases Imin with ⟨bot_le_I, y_minimal⟩
   simp_all
   by_contra height_neq_0
+  rw [height, Order.height] at height_neq_0
   simp [height] at *
-  -- have : {J : PrimeSpectrum R | J.asIdeal ≤ I} ≠ ∅ := by
-  --   intro h
-  --   apply height_neq_0
-  --   exact h
-  have nonempty_m : Nonempty {J : PrimeSpectrum R | J.asIdeal ≤ I} := by
-    exact Set.nonempty_iff_ne_empty'.mpr height_neq_0
-  let J := Classical.choice nonempty_m
-  apply Nonempty.elim nonempty_m
-  simp; intro a
-  sorry
+  obtain ⟨ltseries, ⟨rel_last, len_neq_0⟩⟩ := height_neq_0
+  have len_ge_1 : 1 ≤ ltseries.length := by
+    contrapose! len_neq_0; simp_all
+
+  -- have : RelSeries.head ltseries < {⟨I, h⟩} := by
+  --   simp_all only [Set.lt_eq_ssubset]
+  --   simp_all [RelSeries.head, Set.ssubset_def]
+  --   constructor
+  --   . case _ =>
+  --       intro psr
+  --       intro tofun0
+  --       sorry
+  --   . case _ =>
+  --       sorry
+  --   -- use rel_last
+
+  have head_le_last : RelSeries.head ltseries < RelSeries.last ltseries := by
+    apply RelSeries.rel_of_lt
+    exact len_ge_1
+
+  have head_lt_I : RelSeries.head ltseries < ⟨I, h⟩ := by
+    apply lt_of_lt_of_le head_le_last rel_last
+  have head_le_I : RelSeries.head ltseries ≤ ⟨I, h⟩ := by
+    apply le_of_lt head_lt_I
+  have head_ideal_le_I_ideal :
+      (RelSeries.head ltseries).asIdeal ≤ I := by
+    apply head_le_I
+  -- have I_le_H : ⟨I, h⟩ ≤ RelSeries.head ltseries := by
+  obtain ⟨head_ideal, head_prime⟩ := RelSeries.head ltseries
+
+  have head_ideal_lt_I : head_ideal < I := by
+    sorry
+
+  have head_ideal_le_I : head_ideal ≤ I := by
+    sorry
+
+  specialize y_minimal ?_
+  . apply head_ideal
+  . apply head_prime
+  . case _ =>
+
+    have I_le_head_ideal : I ≤ head_ideal := by
+      apply y_minimal head_ideal_le_I
+
+    absurd I_le_head_ideal
+    exact not_le_of_lt head_ideal_lt_I
+
 
 /-
 I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
