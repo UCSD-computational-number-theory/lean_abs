@@ -10,21 +10,10 @@ import Mathlib.LinearAlgebra.Span.Defs
 --import Mathlib.Data.Real.ENNReal
 
 variable {R : Type _} [CommRing R]
-
 variable (I : Ideal R)
 
-#check Ideal.IsPrime
-
--- noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
---   Order.height {J : PrimeSpectrum R | J.asIdeal ≤ I}
-
-
 noncomputable def height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
-  let ps : PrimeSpectrum R := ⟨p, hp⟩
-  Order.height ps
-
--- noncomputable def height [h : I.IsPrime] : WithBot ℕ∞ :=
---   Order.height (fun _ : PrimeSpectrum R => I)
+  Order.height (⟨p, hp⟩ : PrimeSpectrum R)
 
 #check height
 
@@ -55,7 +44,7 @@ noncomputable def height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
   · intro xQ; apply QP xQ
   · intro xP; exact hPMinimal a IQ QP xP
 
-lemma height_zero_of_minimal_prime [h : I.IsPrime] :
+@[simp] lemma height_zero_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → height I = 0 := by
   intros Imin; rcases Imin with ⟨bot_le_I, y_minimal⟩; simp_all
   by_contra height_neq_0
