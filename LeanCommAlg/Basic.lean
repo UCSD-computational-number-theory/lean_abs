@@ -62,15 +62,12 @@ lemma height_zero_of_minimal_prime [h : I.IsPrime] :
   rw [height, Order.height] at height_neq_0
   simp [height] at *
   obtain ⟨ltseries, ⟨rel_last, len_neq_0⟩⟩ := height_neq_0
-  have len_ge_1 : 1 ≤ ltseries.length := by
-    contrapose! len_neq_0; simp_all
   have head_le_last : RelSeries.head ltseries < RelSeries.last ltseries := by
-    apply RelSeries.rel_of_lt; exact len_ge_1
+    apply RelSeries.rel_of_lt; contrapose! len_neq_0; simp_all
   have head_lt_I : (RelSeries.head ltseries).asIdeal < I := by
     exact gt_of_ge_of_gt rel_last head_le_last
   have head_le_I : (RelSeries.head ltseries).asIdeal ≤ I := by
     apply le_of_lt head_lt_I
-   
   specialize y_minimal ?_
   . apply (RelSeries.head ltseries).asIdeal
   . exact PrimeSpectrum.isPrime (RelSeries.head ltseries)
