@@ -57,60 +57,25 @@ noncomputable def height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
 
 lemma height_zero_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → height I = 0 := by
-
-  intros Imin
-  rcases Imin with ⟨bot_le_I, y_minimal⟩
-  simp_all
+  intros Imin; rcases Imin with ⟨bot_le_I, y_minimal⟩; simp_all
   by_contra height_neq_0
   rw [height, Order.height] at height_neq_0
   simp [height] at *
   obtain ⟨ltseries, ⟨rel_last, len_neq_0⟩⟩ := height_neq_0
   have len_ge_1 : 1 ≤ ltseries.length := by
     contrapose! len_neq_0; simp_all
-
-  -- have : RelSeries.head ltseries < {⟨I, h⟩} := by
-  --   simp_all only [Set.lt_eq_ssubset]
-  --   simp_all [RelSeries.head, Set.ssubset_def]
-  --   constructor
-  --   . case _ =>
-  --       intro psr
-  --       intro tofun0
-  --       sorry
-  --   . case _ =>
-  --       sorry
-  --   -- use rel_last
-
   have head_le_last : RelSeries.head ltseries < RelSeries.last ltseries := by
-    apply RelSeries.rel_of_lt
-    exact len_ge_1
-
-  have head_lt_I : RelSeries.head ltseries < ⟨I, h⟩ := by
-    apply lt_of_lt_of_le head_le_last rel_last
-  have head_le_I : RelSeries.head ltseries ≤ ⟨I, h⟩ := by
+    apply RelSeries.rel_of_lt; exact len_ge_1
+  have head_lt_I : (RelSeries.head ltseries).asIdeal < I := by
+    exact gt_of_ge_of_gt rel_last head_le_last
+  have head_le_I : (RelSeries.head ltseries).asIdeal ≤ I := by
     apply le_of_lt head_lt_I
-  have head_ideal_le_I_ideal :
-      (RelSeries.head ltseries).asIdeal ≤ I := by
-    apply head_le_I
-  -- have I_le_H : ⟨I, h⟩ ≤ RelSeries.head ltseries := by
-  obtain ⟨head_ideal, head_prime⟩ := RelSeries.head ltseries
-
-  have head_ideal_lt_I : head_ideal < I := by
-    sorry
-
-  have head_ideal_le_I : head_ideal ≤ I := by
-    sorry
-
+   
   specialize y_minimal ?_
-  . apply head_ideal
-  . apply head_prime
-  . case _ =>
-
-    have I_le_head_ideal : I ≤ head_ideal := by
-      apply y_minimal head_ideal_le_I
-
-    absurd I_le_head_ideal
-    exact not_le_of_lt head_ideal_lt_I
-
+  . apply (RelSeries.head ltseries).asIdeal
+  . exact PrimeSpectrum.isPrime (RelSeries.head ltseries)
+  . absurd (y_minimal head_le_I)
+    exact not_le_of_lt (head_lt_I)
 
 /-
 I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
