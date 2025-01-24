@@ -367,6 +367,7 @@ The following is a nice sanity check lemma.
     correspondance theorem for localizations.
 \end{proof}
     
+\begin{comment}
 \begin{definition}
     \label{def:primary_ideal}
     An ideal \(I\) is \(\mathfrak{p}\)-primary if it's
@@ -381,6 +382,8 @@ The following is a nice sanity check lemma.
     be the minimum of the lengths of generating sets of  
     \(\mathfrak{m}\)-primary ideals.
 \end{definition}
+
+\end{comment}
 
 Now we state Krull's height theorem and its (partial) converse.
 
@@ -601,6 +604,7 @@ The following is a nice sanity check lemma.
     by definition).
 \end{proof}
 
+\begin{comment}
 \begin{definition}
   \label{def:reg_ring}
   \uses{def:reg_loc}
@@ -617,6 +621,7 @@ The following is a nice sanity check lemma.
   Secondly, the zariski cotangent space
   is a vector space of dimension $\dim R$.
 \end{proposition}
+\end{comment}
 
 \begin{proof}
   See in \verb|adjunction_blob.txt|
@@ -629,7 +634,7 @@ The following is a nice sanity check lemma.
 \end{lemma}
 
 \begin{proof}
-  \uses{cor:local_maximal_gereating_set_basis_residue}
+  \uses{cor:local_maximal_gereating_set_basis_residue, thm:krull_height}
 
   See BH 2.2.3
 
@@ -678,6 +683,7 @@ The following is a nice sanity check lemma.
   $\dim R$, which is Lemma \ref{lem:reg_maximal_dim_generators}.
 \end{proof}
 
+\begin{comment}
 \subsection{Support Theory}
 
 \begin{definition}
@@ -853,6 +859,8 @@ The following is a nice sanity check lemma.
   (geometrically, it vanishes at an associated point)
 \end{lemma}
 
+\end{comment}
+
 
 
 \subsection{Depth and Regular Sequences}
@@ -864,6 +872,7 @@ Actually maybe we don't need depth??
 
 \begin{definition}
   \label{def:depth}
+	\uses{def:weak_reg_seq}
   The depth of a module $M$ is . . . 
 \end{definition}
 
@@ -911,6 +920,7 @@ Actually maybe we don't need depth??
 \end{proof}
 
 
+\begin{comment}
 \subsection{Auslander-Buchsbaum Formula}
 
 \begin{lemma}
@@ -949,7 +959,7 @@ Actually maybe we don't need depth??
 \end{proof}
 
 \begin{theorem}
-  \label{thm:auslander_buchsbaum_formula}
+  \label{thm:auslander_buchsbaum_formula_old}
   depth + projdim = depth
 \end{theorem}
 
@@ -959,6 +969,8 @@ Actually maybe we don't need depth??
     lem:projdim_preserved_quotient_reg_elt,
   }
 \end{proof}
+
+\end{comment}
 
 
 %TODO: figure out if we will actually use this.
@@ -1046,6 +1058,7 @@ Actually maybe we don't need depth??
 %  https://math.stackexchange.com/questions/159390/bruns-herzog-problem-2-1-26-page-64
 %\end{proof}
 
+\begin{comment}
 \subsection{Proof of Auslander-Buchbaum-Serre}
 
 
@@ -1097,8 +1110,10 @@ Actually maybe we don't need depth??
 \begin{proof}
   \uses{
     lem:reg_implies_finite_global,
-    thm:ferrand_vasconcelos,
-    prop:reg_loc_maximal_reg_seq
+    %thm:ferrand_vasconcelos,
+    %prop:reg_loc_maximal_reg_seq
+	  %thm:loc_ring_reg_iff_fin_globdim,
+	  %cor:koszul_min_resl_residue_if_reg
   }
 
   (i) $\implies$ (ii) is precisely Lemma \ref{lem:reg_implies_finite_global}
@@ -1109,7 +1124,7 @@ Actually maybe we don't need depth??
   using \ref{prop:reg_loc_maximal_reg_seq} to 
   conclude regularity.
 
-  \ref{thm:ferrand_vasconcelos}.
+  %\ref{thm:ferrand_vasconcelos}.
 \end{proof}
 
 \begin{theorem}[Regular Rings Localize, BH 2.2.9]
@@ -1136,3 +1151,4 @@ Actually maybe we don't need depth??
   thus any minimal resolution is also finite, giving us what we want.
 
 \end{proof}
+\end{comment}
