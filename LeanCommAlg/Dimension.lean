@@ -52,10 +52,10 @@ noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot 
   rw [Ideal.IsPrime.height, Order.height] at height_neq_0
   simp [Ideal.IsPrime.height] at *
   obtain ⟨ltseries, ⟨rel_last, len_neq_0⟩⟩ := height_neq_0
-  have head_le_last : RelSeries.head ltseries < RelSeries.last ltseries := by
+  have head_lt_last : RelSeries.head ltseries < RelSeries.last ltseries := by
     apply RelSeries.rel_of_lt; contrapose! len_neq_0; simp_all
   have head_lt_I : (RelSeries.head ltseries).asIdeal < I := by
-    exact gt_of_ge_of_gt rel_last head_le_last
+    exact gt_of_ge_of_gt rel_last head_lt_last
   have head_le_I : (RelSeries.head ltseries).asIdeal ≤ I := by
     apply le_of_lt head_lt_I
   specialize y_minimal ?_
@@ -69,8 +69,20 @@ I think this should be true? If you consider the chain of ideals, then `J` must 
 -/
 lemma height_le_prime_of_minimal_prime (J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
     J ∈ I.minimalPrimes → Ideal.IsPrime.height I ≤ Ideal.IsPrime.height J  := by
-  intro hmin
+  intro Imin; rcases Imin with ⟨I_le_J, y_minimal⟩; simp_all
+  by_contra hJ_lt_hI; simp [not_le_of_lt] at hJ_lt_hI
+
+  simp_all [Ideal.IsPrime.height, Order.height]
   sorry
+
+theorem height_eq_iff_eq (I J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
+    I = J ↔ Ideal.IsPrime.height I = Ideal.IsPrime.height J := by
+  constructor
+  . case mp => intro I_eq_J; subst I_eq_J; rfl
+  . case mpr =>
+    intro h_eq
+    simp [Ideal.IsPrime.height, Order.height] at h_eq
+    sorry
 
 theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : Ideal.IsPrime.height I ≤ 1 := by
   rw [Ideal.IsPrime.height, Order.height]
@@ -79,9 +91,14 @@ theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : Id
   sorry
   -- Associated primes, Krull's principal ideal theorem,
 
-noncomputable def Ideal.height (J : Ideal R) : WithBot ℕ∞ :=
-  ⨅ (p : PrimeSpectrum R) (_ : J ≤ p.asIdeal), Ideal.IsPrime.height p.asIdeal
-
-lemma height_ideal_eq_minimal_height (J : Ideal R) [P_is_prime : P.IsPrime] :
-    J ∈ P.minimalPrimes → Ideal.height J = Ideal.IsPrime.height P := by
-  sorry
+-- rad(I) is the intersection of all minimal primes containing I
+theorem radical_intersection_minimal_primes (I : Ideal R) :
+    I.radical = ⨅ (P : Ideal R) (hP : P ∈ I.minimalPrimes), P := by
+  ext x; constructor
+  case h.mp =>
+    intro x_in_rad
+    sorry
+  case h.mpr =>
+    intro x_in_inter
+    simp at x_in_inter
+    sorry
