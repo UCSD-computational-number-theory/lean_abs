@@ -315,9 +315,10 @@ One can also use Hilbert Polynomials, see Atiyah-MacDonald.
 Now, we can start to define dimension.
 
 \begin{definition}
-  \label{def:height_prime_ideal}
+  \label{def:Ideal.IsPrime.height}
+  \leanok
   Let $R$ be a ring, and $\mathfrak{p}$
-  be a prime ideal in $R$.
+  be a prime ideal in $R$.-
   Then the height of $\mathfrak{p}$ is the sup of
   the lengths of chains
   \[
@@ -331,7 +332,7 @@ Now, we can start to define dimension.
 
 \begin{definition}
     \label{def:height_arbitrary_ideal}
-    \uses{def:height_prime_ideal}
+    \uses{def:Ideal.IsPrime.height}
     The height of an ideal \(I \subset R\)
     is the infimum of the heights of
     prime ideals containing \(I\).
@@ -342,7 +343,7 @@ with the previous when \(I\) is prime (all by def).
 
 \begin{definition}
     \label{def:krull_dim_ring}
-    \uses{def:height_prime_ideal}
+    \uses{def:Ideal.IsPrime.height}
     The Krull dimension of the \(R\)
     is the supremum of heights of prime
     ideals \(\mathfrak{p} \subset R\).
@@ -354,7 +355,7 @@ The following is a nice sanity check lemma.
     
 \begin{lemma}
     \label{lem:dim_local_eq_height_prime}
-    \uses{def:height_prime_ideal,def:krull_dim_ring}
+    \uses{def:Ideal.IsPrime.height,def:krull_dim_ring}
     Let \(R\) a ring and \(\mathfrak{p}\) a
     prime ideal, then
     \[
@@ -367,6 +368,7 @@ The following is a nice sanity check lemma.
     correspondance theorem for localizations.
 \end{proof}
     
+\begin{comment}
 \begin{definition}
     \label{def:primary_ideal}
     An ideal \(I\) is \(\mathfrak{p}\)-primary if it's
@@ -382,13 +384,15 @@ The following is a nice sanity check lemma.
     \(\mathfrak{m}\)-primary ideals.
 \end{definition}
 
+\end{comment}
+
 Now we state Krull's height theorem and its (partial) converse.
 
 
 
 \begin{theorem}
     \label{thm:krull_principal_ideal}
-    \uses{cor:local_maximal_gereating_set_basis_residue,def:height_prime_ideal}
+    \uses{cor:local_maximal_gereating_set_basis_residue,def:Ideal.IsPrime.height}
     Let \(R\) be a noetherian ring, 
     and \(I\) a prinicpal ideal.
     Then each minimal prime ideal over \(I\) 
@@ -601,6 +605,7 @@ The following is a nice sanity check lemma.
     by definition).
 \end{proof}
 
+\begin{comment}
 \begin{definition}
   \label{def:reg_ring}
   \uses{def:reg_loc}
@@ -617,6 +622,7 @@ The following is a nice sanity check lemma.
   Secondly, the zariski cotangent space
   is a vector space of dimension $\dim R$.
 \end{proposition}
+\end{comment}
 
 \begin{proof}
   See in \verb|adjunction_blob.txt|
@@ -629,7 +635,7 @@ The following is a nice sanity check lemma.
 \end{lemma}
 
 \begin{proof}
-  \uses{cor:local_maximal_gereating_set_basis_residue}
+  \uses{cor:local_maximal_gereating_set_basis_residue, thm:krull_height}
 
   See BH 2.2.3
 
@@ -678,6 +684,7 @@ The following is a nice sanity check lemma.
   $\dim R$, which is Lemma \ref{lem:reg_maximal_dim_generators}.
 \end{proof}
 
+\begin{comment}
 \subsection{Support Theory}
 
 \begin{definition}
@@ -853,6 +860,8 @@ The following is a nice sanity check lemma.
   (geometrically, it vanishes at an associated point)
 \end{lemma}
 
+\end{comment}
+
 
 
 \subsection{Depth and Regular Sequences}
@@ -864,6 +873,7 @@ Actually maybe we don't need depth??
 
 \begin{definition}
   \label{def:depth}
+	\uses{def:weak_reg_seq}
   The depth of a module $M$ is . . . 
 \end{definition}
 
@@ -911,6 +921,7 @@ Actually maybe we don't need depth??
 \end{proof}
 
 
+\begin{comment}
 \subsection{Auslander-Buchsbaum Formula}
 
 \begin{lemma}
@@ -949,7 +960,7 @@ Actually maybe we don't need depth??
 \end{proof}
 
 \begin{theorem}
-  \label{thm:auslander_buchsbaum_formula}
+  \label{thm:auslander_buchsbaum_formula_old}
   depth + projdim = depth
 \end{theorem}
 
@@ -959,6 +970,8 @@ Actually maybe we don't need depth??
     lem:projdim_preserved_quotient_reg_elt,
   }
 \end{proof}
+
+\end{comment}
 
 
 %TODO: figure out if we will actually use this.
@@ -1046,6 +1059,7 @@ Actually maybe we don't need depth??
 %  https://math.stackexchange.com/questions/159390/bruns-herzog-problem-2-1-26-page-64
 %\end{proof}
 
+\begin{comment}
 \subsection{Proof of Auslander-Buchbaum-Serre}
 
 
@@ -1097,8 +1111,10 @@ Actually maybe we don't need depth??
 \begin{proof}
   \uses{
     lem:reg_implies_finite_global,
-    thm:ferrand_vasconcelos,
-    prop:reg_loc_maximal_reg_seq
+    %thm:ferrand_vasconcelos,
+    %prop:reg_loc_maximal_reg_seq
+	  %thm:loc_ring_reg_iff_fin_globdim,
+	  %cor:koszul_min_resl_residue_if_reg
   }
 
   (i) $\implies$ (ii) is precisely Lemma \ref{lem:reg_implies_finite_global}
@@ -1109,7 +1125,7 @@ Actually maybe we don't need depth??
   using \ref{prop:reg_loc_maximal_reg_seq} to 
   conclude regularity.
 
-  \ref{thm:ferrand_vasconcelos}.
+  %\ref{thm:ferrand_vasconcelos}.
 \end{proof}
 
 \begin{theorem}[Regular Rings Localize, BH 2.2.9]
@@ -1136,3 +1152,4 @@ Actually maybe we don't need depth??
   thus any minimal resolution is also finite, giving us what we want.
 
 \end{proof}
+\end{comment}
