@@ -315,9 +315,10 @@ One can also use Hilbert Polynomials, see Atiyah-MacDonald.
 Now, we can start to define dimension.
 
 \begin{definition}
-  \label{def:height_prime_ideal}
+  \label{def:Ideal.IsPrime.height}
+  \leanok
   Let $R$ be a ring, and $\mathfrak{p}$
-  be a prime ideal in $R$.
+  be a prime ideal in $R$.-
   Then the height of $\mathfrak{p}$ is the sup of
   the lengths of chains
   \[
@@ -331,7 +332,7 @@ Now, we can start to define dimension.
 
 \begin{definition}
     \label{def:height_arbitrary_ideal}
-    \uses{def:height_prime_ideal}
+    \uses{def:Ideal.IsPrime.height}
     The height of an ideal \(I \subset R\)
     is the infimum of the heights of
     prime ideals containing \(I\).
@@ -342,7 +343,7 @@ with the previous when \(I\) is prime (all by def).
 
 \begin{definition}
     \label{def:krull_dim_ring}
-    \uses{def:height_prime_ideal}
+    \uses{def:Ideal.IsPrime.height}
     The Krull dimension of the \(R\)
     is the supremum of heights of prime
     ideals \(\mathfrak{p} \subset R\).
@@ -354,7 +355,7 @@ The following is a nice sanity check lemma.
     
 \begin{lemma}
     \label{lem:dim_local_eq_height_prime}
-    \uses{def:height_prime_ideal,def:krull_dim_ring}
+    \uses{def:Ideal.IsPrime.height,def:krull_dim_ring}
     Let \(R\) a ring and \(\mathfrak{p}\) a
     prime ideal, then
     \[
@@ -391,7 +392,7 @@ Now we state Krull's height theorem and its (partial) converse.
 
 \begin{theorem}
     \label{thm:krull_principal_ideal}
-    \uses{cor:local_maximal_gereating_set_basis_residue,def:height_prime_ideal}
+    \uses{cor:local_maximal_gereating_set_basis_residue,def:Ideal.IsPrime.height}
     Let \(R\) be a noetherian ring, 
     and \(I\) a prinicpal ideal.
     Then each minimal prime ideal over \(I\) 

@@ -11,6 +11,7 @@ import Mathlib.LinearAlgebra.Span.Defs
 
 variable {R : Type _} [CommRing R]
 variable (I : Ideal R)
+variable (P : Ideal R)
 
 noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
   Order.height (⟨p, hp⟩ : PrimeSpectrum R)
@@ -77,3 +78,10 @@ theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : Id
   intro ltseries relseries
   sorry
   -- Associated primes, Krull's principal ideal theorem,
+
+noncomputable def Ideal.height (J : Ideal R) : WithBot ℕ∞ :=
+  ⨅ (p : PrimeSpectrum R) (_ : J ≤ p.asIdeal), Ideal.IsPrime.height p.asIdeal
+
+lemma height_ideal_eq_minimal_height (J : Ideal R) [P_is_prime : P.IsPrime] :
+    J ∈ P.minimalPrimes → Ideal.height J = Ideal.IsPrime.height P := by
+  sorry
