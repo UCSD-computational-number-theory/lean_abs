@@ -12,10 +12,10 @@ import Mathlib.LinearAlgebra.Span.Defs
 variable {R : Type _} [CommRing R]
 variable (I : Ideal R)
 
-noncomputable def height_prime_ideal (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
+noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
   Order.height (⟨p, hp⟩ : PrimeSpectrum R)
 
-#check height_prime_ideal
+#check Ideal.IsPrime.height
 
 @[simp] lemma singleton_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := by
@@ -45,11 +45,11 @@ noncomputable def height_prime_ideal (p : Ideal R) [hp : p.IsPrime] : WithBot �
   · intro xP; exact hPMinimal a IQ QP xP
 
 @[simp] lemma height_zero_of_minimal_prime [h : I.IsPrime] :
-    I ∈ minimalPrimes R → height_prime_ideal I = 0 := by
+    I ∈ minimalPrimes R → Ideal.IsPrime.height I = 0 := by
   intros Imin; rcases Imin with ⟨bot_le_I, y_minimal⟩; simp_all
   by_contra height_neq_0
-  rw [height_prime_ideal, Order.height] at height_neq_0
-  simp [height_prime_ideal] at *
+  rw [Ideal.IsPrime.height, Order.height] at height_neq_0
+  simp [Ideal.IsPrime.height] at *
   obtain ⟨ltseries, ⟨rel_last, len_neq_0⟩⟩ := height_neq_0
   have head_le_last : RelSeries.head ltseries < RelSeries.last ltseries := by
     apply RelSeries.rel_of_lt; contrapose! len_neq_0; simp_all
@@ -67,12 +67,12 @@ noncomputable def height_prime_ideal (p : Ideal R) [hp : p.IsPrime] : WithBot �
 I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
 -/
 lemma height_le_prime_of_minimal_prime (J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
-    J ∈ I.minimalPrimes → height_prime_ideal I ≤ height_prime_ideal J  := by
+    J ∈ I.minimalPrimes → Ideal.IsPrime.height I ≤ Ideal.IsPrime.height J  := by
   intro hmin
   sorry
 
-theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : height_prime_ideal I ≤ 1 := by
-  rw [height_prime_ideal, Order.height]
+theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : Ideal.IsPrime.height I ≤ 1 := by
+  rw [Ideal.IsPrime.height, Order.height]
   simp_all
   intro ltseries relseries
   sorry

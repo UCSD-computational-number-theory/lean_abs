@@ -3,4 +3,4 @@
 
 *.fls
 blueprint/web/
-blueprint/web.paux
+blueprint/src/web.paux
