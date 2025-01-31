@@ -68,25 +68,31 @@ variable (P : Ideal R)
     exact not_le_of_lt (head_lt_I)
 
 /-
-I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
+I think this should be true? If you consider the chain of ideals,
+then `J` must contain `I`, and thus have a height of at least `height I`
 -/
 lemma height_le_prime_of_minimal_prime (J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
     J ∈ I.minimalPrimes → I.primeHeight ≤ J.primeHeight := by
-  intro Imin; rcases Imin with ⟨I_le_J, y_minimal⟩; simp_all
-  by_contra hJ_lt_hI; simp [not_le_of_lt] at hJ_lt_hI
+  intro Imin; rcases Imin with ⟨I_le_J, _⟩; simp_all
+  exact Ideal.primeHeight_mono I_le_J
 
-  simp_all [Ideal.primeHeight]
-  sorry
-
-theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] :
+/-
+Krull's Principal Ideal Theorem
+- The height of a principl prime ideal is at most 1
+-/
+theorem height_1_of_principal_of_prime [h : I.IsPrime] [h_principal : I.IsPrincipal] :
     Ideal.primeHeight I ≤ 1 := by
-  rw [Ideal.primeHeight, Order.height]
-  simp_all
-  intro ltseries relseries
-  sorry
-  -- Associated primes, Krull's principal ideal theorem,
+  rw [Ideal.primeHeight]
+  rcases h_principal with ⟨span⟩
+  simp_all only [Ideal.submodule_span_eq]
+  obtain ⟨w, h_1⟩ := span
+  subst h_1
 
--- rad(I) is the intersection of all minimal primes containing I
+  sorry
+
+/-
+rad(I) is the intersection of all minimal primes containing I
+-/
 theorem radical_intersection_minimal_primes (I : Ideal R) :
     I.radical = ⨅ (P : Ideal R) (hP : P ∈ I.minimalPrimes), P := by
   ext x; constructor
