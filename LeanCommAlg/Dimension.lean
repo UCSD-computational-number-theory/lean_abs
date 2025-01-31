@@ -4,6 +4,7 @@ import Mathlib.RingTheory.Ideal.MinimalPrime
 import Mathlib.RingTheory.Ideal.Operations
 import Mathlib.RingTheory.PrincipalIdealDomain
 import Mathlib.Order.Height
+import Mathlib.RingTheory.Ideal.Height
 import Mathlib.Order.WithBot
 import Mathlib.Order.KrullDimension
 import Mathlib.LinearAlgebra.Span.Defs
@@ -12,6 +13,8 @@ import Mathlib.LinearAlgebra.Span.Defs
 variable {R : Type _} [CommRing R]
 variable (I : Ideal R)
 variable (P : Ideal R)
+
+#check Ideal.height
 
 noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
   Order.height (⟨p, hp⟩ : PrimeSpectrum R)
@@ -102,3 +105,7 @@ theorem radical_intersection_minimal_primes (I : Ideal R) :
     intro x_in_inter
     simp at x_in_inter
     sorry
+
+theorem kurll_principal_ideal (I : Ideal R) [hI : I.IsPrincipal] (P : Ideal R) (hP : P ∈ I.minimalPrimes) :
+    Ideal.height P ≤ 1 := by
+      sorry
