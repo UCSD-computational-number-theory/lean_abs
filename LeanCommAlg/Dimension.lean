@@ -104,6 +104,6 @@ theorem radical_intersection_minimal_primes (I : Ideal R) :
     simp at x_in_inter
     sorry
 
-theorem kurll_principal_ideal (I : Ideal R) [hI : I.IsPrincipal] (P : Ideal R) (hP : P ∈ I.minimalPrimes) :
+theorem krull_principal_ideal (I : Ideal R) [hI : I.IsPrincipal] (P : Ideal R) (hP : P ∈ I.minimalPrimes) :
     Ideal.height P ≤ 1 := by
       sorry
