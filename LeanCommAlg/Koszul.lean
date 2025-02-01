@@ -25,19 +25,21 @@ variable {c : ComplexShape ℕ} (C : HomologicalComplex V c)
 
 noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check zeroObj
-noncomputable def identityMorph : zeroObj V ⟶ zeroObj V := (λ _ => _)
+
+lemma comp_zero_is_zero : 𝟙 (zeroObj V) ≫ 𝟙 (zeroObj V) = 0 := by
+  simp_all
+  refine zero_of_target_iso_zero (𝟙 (zeroObj V)) ?_
+  rfl
 
 -- the complex 0 → 0 → 0 → 0
 noncomputable def trivialComplex : ShortComplex V := {
   X₁ := zeroObj V,
   X₂ := zeroObj V,
   X₃ := zeroObj V,
-  f := V.,
-  g := sorry,
-  zero := by sorry
+  f := 𝟙 (zeroObj V),
+  g := 𝟙 (zeroObj V),
+  zero := comp_zero_is_zero V
 }
-
-
 
 -- k-th differential of Koszul complex
 def d_k [Module.Free R M] (k : ℕ) (s : M →ₗ[R] R) : M →ₗ[R] M :=
