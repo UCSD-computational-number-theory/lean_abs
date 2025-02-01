@@ -41,6 +41,16 @@ noncomputable def trivialComplex : ShortComplex V := {
   zero := comp_zero_is_zero V
 }
 
+-- the homological complex
+-- 0 → 0 → 0 → 0 → ...
+noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
+  X := λ i => zeroObj V,
+  d := λ i => 0,
+  shape := c,
+  d_comp_d' := λ i j k hij hjk => by
+    simp_all
+}
+
 -- k-th differential of Koszul complex
 def d_k [Module.Free R M] (k : ℕ) (s : M →ₗ[R] R) : M →ₗ[R] M :=
   have h : ∃ (S : Set M), Nonempty (Basis (↑S) R M) := by
