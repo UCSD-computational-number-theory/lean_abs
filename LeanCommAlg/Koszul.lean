@@ -21,7 +21,7 @@ universe v u
 open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
 variable {ι : Type*}
 variable (V : Type u) [Category.{v} V] [HasZeroMorphisms V] [HasZeroObject V]
-variable {c : ComplexShape ℕ} (C : HomologicalComplex V c)
+variable {c : ComplexShape ℤ}
 
 noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check zeroObj
@@ -46,7 +46,9 @@ noncomputable def trivialComplex : ShortComplex V := {
 noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
   X := λ i => zeroObj V,
   d := λ i => 0,
-  shape := c,
+  shape := by
+    intro i j a
+    simp_all only [Pi.zero_apply],
   d_comp_d' := λ i j k hij hjk => by
     simp_all
 }
@@ -58,24 +60,20 @@ def d_k [Module.Free R M] (k : ℕ) (s : M →ₗ[R] R) : M →ₗ[R] M :=
   sorry
 
 
-def KoszulComplexShape : ComplexShape (ULift ℤ) := {
-  Rel     := (fun i j => j.down = i.down + 1),
-  next_eq := (fun {i j j'} h h' => by
-    simp_all only
-    have fwd : ℤ := i.down
-    ext : 1
-    simp_all only
-  ),
-  prev_eq := (fun {i i' j} h h' => by simp_all only [add_left_inj, ULift.down_inj])
+def KoszulComplexShape : ComplexShape ℤ := {
+  Rel     := (fun i j => j = i + 1),
+  next_eq := (fun {i j j'} h h' => by subst h h'; rfl  ),
+  prev_eq := (fun {i i' j} h h' => by subst h; exact (Int.add_left_inj 1).mp h')
 }
+abbrev kcs := KoszulComplexShape
 
 /-
 `[Module.Free R M]` is a typeclass that says `M` is free as an `R`-module.
 -/
-noncomputable def KoszulComplex [Module.Free R M] : HomologicalComplex KoszulComplexShape M :=
+noncomputable def KoszulComplex [Module.Free R M] : CochainComplex V ℤ :=
   {
-    X := (λ i, if i = 0 then M else ExteriorAlgebra R (I ^ i)),
-    d := (λ d, d_k I i ),
+    X := (fun i => sorry),
+    d := (fun d => sorry),
     shape := sorry
     d_comp_d' := sorry
   }
