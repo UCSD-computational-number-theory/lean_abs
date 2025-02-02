@@ -9,12 +9,16 @@ import Mathlib.Algebra.Homology.ShortComplex.Basic
 import Mathlib.CategoryTheory.Subobject.Limits
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 import Mathlib.CategoryTheory.GradedObject
+import Mathlib.RingTheory.GradedAlgebra.Basic
+import Mathlib.Algebra.Group.Submonoid.Defs
 
 --import Mathlib.Data.Real.ENNReal
 
-variable {R : Type _} [CommRing R]
+variable {ι R A M σ : Type*}
+variable [DecidableEq ι] [AddMonoid ι] [CommRing R] [Semiring A] [Algebra R A]
+variable [SetLike σ A] [AddSubmonoidClass σ A] (𝒜 : ℕ → σ)
 variable (I : Ideal R)
-variable {M : Type _} [AddCommGroup M]
+variable [AddCommGroup M]
 variable [Module R M]
 
 universe v u
@@ -54,9 +58,7 @@ noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
 }
 
 -- k-th differential of Koszul complex
-def d_k [Module.Free R M] (k : ℕ) (s : M →ₗ[R] R) : M →ₗ[R] M :=
-  have h : ∃ (S : Set M), Nonempty (Basis (↑S) R M) := by
-    apply (Module.free_iff_set R M).mp; assumption
+def d_k [Module R M] (k : ℕ) (s : M →ₗ[R] R) : M →ₗ[R] M :=
   sorry
 
 
@@ -70,7 +72,7 @@ abbrev kcs := KoszulComplexShape
 /-
 `[Module.Free R M]` is a typeclass that says `M` is free as an `R`-module.
 -/
-noncomputable def KoszulComplex [Module.Free R M] : CochainComplex V ℤ :=
+noncomputable def KoszulComplex [Module R M] : CochainComplex V ℤ :=
   {
     X := (fun i => sorry),
     d := (fun d => sorry),
