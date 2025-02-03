@@ -1,19 +1,20 @@
 import Mathlib.RingTheory.Ideal.Basic
+import Mathlib.RingTheory.GradedAlgebra.Basic
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basic
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Grading
 import Mathlib.LinearAlgebra.ExteriorPower.Basic
 import Mathlib.LinearAlgebra.FreeModule.Basic
 import Mathlib.LinearAlgebra.Span.Defs
 import Mathlib.Algebra.Group.Defs
+import Mathlib.Algebra.Group.Submonoid.Defs
 import Mathlib.Algebra.Homology.HomologicalComplex
 import Mathlib.Algebra.Homology.ComplexShape
 import Mathlib.Algebra.Homology.ShortComplex.Basic
+import Mathlib.Algebra.DirectSum.Basic
 import Mathlib.Algebra.DirectSum.Module
 import Mathlib.CategoryTheory.Subobject.Limits
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 import Mathlib.CategoryTheory.GradedObject
-import Mathlib.RingTheory.GradedAlgebra.Basic
-import Mathlib.Algebra.Group.Submonoid.Defs
 
 --import Mathlib.Data.Real.ENNReal
 open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
@@ -36,6 +37,8 @@ noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check ExteriorAlgebra.gradedAlgebra R M
 #check ExteriorAlgebra R M
 #check (ExteriorAlgebra.ι R)
+#check DirectSum.lof
+#check DirectSum.toModule
 
 /-
 theorem mul_alternating :
@@ -68,6 +71,12 @@ noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
   d_comp_d' := λ i j k hij hjk => by
     simp_all
 }
+
+noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
+  sorry
+
+noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
+  sorry
 
 noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M :=
   sorry
