@@ -37,6 +37,7 @@ noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check ExteriorAlgebra.gradedAlgebra R M
 #check ExteriorAlgebra R M
 #check (ExteriorAlgebra.ι R)
+#check (ExteriorAlgebra.ιMulti R) 1
 #check DirectSum.lof
 #check DirectSum.toModule
 
@@ -72,6 +73,15 @@ noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
     simp_all
 }
 
+open ExteriorAlgebra
+
+--lemma linear_of_ext_mul
+
+def mul_a (a : M) : ExteriorAlgebra R M → ExteriorAlgebra R M :=
+  --include a into ExteriorAlgebra, then apply the multiplication
+  --fun m => m * a
+  sorry
+
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
   sorry
 
@@ -79,10 +89,13 @@ noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M 
   sorry
 
 noncomputable def ext_mul_a (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
-  sorry
+  { toFun := mul_a a
+    map_add' := fun x y => sorry
+    map_smul' := fun r x => sorry}
 
 noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M :=
-  (ext_proj (i+1)).comp (ext_inclusion i)
+  ((ext_proj (i+1)).comp (ext_mul_a a)).comp (ext_inclusion i)
+
 
 
 def KoszulComplexShape : ComplexShape ℤ := {
