@@ -1,0 +1,207 @@
+\newcommand{\pd}{\operatorname{pd}}
+\newcommand{\depth}{\operatorname{depth}}
+\newcommand{\ext}{\operatorname{Ext}}
+
+
+\subsection{Koszul Complex}
+\begin{definition}
+	\label{def:koszul}
+	Let $k$ be a field and $S = k[x_1, \dots, x_n]$ and $M$ be an $S$-module.
+	Then there exists an free resolution of $M$.
+\end{definition}
+
+\begin{theorem}
+	Let $M$ be a graded module (e.g. $S/I$ where $I$ is a homogeneous ideal).
+\end{theorem}
+
+%Let $I = \langle y - x^2\rangle$, then $R/I$ is not $\mathbb{Z}$ graded, as $y - x^2 \sim 0$, and thus $x \cdot $
+
+\begin{lemma}[Minimal Free Resolution]
+	\label{lem:min_res_maps_gen_to_basis}
+	\uses{lem:nakayama}
+	The minimal free resolution of $M$ is that $\varphi (F_{i+1}) \in F_{i}/\mathfrak{m}F_i$.
+	In the local (or graded) case, this is the same that we map the basis of $F_{i+1}$ minimal generators of the image $\varphi$ that is the $i$-th syzygy module.
+\end{lemma}
+\begin{proof}
+	We send the basis of the free module $F_{i+1}$ to a set of generators.
+	By Nakayama's $\varphi$ form a $k$ vector space homomorphism, and since it's a surjection, it's a isomorphism.
+\end{proof}
+
+\begin{definition}
+	Let $S$ be a Noetherian ring, and $\mathrm{a} = a_1, \dots, a_m$ be an sequence of elements in $S$. 
+	Then the Koszul complex in defined as the chain complex $K(\mathrm{a})$:
+	$$\begin{tikzcd}
+	\bigwedge^{i+1}_S S^m \arrow[r, "d_{i+1}"] & \bigwedge^i_S S^m \arrow[r, "d_i"] & \bigwedge^{i-1}_S S^m \arrow[r] & \dots \arrow[r] & R^m \arrow[r, "d_1"] & R \arrow[r] & 0
+	\end{tikzcd}$$
+	Consider $e_{i(1)}\wedge \dots \wedge e_{i(r)}$ be the basis of the free module $\bigwedge^{r}_S S^m$ the differentials $d_i: $are defined as 
+	$$d_i(e_{i(1)}\wedge \dots \wedge e_{i(r)})  = \sum_{j = 1}^{r} a_{i(j)} e_{i(1)} \wedge \dots \wedge \hat e_{i(j)} \wedge \dots \wedge e_{i(r)}$$
+	Where the term $\hat e_{i(j)}$ is omitted.
+	This defines a $S$-linear map.
+\end{definition}
+
+\begin{theorem}[Exactness of Koszul Complex]
+	\label{thm:koszul_exact_iff_reg_seq}
+	\uses{def:reg_seq, def:koszul}
+\end{theorem}
+
+\begin{proof}
+\end{proof}
+
+\subsection{Depth}
+
+\begin{definition}
+	Let $M$ be a $S$-module, then $a \in S$ is \text{weakly $M$-regular} if $am = 0 $ implies $m = 0$.
+	If $aM \neq M$ then $a$ is $M$-regular.
+	A sequence $a_1, \dots, a_n$ is called \textit{weakly $M$-regular} if for all $i > 1$, $a_i$ is weakly $M$-regular in $M/(a_1,\dots,a_{i-1})M$.
+	Moreover, it's $M$-regular if $M/(a_1, \dots, a_{i-1}) \neq 0$.
+\end{definition}
+
+\begin{definition}
+	The \textit{depth} of $M$ in respect to $I$, denoted as $\depth_I M$, is define to be the supremum of the lengths of $M$-regular sequence contained in $I$ (if $IM \neq M$) or $\infty$ otherwise.
+	Especially, when $S$ is a local ring, we denoted the $\depth M := \depth_\mathfrak{m}M$.
+\end{definition}
+
+\begin{theorem}[Characterization of depth via Koszul]
+	\label{thm: depth_equal_van_index_koszul_homology}
+	\uses{lem:nakayama, def:depth, def:koszul}
+	Let $S$ be a local ring, and $a_1, \dots, a_r \in \mathfrak{m}$ then $H_i(K(a_1, \dots, a_r) \otimes_S M) = 0$ implies that $H_j(K(a_1, \dots, a_r) \otimes_S M) = 0$ for all $j \leq i$.
+	In particular, if $H_{r-1}(K(a_1, \dots, a_r) \otimes_S M) = 0$ then $a_1, \dots, a_r$ is an $M$-sequence.
+\end{theorem}
+
+\begin{proof}
+	We prove by induction, as $r = 1$ this is trivially true.
+	We know that 
+	$$K(a_1, \dots, a_r) = K(a_1, \dots, a_{r-1}) \otimes_S K(a_r)$$
+	In particular it is isomorphic to the mapping cone $K(a_1, \dots, a_{r-1}) \oplus K(a_1, \dots, a_{r-1})[1]$.
+	This result in a long exact sequence of the homology module and hence we have the connecting map 
+	$$\delta_i: H_i(K(a_1, \dots, a_{r_1})) \to H_i(K(a_1, \dots, a_{r-1}))$$
+	which is simply the map $\cdot a_r$.\\
+	Tensoring by $M$, then if $H_i(K(a_1, \dots, a_r) \otimes_S M) = 0$, $.a_r$ is an isomorphism, then by Nakayama's lemma, 
+	$$H_{i-1}(K(a_1, \dots, a_{r-1}) \otimes_S M) = 0$$
+	By our induction hypothesis on $r$, $H_{j}(K(a_1, \dots, a_{r-1}) \otimes_S M) = 0$ for all $j \leq i-1$, but this means that $H_i(M \otimes_S K(a_1, \dots, a_r)) = 0$ for all $j \leq r$ because of the long exact sequence.
+	Then we do induction on $r$ again, when $r=1$ and $H_0(K(a_1)\otimes_S M) = 0$, then $M = a_1 M$, meaning $a_1$ is regular.
+	If $H_{r-1}(K(a_1, \dots, a_r) \otimes_S M) = 0$, then 
+	$$H_{r-2}(K(a_1, \dots, a_{r-1}) \otimes_S M) = 0$$
+	By induction, this implies that $a_1, \dots, a_{r-1}$ is an $M$-sequence.
+\end{proof}
+
+\begin{theorem}
+	Let $S$ be a local ring with maximal ideal $\mathfrak{m} = \langle a_1, \dots, a_r\rangle$. Let $M$ be an $R$-module, $d$ the smallest integer $d$ such that $H_d(K(a_1, \dots, a_r) \otimes_S M) \neq 0$, then every maximal $M$-sequence in $\mathfrak{m}$ has length $d$.
+	This implies that $\depth M = d$.
+\end{theorem}
+\begin{proof}
+	It's clear that the length of an $M$-sequence can not be greater than $d$.
+	Let $b_1, \dots, b_i \in \mathfrak{m}, r$ be an maximal $M$-sequence, then every element in $S$ is a zero-divisor of $M$.
+
+	$H^i(K(b_1, \dots, b_i) $
+\end{proof}
+\begin{lemma}
+
+\end{lemma}
+\begin{theorem}
+	Let $M$ be an $S$-module, and $I = \langle a_1, \dots, a_r\rangle$ is an ideal of $S$ such that $IM \neq M$, then every maximal $M$-sequence in $I$ has length $i$  where $H_i(K(a_1, \dots, a_r) \otimes_S M) \neq 0$ and $H_j(K(a_1, \dots, a_r) \otimes_S M) = 0$ for all $j < i$, this implies that $\depth_I M = i$.
+\end{theorem}
+
+
+\begin{theorem}
+	The depth of $M$ is the smallest number $d$ such that $\ext_R^d(k,M)$ is non-zero.
+\end{theorem}
+\begin{proof}
+
+\end{proof}
+
+\begin{lemma}
+	\label{IdealAnnilKoszulHomology}
+	Let $S$ be a local ring, and $M \otimes_S K(x_1, \dots, x_n)$ be koszul complex generated by a sequence $x_1, \dots x_n \in R$.
+	Then any element $y \in (x_1, \dots, x_n)$ annilates the homology group $H_i(M \otimes_S K(x_1, \dots, x_n)$ for all $i$.
+\end{lemma}
+
+\begin{theorem}%(Auslander-Buchsbaum formula)
+	\label{Auslander-Buchsbaum formula}
+	Let $S$ be a local Noetherian ring and $M$ be a finitely generated $S$-module with $\pd M < \infty$, then
+	$$\pd M + \depth M = \depth S$$
+\end{theorem}
+\begin{proof}
+	Projective modules of local rings are free.
+	We prove by induction on the projective dimension of $M$.
+	If $\pd M = 0$, $M$ is free then $\depth M = \depth S$.
+	For $\pd M = 1$ consider the following minimal free resolution:
+	$$\begin{tikzcd}
+		0 \arrow[r] & S^n \arrow[r, "\varphi"] & S^m \arrow[r] & M \arrow[r] & 0
+	\end{tikzcd}$$
+	Since the resolution is minimal, the map $\varphi$ can be represented by a $n \times m$ matrix with entries in $\mathfrak{m}$.
+\end{proof}
+\subsection{Regular Local Ring}
+
+\begin{definition}
+	The \textit{Krull dimension} of $R$ is the supremum of the height of ideals in $R$.
+	The height is, the length of the chain $P_1 \subset P_1 \subset \dots P_h \subset I$ of prime ideals.
+\end{definition}
+
+\begin{theorem}
+	Let $I = (a_1, \dots, a_r)$ be an ideal, then the height of a minimal prime ideal containing $I$ has height at most $n$.
+\end{theorem}
+
+\begin{corollary}
+	Let $R$ be a local ring, then the dimension of $R$ is bounded by the size of the minimal generating set of $\mathfrak{m}$.
+\end{corollary}
+
+\begin{definition}
+	Let $R$ be a Noetherian local ring with minimal generated $\mathfrak{m} = (a_1, \dots, a_r)$, then $R$ is regular if $\dim R = r$.
+\end{definition}
+
+\begin{proposition}
+	Let $R$ be a regular local ring of dimension $d$, then the maximal length of a regular sequence is $d$.
+	In other words, regular local rings are Cohen-Macaulay.
+\end{proposition}
+\begin{proof}
+	Let $a_1, \dots, a_s$ be a regular sequence, then by the principle ideal theorem $s \leq r = d$.
+	If $s > r$, then if $a_1, \dots, a_s$ generates $\mathfrak{m}$, then it's the minimal generating set.
+	Otherwise, by induction on the last number of $f_j \neq 0$:
+	If $a_i \in (a_2, \dots, a_s)$, then $a_i = \sum_{j\neq i}^{s} f_j a_j$, and thus $f_s a_s = a_1 - \sum_{j\neq i}^{s-1}f_j a_j$, hence $a_s$ is a zero divisor.
+	If the sequence does not generate $\mathfrak{m}$, the minimal generating set $a_1, \dots, a_s, b_1, \dots, b_t$ has size greater then $s > r$.
+\end{proof}
+
+Let $I$ be an ideal, of dimension $d$, and let $J = \langle f \rangle$ be a principle ideal such that $f \notin I$.
+Then $\langle I, f\rangle$ has dimension at most $d - 1$.
+\begin{proof}
+	Let $f = f_1 \dots f_r$ where $f_i$ are primes.
+	If $\dim I = d$ then there is a chain of prime ideals $I \subset P_0 \dots P_d$.
+	Then each $\langle f_i \rangle$ is a prime ideal in $R/I$ and hence $R/ \langle I, f_i\rangle$ has dimension at most $d-1$.
+	So does $R/If$.
+	%If $f$ is not a zerodivisor in $R/I$ then the minimal prime $P'$ over $\langle f\rangle$ in $R/I$ has height at most $1$.
+\end{proof}
+
+\begin{proposition}
+	A Noetherian local ring $R$ is regular if and only if $\mathfrak{m}$ is generated by a regular sequence.
+\end{proposition}
+\begin{proof}
+	If $\mathfrak{m}$ where the minimal generators $g_1, \dots, g_r$ form a regular sequence, then by the principle ideal theorem $\mathfrak{m}$ has height at most $r$.
+	Geometrically, every intersection with such a hyperplane descreases the dimension of $1$, hence the dimension of $R$ is at least $d$.
+	If $R$ is regular, then $\dim R = r$, which means there is a chain $P_0 \subset \dots P_r = \mathfrak{m}$.
+
+	if $g_1, \dots, g_r$ not regular.
+\end{proof}
+
+\begin{theorem}[Auslander-Buchsbaum-Serre Theorem]
+	$R$ is regular iff it has finite global dimension.
+	\label{Auslander-Buchsbaum-Serre Theorem}
+\end{theorem}
+\begin{proof}
+	If regular then $\mathfrak{m}$ generated by a regular sequence, the residue field is resolved by the Koszul complex, hence gd finite.
+	If finite, then $\pd M \leq d$ for all $R$-module $M$, and $\mathfrak{m}$ is minimally generated by $g_1, \dots, g_r$.
+	We know that $r \leq \dim R$, then we have to show $r \geq \dim R$.
+	In fact, $\pd k \geq n$ since the Koszul complex, but by the formula $\pd k = \dim \depth R$.
+\end{proof}
+
+\begin{proposition}
+	$R$ is a regular local ring if and only if $\text{gd}R = \dim R$.
+\end{proposition}
+\begin{proof}
+	By the Auslander-Buchsbaum formula, $\pd M \leq \depth R \leq \dim R$.
+	Then we only have to show that $\pd M \geq \dim R$ if and only if $R$ is regular.
+	Let $R$ be a regular local ring, then there exists a regular sequence $a_1, \dots, a_d \in \mathfrak{m}$.
+	Then we can take the Koszul complex of $a_1, \dots, a_d$, since it's a minimal free resolution of $R/(a_1, \dots, a_d)$ of length $d$.
+	Particularly, if $R$ is local every projetive module $M$ is free.
+	Convsersely, if $\pd M \geq \dim R$, .
+\end{proof}
