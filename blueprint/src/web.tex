@@ -1,27 +1,78 @@
-% This file makes a web version of the blueprint
-% It should include all the \usepackage needed for this version.
-% The template includes standard AMS packages.
-% It is otherwise a very minimal preamble (you should probably at least
-% add cleveref and tikz-cd).
+\documentclass{article}
 
-\documentclass{report}
+\usepackage[dep_graph, coverage, project=../project, dep_by=section]{blueprint}
 
-\usepackage{amssymb, amsthm, amsmath}
-\usepackage{hyperref}
-\usepackage[showmore, dep_graph]{blueprint}
+\usepackage{amsfonts, amsthm, amssymb, amsmath}
+\usepackage{tikz-cd}
+\usepackage{comment}
+\usetikzlibrary{decorations}
 
+\numberwithin{equation}{subsection}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theoremx}{Theorem} % theorem not in dep graph
+\newtheorem*{remarkx}{Remark} % unnumbered remark
+\numberwithin{theorem}{subsection}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{lemmax}[theorem]{Lemma} % lemma not in dep graph
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{defprop}[theorem]{Definition/Proposition}
 
-\input{macros/common}
-\input{macros/web}
+%`\newtheorem{thm}{Theorem}[section]
+%`\newtheorem{lem}[thm]{Lemma}
+%`\newtheorem{cor}[thm]{Corollary}
+%`\newtheorem{prop}[thm]{Proposition}
+%`\newtheorem{conj}[thm]{Conjecture}
+%`
+%`%\theoremstyle{definition}
+%`\newtheorem{defn}[thm]{Definition}
+%`\newtheorem{ex}[thm]{Example}
+%`\newtheorem{xca}[thm]{Exercise}
+%`
+%`%\theoremstyle{remark}
+%`\newtheorem{rmk}[thm]{Remark}
 
-\home{https://UCSD-computational-number-theory.github.io/lean-abs}
-\github{https://github.com/UCSD-computational-number-theory/lean-abs}
-\dochome{https://UCSD-computational-number-theory.github.io/lean-abs/docs}
+\input{macros}
 
-\title{Auslander-Buchsbaum-Serre Theorem}
-\author{Arnav Dandu \and Jack J. Garzella \and Yu Shang \and Kyle Trinh}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{examples}[theorem]{Examples}
+\newtheorem{observation}[theorem]{Observation}
+
+\newcommand{\pd}{\operatorname{pd}}
+\renewcommand{\height}{\operatorname{height}}
+\newcommand{\depth}{\operatorname{depth}}
+\newcommand{\tor}{\operatorname{Tor}}
+\newcommand{\ext}{\operatorname{Ext}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
+\date{\today}
+
+\setcounter{tocdepth}{1}
+
+\title{Blueprint for the Adjunction Formula}
+
+\author{Edited by Jack J. Garzella and Calvin Lee}
+
+%\home{https://github.com/leanprover-community/lean-liquid}
+%\github{https://github.com/leanprover-community/lean-liquid/}
 
 \begin{document}
-\maketitle
 \input{content}
+
+%TODO: fix bibliograph, it doesn't like the references for some reason
+%\bibliographystyle{amsalpha}
+
+%\bibliography{Analytic}
 \end{document}
+
+% vim: ts=2 et sw=2 sts=2
