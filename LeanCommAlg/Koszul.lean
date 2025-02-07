@@ -27,6 +27,7 @@ variable [SetLike σ A] [AddSubmonoidClass σ A] (𝒜 : ℕ → σ)
 variable (I : Ideal R)
 variable [AddCommGroup M]
 variable [Module R M]
+variable [Module.Finite R M] -- allows you to decompose into the direct sum without trouble
 
 universe v u
 variable {ι : Type*}
@@ -88,23 +89,42 @@ def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
 
 #check ⋀[R]^2 M
 #check (ExteriorAlgebra.gradedAlgebra R M).toDecomposition.decompose'
+#check (ExteriorAlgebra.gradedAlgebra R M).toDecomposition
 #check (DirectSum.lof R ι)
+#check (DirectSum.component R ℕ)
 
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
   (⋀[R]^i M).subtype
 
-noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := by
-  apply LinearMap.IsProj.codRestrict ?_
-  . exact CliffordAlgebra.reverse
-  . refine { map_mem := ?_, map_id := ?_ }
-    . intro x
+-- noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := by
+--   apply LinearMap.IsProj.codRestrict ?_
+--   . exact CliffordAlgebra.reverse
+--   . case _ =>
+--     refine { map_mem := ?_, map_id := ?_ }
+--     . intro x
+
+--       sorry
+--     . refine fun x a ↦ ?_
+--       . sorry
+
+#check (DirectSum.component R ι)
+#check fun (i : ℕ) => (DirectSum.component R ℕ)
+def ex_extalg : ExteriorAlgebra R M := by sorry
+#check ((ExteriorAlgebra.gradedAlgebra R M).toDecomposition.decompose' ex_extalg) 3
+
+noncomputable def ext_proj' (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
+  {
+    toFun := by
+      intro hx
+
       sorry
-    . sorry
+    ,
+    map_add' := sorry,
+    map_smul' := sorry
+  }
 
 
-  sorry
-
-noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M :=
+noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M := by
   (ext_proj (i+1)) ∘ₗ (ext_mul_a' a) ∘ₗ (ext_inclusion i)
 
 
