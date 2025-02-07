@@ -19,6 +19,8 @@ import Mathlib.CategoryTheory.GradedObject
 --import Mathlib.Data.Real.ENNReal
 open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
 
+infixr:20 "<∘ₗ>" => LinearMap.comp
+
 variable {ι R A M σ : Type*}
 variable [DecidableEq ι] [AddMonoid ι] [CommRing R] [Semiring A] [Algebra R A]
 variable [SetLike σ A] [AddSubmonoidClass σ A] (𝒜 : ℕ → σ)
@@ -85,19 +87,18 @@ def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
   mulRight (ExteriorAlgebra.ι R a)
 
 #check ⋀[R]^2 M
-#check (ExteriorAlgebra.gradedAlgebra R M 2)
+#check (ExteriorAlgebra.gradedAlgebra R M).decompose' 2
 
 
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
-  -- ((gradedAlgebra R M) i)
+  ((gradedAlgebra R M) i)
 
-  sorry
 
 noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
   sorry
 
 noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M :=
-  ((ext_proj (i+1)).comp (ext_mul_a a)).comp (ext_inclusion i)
+  (ext_proj (i+1)) ∘ₗ (ext_mul_a' a) ∘ₗ (ext_inclusion i)
 
 
 
