@@ -1,0 +1,6 @@
+/.lake
+.venv/
+
+*.fls
+blueprint/web/
+blueprint/src/web.paux
