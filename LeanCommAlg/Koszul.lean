@@ -75,23 +75,26 @@ noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
 
 open ExteriorAlgebra
 
---lemma linear_of_ext_mul
+def mulRight (b : A) : A →ₗ[R] A :=
+{ toFun := λ a => a * b,
+  map_add' := λ x y => by exact RightDistribClass.right_distrib x y b,
+  map_smul' := λ m x => by exact smul_mul_assoc m x b }
 
-def mul_a (a : M) : ExteriorAlgebra R M → ExteriorAlgebra R M :=
-  --include a into ExteriorAlgebra, then apply the multiplication
-  --fun m => m * a
-  sorry
+--lemma linear_of_ext_mul
+def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
+  mulRight (ExteriorAlgebra.ι R a)
+
+#check ⋀[R]^2 M
+#check (ExteriorAlgebra.gradedAlgebra R M 2)
+
 
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
+  -- ((gradedAlgebra R M) i)
+
   sorry
 
 noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
   sorry
-
-noncomputable def ext_mul_a (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
-  { toFun := mul_a a
-    map_add' := fun x y => sorry
-    map_smul' := fun r x => sorry}
 
 noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M :=
   ((ext_proj (i+1)).comp (ext_mul_a a)).comp (ext_inclusion i)
