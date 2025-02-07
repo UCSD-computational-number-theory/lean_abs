@@ -91,7 +91,8 @@ def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
 
 
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
-  ((gradedAlgebra R M) i)
+  --((gradedAlgebra R M) i)
+  sorry
 
 
 noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
