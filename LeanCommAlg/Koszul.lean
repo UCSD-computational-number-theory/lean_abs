@@ -87,15 +87,15 @@ def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
   mulRight (ExteriorAlgebra.ι R a)
 
 #check ⋀[R]^2 M
-#check (ExteriorAlgebra.gradedAlgebra R M).decompose' 2
-
+#check (ExteriorAlgebra.gradedAlgebra R M).toDecomposition.decompose'
+#check (DirectSum.lof R ι)
 
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
-  --((gradedAlgebra R M) i)
-  sorry
-
+  (⋀[R]^i M).subtype
 
 noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
+
+
   sorry
 
 noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M :=
