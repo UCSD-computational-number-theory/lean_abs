@@ -93,7 +93,13 @@ def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
 noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
   (⋀[R]^i M).subtype
 
-noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
+noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := by
+  apply LinearMap.IsProj.codRestrict ?_
+  . exact CliffordAlgebra.reverse
+  . refine { map_mem := ?_, map_id := ?_ }
+    . intro x
+      sorry
+    . sorry
 
 
   sorry
