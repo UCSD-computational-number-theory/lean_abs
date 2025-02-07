@@ -315,7 +315,7 @@ One can also use Hilbert Polynomials, see Atiyah-MacDonald.
 Now, we can start to define dimension.
 
 \begin{definition}
-  \label{def:Ideal.IsPrime.height}
+  \label{def:Ideal.primeHeight}
   \leanok
   Let $R$ be a ring, and $\mathfrak{p}$
   be a prime ideal in $R$.-
@@ -331,8 +331,9 @@ Now, we can start to define dimension.
 
 
 \begin{definition}
-    \label{def:height_arbitrary_ideal}
-    \uses{def:Ideal.IsPrime.height}
+    \label{def:Ideal.height}
+    \leanok
+    \uses{def:Ideal.primeHeight}
     The height of an ideal \(I \subset R\)
     is the infimum of the heights of
     prime ideals containing \(I\).
@@ -343,7 +344,7 @@ with the previous when \(I\) is prime (all by def).
 
 \begin{definition}
     \label{def:krull_dim_ring}
-    \uses{def:Ideal.IsPrime.height}
+    \uses{def:Ideal.primeHeight}
     The Krull dimension of the \(R\)
     is the supremum of heights of prime
     ideals \(\mathfrak{p} \subset R\).
@@ -355,7 +356,7 @@ The following is a nice sanity check lemma.
     
 \begin{lemma}
     \label{lem:dim_local_eq_height_prime}
-    \uses{def:Ideal.IsPrime.height,def:krull_dim_ring}
+    \uses{def:Ideal.primeHeight,def:krull_dim_ring}
     Let \(R\) a ring and \(\mathfrak{p}\) a
     prime ideal, then
     \[
@@ -392,7 +393,7 @@ Now we state Krull's height theorem and its (partial) converse.
 
 \begin{theorem}
     \label{thm:krull_principal_ideal}
-    \uses{cor:local_maximal_gereating_set_basis_residue,def:Ideal.IsPrime.height}
+    \uses{cor:local_maximal_gereating_set_basis_residue,def:Ideal.primeHeight}
     Let \(R\) be a noetherian ring, 
     and \(I\) a prinicpal ideal.
     Then each minimal prime ideal over \(I\) 
@@ -422,7 +423,7 @@ Now we state Krull's height theorem and its (partial) converse.
 
 \begin{theorem}
     \label{thm:genset_of_any_height_of_noetherian_height_n}
-    \uses{def:height_arbitrary_ideal,cor:prime_avoidance_ring}
+    \uses{def:Ideal.height,cor:prime_avoidance_ring}
     Let \(R\) a noetherian ring, and \(I\) a proper 
     ideal of height \(n\).
     Then for all \(1 \leq i \leq n\),

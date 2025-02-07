@@ -16,10 +16,10 @@ variable (P : Ideal R)
 
 #check Ideal.height
 
-noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
-  Order.height (⟨p, hp⟩ : PrimeSpectrum R)
+-- noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot ℕ∞ :=
+--   Order.height (⟨p, hp⟩ : PrimeSpectrum R)
 
-#check Ideal.IsPrime.height
+-- #check Ideal.IsPrime.height
 
 @[simp] lemma singleton_of_minimal_prime [h : I.IsPrime] :
     I ∈ minimalPrimes R → {J : PrimeSpectrum R | J.asIdeal ≤ I} = {⟨I, h⟩} := by
@@ -49,11 +49,11 @@ noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot 
   · intro xP; exact hPMinimal a IQ QP xP
 
 @[simp] lemma height_zero_of_minimal_prime [h : I.IsPrime] :
-    I ∈ minimalPrimes R → Ideal.IsPrime.height I = 0 := by
+    I ∈ minimalPrimes R → Ideal.primeHeight I = 0 := by
   intros Imin; rcases Imin with ⟨bot_le_I, y_minimal⟩; simp_all
   by_contra height_neq_0
-  rw [Ideal.IsPrime.height, Order.height] at height_neq_0
-  simp [Ideal.IsPrime.height] at *
+  rw [Ideal.primeHeight, Order.height] at height_neq_0
+  simp [Ideal.primeHeight] at *
   obtain ⟨ltseries, ⟨rel_last, len_neq_0⟩⟩ := height_neq_0
   have head_lt_last : RelSeries.head ltseries < RelSeries.last ltseries := by
     apply RelSeries.rel_of_lt; contrapose! len_neq_0; simp_all
@@ -68,33 +68,31 @@ noncomputable def Ideal.IsPrime.height (p : Ideal R) [hp : p.IsPrime] : WithBot 
     exact not_le_of_lt (head_lt_I)
 
 /-
-I think this should be true? If you consider the chain of ideals, then `J` must contain `I`, and thus have a height of at least `height I`
+I think this should be true? If you consider the chain of ideals,
+then `J` must contain `I`, and thus have a height of at least `height I`
 -/
 lemma height_le_prime_of_minimal_prime (J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
-    J ∈ I.minimalPrimes → Ideal.IsPrime.height I ≤ Ideal.IsPrime.height J  := by
-  intro Imin; rcases Imin with ⟨I_le_J, y_minimal⟩; simp_all
-  by_contra hJ_lt_hI; simp [not_le_of_lt] at hJ_lt_hI
+    J ∈ I.minimalPrimes → I.primeHeight ≤ J.primeHeight := by
+  intro Imin; rcases Imin with ⟨I_le_J, _⟩; simp_all
+  exact Ideal.primeHeight_mono I_le_J
 
-  simp_all [Ideal.IsPrime.height, Order.height]
+/-
+Krull's Principal Ideal Theorem
+- The height of a principl prime ideal is at most 1
+-/
+theorem height_1_of_principal_of_prime [h : I.IsPrime] [h_principal : I.IsPrincipal] :
+    Ideal.primeHeight I ≤ 1 := by
+  rw [Ideal.primeHeight]
+  rcases h_principal with ⟨span⟩
+  simp_all only [Ideal.submodule_span_eq]
+  obtain ⟨w, h_1⟩ := span
+  subst h_1
+
   sorry
 
-theorem height_eq_iff_eq (I J : Ideal R) [hJ : J.IsPrime] [hI : I.IsPrime] :
-    I = J ↔ Ideal.IsPrime.height I = Ideal.IsPrime.height J := by
-  constructor
-  . case mp => intro I_eq_J; subst I_eq_J; rfl
-  . case mpr =>
-    intro h_eq
-    simp [Ideal.IsPrime.height, Order.height] at h_eq
-    sorry
-
-theorem height_1_of_principal_of_prime [h : I.IsPrime] [h' : I.IsPrincipal] : Ideal.IsPrime.height I ≤ 1 := by
-  rw [Ideal.IsPrime.height, Order.height]
-  simp_all
-  intro ltseries relseries
-  sorry
-  -- Associated primes, Krull's principal ideal theorem,
-
--- rad(I) is the intersection of all minimal primes containing I
+/-
+rad(I) is the intersection of all minimal primes containing I
+-/
 theorem radical_intersection_minimal_primes (I : Ideal R) :
     I.radical = ⨅ (P : Ideal R) (hP : P ∈ I.minimalPrimes), P := by
   ext x; constructor
@@ -106,6 +104,6 @@ theorem radical_intersection_minimal_primes (I : Ideal R) :
     simp at x_in_inter
     sorry
 
-theorem kurll_principal_ideal (I : Ideal R) [hI : I.IsPrincipal] (P : Ideal R) (hP : P ∈ I.minimalPrimes) :
+theorem krull_principal_ideal (I : Ideal R) [hI : I.IsPrincipal] (P : Ideal R) (hP : P ∈ I.minimalPrimes) :
     Ideal.height P ≤ 1 := by
       sorry
