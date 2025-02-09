@@ -12,6 +12,7 @@ import Mathlib.Algebra.Homology.ComplexShape
 import Mathlib.Algebra.Homology.ShortComplex.Basic
 import Mathlib.Algebra.DirectSum.Basic
 import Mathlib.Algebra.DirectSum.Module
+import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Subobject.Limits
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 import Mathlib.CategoryTheory.GradedObject
@@ -23,15 +24,15 @@ infixr:20 "<∘ₗ>" => LinearMap.comp
 
 variable {ι R A M σ : Type*}
 variable [DecidableEq ι] [AddMonoid ι] [CommRing R] [Semiring A] [Algebra R A]
-variable [SetLike σ A] [AddSubmonoidClass σ A] (𝒜 : ℕ → σ)
 variable (I : Ideal R)
 variable [AddCommGroup M]
 variable [Module R M]
-variable [Module.Finite R M] -- allows you to decompose into the direct sum without trouble
+-- variable [Module.Finite R M] -- allows you to decompose into the direct sum without trouble
 
 universe v u
 variable {ι : Type*}
 variable (V : Type u) [Category.{v} V] [HasZeroMorphisms V] [HasZeroObject V]
+-- variable (Rmod : Type u) [Category.{v} Rmod] [HasZeroMorphisms Rmod] [HasZeroObject Rmod]
 variable {c : ComplexShape ℤ}
 
 
@@ -78,71 +79,53 @@ noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
 
 open ExteriorAlgebra
 
+-- Koszul complex
+
+#check ModuleCat R -- category of R-mod
+
 def mulRight (b : A) : A →ₗ[R] A :=
 { toFun := λ a => a * b,
   map_add' := λ x y => by exact RightDistribClass.right_distrib x y b,
   map_smul' := λ m x => by exact smul_mul_assoc m x b }
 
 --lemma linear_of_ext_mul
-def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
+@[simp] def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
   mulRight (ExteriorAlgebra.ι R a)
 
 #check ⋀[R]^2 M
-#check (ExteriorAlgebra.gradedAlgebra R M).toDecomposition.decompose'
-#check (ExteriorAlgebra.gradedAlgebra R M).toDecomposition
-#check (DirectSum.lof R ι)
-#check (DirectSum.component R ℕ)
 
-noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
+@[simp] noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
   (⋀[R]^i M).subtype
 
--- noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := by
---   apply LinearMap.IsProj.codRestrict ?_
---   . exact CliffordAlgebra.reverse
---   . case _ =>
---     refine { map_mem := ?_, map_id := ?_ }
---     . intro x
-
---       sorry
---     . refine fun x a ↦ ?_
---       . sorry
-
-#check (DirectSum.component R ι)
-#check fun (i : ℕ) => (DirectSum.component R ℕ)
-def ex_extalg : ExteriorAlgebra R M := by sorry
-#check ((ExteriorAlgebra.gradedAlgebra R M).toDecomposition.decompose' ex_extalg) 3
-
-noncomputable def ext_proj' (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M :=
-  {
-    toFun := by
-      intro hx
-
-      sorry
-    ,
-    map_add' := sorry,
-    map_smul' := sorry
-  }
-
-
-noncomputable def diff_map (i : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^(i+1) M := by
-  (ext_proj (i+1)) ∘ₗ (ext_mul_a' a) ∘ₗ (ext_inclusion i)
-
-
-
-def KoszulComplexShape : ComplexShape ℤ := {
-  Rel     := (fun i j => j = i + 1),
-  next_eq := (fun {i j j'} h h' => by subst h h'; rfl  ),
-  prev_eq := (fun {i i' j} h h' => by subst h; exact (Int.add_left_inj 1).mp h')
+@[simp] noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := {
+  toFun := fun a => ((ExteriorAlgebra.GradedAlgebra.liftι R M) a) i,
+  map_add' := λ x y => by simp,
+  map_smul' := λ m x => by simp; rfl
 }
-abbrev kcs := KoszulComplexShape
 
-/-
-`[Module.Free R M]` is a typeclass that says `M` is free as an `R`-module.
--/
-noncomputable def KoszulComplex [Module R M] : CochainComplex V ℤ :=
-  {
-    X := (fun i => sorry),
-    d := (fun d => sorry),
-    shape := sorry
-    d_comp_d' := sorry
-  }
+@[simp] noncomputable def diff_map (i j : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^j M :=
+  (ext_proj j) ∘ₗ (ext_mul_a' a) ∘ₗ (ext_inclusion i)
+
+
+-- def KoszulComplexShape : ComplexShape ℕ := {
+--   Rel     := (fun i j => j = i + 1),
+--   next_eq := (fun {i j j'} h h' => by subst h h'; rfl  ),
+--   prev_eq := (fun {i i' j} h h' => by subst h; exact Nat.succ_inj'.mp h')
+-- }
+
+-- abbrev kcs := KoszulComplexShape
+
+noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
+  X := (fun i => ModuleCat.of R (⋀[R]^i M)),
+  d := λ i j => if j == i + 1 then ModuleCat.ofHom (diff_map i j a) else 0,
+  shape := fun i j h => by
+    simp_all; intro h'
+    exact False.elim (h (id (Eq.symm h'))),
+  d_comp_d' := by
+    intro i j k hij hjk
+    rw [← ExteriorAlgebra.ι_sq_zero a]
+
+
+
+    sorry
+}
