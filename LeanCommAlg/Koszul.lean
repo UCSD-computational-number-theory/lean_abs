@@ -147,13 +147,21 @@ lemma proj_incl_comp_id (i : ℕ) :
   simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
   simp [ext_inclusion, ext_proj]
 
--- this is requored for the proof to work
-@[simp] lemma incl_proj_comp_id (i : ℕ) :
+@[simp] lemma incl_proj_comp_id' (i : ℕ) (x : ⋀[R]^i M) :
+    ext_inclusion i (ext_proj i (x : ExteriorAlgebra R M)) = x := by
+  simp_all [ext_inclusion, ext_proj]
+
+-- this is required for the proof to work
+lemma incl_proj_comp_id (i : ℕ) :
     (ext_inclusion i : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M) ∘ₗ (ext_proj i : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M) = LinearMap.id := by
+
   apply LinearMap.ext; intro x
+  rw [LinearMap.comp_apply (ext_inclusion i) (ext_proj i) x]
   simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
-  simp [ext_inclusion, ext_proj]
-  refine DirectSum.decompose_of_mem_same (fun i ↦ ⋀[R]^i M) ?_
+  unfold ext_inclusion ext_proj
+  apply DirectSum.decompose_of_mem_same (fun i ↦ ⋀[R]^i M) ?_
+  simp_all
+
   sorry
 
 
@@ -170,6 +178,19 @@ theorem koszul_d_squared_zero (i : ℕ) (m : M) :
   have : (proj2 ∘ₗ mula ∘ₗ incl1) ∘ₗ proj1 ∘ₗ mula ∘ₗ incl0
         = proj2 ∘ₗ mula ∘ₗ (incl1 ∘ₗ proj1) ∘ₗ mula ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
   rw [this, ← i1, ← p1]
+
+
+  -- doing an ext proof is really annoying, so I tried avoiding it by showing the
+  -- composition is a linear map
+  -- however, i dont think it works because the map from ith power to ExtAlg to ith power is weird
+  -- this might be because of how `ext_inclusion` is defined.
+
+  -- apply LinearMap.ext; intro x
+  -- simp
+  -- generalize consume : (mula (incl0 x)) = cons
+  -- rw [incl_proj_comp_id' (i + 1) cons]
+
+
   simp [incl_proj_comp_id (i + 1)]
   have : proj2 ∘ₗ mula ∘ₗ mula ∘ₗ incl0 = proj2 ∘ₗ (mula ∘ₗ mula) ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
   rw [this, ← ma, ext_mul_a'_comp_zero, LinearMap.zero_comp, LinearMap.comp_zero]
@@ -180,26 +201,12 @@ noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat
   d := fun i j => if i + 1 == j then ofHom (diff_map i j a) else 0,
   shape := fun i j h => by simp_all,
   d_comp_d' := by
-    intro i j k hij hjk
-    simp_all [diff_map]
-
-    have d_squared_zero (i : ℕ) (m : M) (a : ExteriorAlgebra R M) :
-        (diff_map (i + 1) (i + 2) m) ∘ₗ (diff_map i (i + 1) m) = (0 : ⋀[R]^i M →ₗ[R] ⋀[R]^(i + 2) M) := by
-      simp [diff_map]
-      apply LinearMap.ext; intro x
-      -- theres a missing step here i think?
-      -- idk how necessary this is
-      sorry
-
-    -- type error here
-    have proj_comp_incl_id (i : ℕ) : Hom (ext_proj i) ≫ Hom (ext_inclusion i) = 𝟙 ?_ := by
-      apply LinearMap.ext
-      intro x
-      simp
-      exact rfl
-      sorry
-
-
-    sorry
-
+    intro i _ _ hij hjk
+    simp at hij hjk; subst hij hjk; simp
+    have conv (j : ℕ) (a : ⋀[R]^j M →ₗ[R] ⋀[R]^(j + 1) M) (b : ⋀[R]^(j + 1) M →ₗ[R] ⋀[R]^(j + 2) M) :
+        ofHom a ≫ ofHom b = ofHom (b ∘ₗ a) := rfl
+    rw [conv]
+    have : i + 1 + 1 = i + 2 := rfl; rw [this]; clear this
+    rw [koszul_d_squared_zero i a]
+    rfl
 }
