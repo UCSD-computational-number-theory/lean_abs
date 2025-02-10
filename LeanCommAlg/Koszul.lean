@@ -22,19 +22,13 @@ open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
 
 infixr:20 "<∘ₗ>" => LinearMap.comp
 
-variable {ι R A M σ : Type*}
-variable [DecidableEq ι] [AddMonoid ι] [CommRing R] [Semiring A] [Algebra R A]
-variable (I : Ideal R)
-variable [AddCommGroup M]
-variable [Module R M]
--- variable [Module.Finite R M] -- allows you to decompose into the direct sum without trouble
+variable {ι σ : Type*} [DecidableEq ι] [AddMonoid ι]
+variable {A : Type*} [Semiring A]
+variable {R : Type*} [CommRing R] [Algebra R A]
+variable {M : Type*} [AddCommGroup M] [Module R M]
 
 universe v u
-variable {ι : Type*}
 variable (V : Type u) [Category.{v} V] [HasZeroMorphisms V] [HasZeroObject V]
--- variable (Rmod : Type u) [Category.{v} Rmod] [HasZeroMorphisms Rmod] [HasZeroObject Rmod]
-variable {c : ComplexShape ℤ}
-
 
 noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check zeroObj
@@ -45,15 +39,9 @@ noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check DirectSum.lof
 #check DirectSum.toModule
 
-/-
-theorem mul_alternating :
-
--/
 
 lemma comp_zero_is_zero : 𝟙 (zeroObj V) ≫ 𝟙 (zeroObj V) = 0 := by
-  simp_all
-  refine zero_of_target_iso_zero (𝟙 (zeroObj V)) ?_
-  rfl
+  simp; exact zero_of_target_iso_zero (𝟙 (zeroObj V)) (by rfl)
 
 -- the complex 0 → 0 → 0 → 0
 noncomputable def trivialComplex : ShortComplex V := {
@@ -70,11 +58,8 @@ noncomputable def trivialComplex : ShortComplex V := {
 noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
   X := λ i => zeroObj V,
   d := λ i => 0,
-  shape := by
-    intro i j a
-    simp_all only [Pi.zero_apply],
-  d_comp_d' := λ i j k hij hjk => by
-    simp_all
+  shape := by intros; simp_all only [Pi.zero_apply],
+  d_comp_d' := λ i j k hij hjk => by simp_all
 }
 
 open ExteriorAlgebra
@@ -115,9 +100,6 @@ omit [NonUnitalSemiring (DirectSum ℕ fun i ↦ ↥(⋀[R]^i M))]
 
 noncomputable def diff_map (i j : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^j M :=
   (ext_proj j) ∘ₗ (ext_mul_a' a) ∘ₗ (ext_inclusion i)
-
-
-#check ext_mul_a'
 
 lemma ext_power_0_is_base : (⋀[R]^0 M) = Submodule.span R {1} := by
   simp_all; exact Submodule.one_eq_span
