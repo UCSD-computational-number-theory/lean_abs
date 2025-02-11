@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Ideal.Basic
 import Mathlib.RingTheory.Spectrum.Prime.Basic
-import Mathlib.RingTheory.Ideal.MinimalPrime
+import Mathlib.RingTheory.Ideal.MinimalPrime.Basic
 import Mathlib.RingTheory.Ideal.Operations
 import Mathlib.RingTheory.PrincipalIdealDomain
 import Mathlib.Order.Height
