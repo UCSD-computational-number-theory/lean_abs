@@ -578,10 +578,9 @@ Other dimension theory necessary? Probably?
   \uses{def:weak_reg_seq}
   Let $M$ be an $R$-module.
   An $M$-regular sequence is a weak $M$-regular sequence
-  such that $M / (x_1, \ldots, x_n) M \neq 0$.
+  such that $M / (x_1, \ldots, x_n) M \neq 0$, that is $IM \neq M$.
   If $M = R$, we simply call this a regular sequence.
 \end{definition}
-
 
 \begin{definition}
   \label{def:reg_loc}
@@ -875,7 +874,8 @@ Actually maybe we don't need depth??
 \begin{definition}
   \label{def:depth}
 	\uses{def:weak_reg_seq}
-  The depth of a module $M$ is . . . 
+	Let $M$ be an $A$-module, $I \subset A$ an ideal, The depth of $M$ with respect to $I$, denoted $\depth_I M$, is the supremum of the length of $M$-regular sequences contained in $I$ (so $IM \neq M$ it's weakly regular), or $\infty$ otherwise.
+	If $A$ is a local ring with maximal ideal $\mathfrak{m}$, denote $\depth M := \depth_\mathfrak{m}M$.
 \end{definition}
 
 \begin{theorem}[BH 1.2.12]

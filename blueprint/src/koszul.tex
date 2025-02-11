@@ -84,11 +84,13 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 	\arrow[from=1-4, to=1-5]
 	\arrow[from=1-5, to=1-6]
 \end{tikzcd}\]
-\end{lemma}
 
 \begin{proof}
 	$L \otimes K(a)$ is in exactly the mapping cone.
 \end{proof}
+
+\end{lemma}
+
 
 \begin{corollary}
 	\label{cor:tensor_koszul_induced_long_exact_seq}
@@ -110,13 +112,18 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 	Then $H_i(K(a) \otimes M) = 0$ for all $i > 0$.
 \end{theorem}
 
-\begin{corollary}
-	\label{cor:reg_in_jrad_iff_koszul_exact}
+\begin{lemma}
+	\label{lem:reg_in_jrad_iff_koszul_exact}
 	\uses{thm:reg_seq_implies_koszul_exact, lem:nakayama, def:reg_seq}
 	If $M$ is a finitely generated $R$-module and $a = (a_1, \dots, a_n)$ be a sequence in the Jacobson radical $J$ of $R$.
 	If $H_1(K(a) \otimes M) = 0$, then $a$ is $M$-regular.
-	In fact, this does not depends on the order.
-\end{theorem}
+\end{lemma}
+
+\begin{corollary}
+	\label{cor:perm_of_reg_seq_in_jrad_is_reg}
+	\uses{lem:reg_in_jrad_iff_koszul_exact_at_one}
+	If $a = (a_1, \dots, a_n)$ is an $M$-sequence in the Jacobson radical, so is every permuations of $a$.
+\end{corollary}
 
 \begin{lemma}
 	\label{thm:koszul_complex_res_quotient_ring}
