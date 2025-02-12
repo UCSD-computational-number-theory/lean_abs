@@ -38,6 +38,7 @@ noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
 #check (ExteriorAlgebra.ιMulti R) 1
 #check DirectSum.lof
 #check DirectSum.toModule
+#check ⨆ (rs : List R), rs.length
 
 
 lemma comp_zero_is_zero : 𝟙 (zeroObj V) ≫ 𝟙 (zeroObj V) = 0 := by
@@ -192,3 +193,4 @@ noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat
     rw [koszul_d_squared_zero i a]
     rfl
 }
+
