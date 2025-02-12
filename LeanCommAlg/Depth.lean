@@ -11,9 +11,5 @@ variable [CommRing R] [AddCommGroup M] [Module R M]
 
 variable (rs : List R)
 
-#check List.length rs
-
-#check Sequence.IsRegular M rs
-
-def depth (I : Ideal R) [Module R M]  : ℕ∞ :=
-  {rs : Sequence.IsRegular M rs} 
+noncomputable def depth (I : Ideal R) [Module R M] : ℕ :=
+  ⨆(rs : List R), ⨆(_ : Sequence.IsRegular M rs), rs.length
