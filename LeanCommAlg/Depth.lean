@@ -15,5 +15,5 @@ noncomputable def depth (I : Ideal R) [Module R M] : ℕ :=
   ⨆(rs : List R), ⨆(_ : Sequence.IsRegular M rs), rs.length
 
 
-def list_I_to_R {R : Type*} [CommRing R] (I : Ideal R) (L : List I) : List R :=
+def list_I_to_R [CommRing R] (I : Ideal R) (L : List I) : List R :=
   (L : List R)
