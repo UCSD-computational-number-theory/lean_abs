@@ -14,54 +14,14 @@ import Mathlib.Algebra.DirectSum.Basic
 import Mathlib.Algebra.DirectSum.Module
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Subobject.Limits
-import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
-import Mathlib.CategoryTheory.GradedObject
 
---import Mathlib.Data.Real.ENNReal
 open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
 
 infixr:20 "<∘ₗ>" => LinearMap.comp
 
-variable {ι σ : Type*} [DecidableEq ι] [AddMonoid ι]
 variable {A : Type*} [Semiring A]
 variable {R : Type*} [CommRing R] [Algebra R A]
 variable {M : Type*} [AddCommGroup M] [Module R M]
-
-universe v u
-variable (V : Type u) [Category.{v} V] [HasZeroMorphisms V] [HasZeroObject V]
-
-noncomputable def zeroObj : V := (HasZeroObject.zero' V).1
-#check zeroObj
-#check ExteriorAlgebra.gradedAlgebra R M
-#check ExteriorAlgebra R M
-#check (ExteriorAlgebra.ι R)
-#check (ExteriorAlgebra.ιMulti R) 1
-#check DirectSum.lof
-#check DirectSum.toModule
-#check ⨆ (rs : List R), rs.length
-
-
-lemma comp_zero_is_zero : 𝟙 (zeroObj V) ≫ 𝟙 (zeroObj V) = 0 := by
-  simp; exact zero_of_target_iso_zero (𝟙 (zeroObj V)) (by rfl)
-
--- the complex 0 → 0 → 0 → 0
-noncomputable def trivialComplex : ShortComplex V := {
-  X₁ := zeroObj V,
-  X₂ := zeroObj V,
-  X₃ := zeroObj V,
-  f := 𝟙 (zeroObj V),
-  g := 𝟙 (zeroObj V),
-  zero := comp_zero_is_zero V
-}
-
--- the homological complex
--- 0 → 0 → 0 → 0 → ...
-noncomputable def trivialHomologicalComplex : HomologicalComplex V c := {
-  X := λ i => zeroObj V,
-  d := λ i => 0,
-  shape := by intros; simp_all only [Pi.zero_apply],
-  d_comp_d' := λ i j k hij hjk => by simp_all
-}
 
 open ExteriorAlgebra
 
@@ -193,4 +153,3 @@ noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat
     rw [koszul_d_squared_zero i a]
     rfl
 }
-
