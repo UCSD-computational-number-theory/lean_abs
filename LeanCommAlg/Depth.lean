@@ -1,6 +1,9 @@
 import Mathlib.RingTheory.Regular.RegularSequence
 import Mathlib.RingTheory.LocalRing.Defs
 import Mathlib.RingTheory.LocalRing.Basic
+import Mathlib.CategoryTheory.Abelian.Ext
+import Mathlib.CategoryTheory.Abelian.ProjectiveDimension
+import Mathlib.CategoryTheory.Abelian.ProjectiveResolution
 import Mathlib.LinearAlgebra.Basis.Defs
 
 open RingTheory
