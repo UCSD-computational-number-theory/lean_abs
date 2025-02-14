@@ -90,22 +90,29 @@ lemma proj_incl_comp_id (i : ℕ) :
   simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
   simp [ext_inclusion, ext_proj]
 
-@[simp] lemma incl_proj_comp_id' (i : ℕ) (x : ⋀[R]^i M) :
-    ext_inclusion i (ext_proj i (x : ExteriorAlgebra R M)) = x := by
-  simp_all [ext_inclusion, ext_proj]
-
--- this is required for the proof to work
-lemma incl_proj_comp_id (i : ℕ) :
-    (ext_inclusion i : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M) ∘ₗ (ext_proj i : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M) = LinearMap.id := by
-
-  apply LinearMap.ext; intro x
-  rw [LinearMap.comp_apply (ext_inclusion i) (ext_proj i) x]
-  simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
-  unfold ext_inclusion ext_proj
-  apply DirectSum.decompose_of_mem_same (fun i ↦ ⋀[R]^i M) ?_
-  simp_all
+theorem wedge_pass (i : ℕ) (a : M) : x ∈ ⋀[R]^i M → (ι R a) * x ∈ ⋀[R]^(i + 1) M := by
+  intro h
 
   sorry
+
+@[simp] lemma incl_proj_comp_id' (i : ℕ) (x : ⋀[R]^i M) :
+    ext_inclusion i (ext_proj i x) = x.val := by
+  simp_all [ext_inclusion, ext_proj]
+
+
+
+-- this is required for the proof to work
+-- lemma incl_proj_comp_id (i : ℕ) (hy : y ∈ ⋀[R]^i M) :
+--     (ext_inclusion i : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M) ∘ₗ (ext_proj i : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M) = LinearMap.id := by
+
+--   apply LinearMap.ext; intro x
+--   rw [LinearMap.comp_apply (ext_inclusion i) (ext_proj i) x]
+--   simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
+--   unfold ext_inclusion ext_proj
+--   apply DirectSum.decompose_of_mem_same (fun i ↦ ⋀[R]^i M) ?_
+--   simp_all
+
+--   sorry
 
 
 theorem koszul_d_squared_zero (i : ℕ) (m : M) :
@@ -118,25 +125,47 @@ theorem koszul_d_squared_zero (i : ℕ) (m : M) :
   generalize i0 : (ext_inclusion (R := R) (M := M) i) = incl0
   generalize i1 : (ext_inclusion (R := R) (M := M) (i + 1)) = incl1
 
-  have : (proj2 ∘ₗ mula ∘ₗ incl1) ∘ₗ proj1 ∘ₗ mula ∘ₗ incl0
-        = proj2 ∘ₗ mula ∘ₗ (incl1 ∘ₗ proj1) ∘ₗ mula ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
-  rw [this, ← i1, ← p1]
+  apply LinearMap.ext; intro x
+  simp [LinearMap.comp_apply]
+  rw [← p1, ext_proj]; simp [LinearMap.mk]
+  rw [← i1, ext_inclusion]
+  refine Submodule.coe_eq_zero.mp ?_
 
 
-  -- doing an ext proof is really annoying, so I tried avoiding it by showing the
-  -- composition is a linear map
-  -- however, i dont think it works because the map from ith power to ExtAlg to ith power is weird
-  -- this might be because of how `ext_inclusion` is defined.
-
-  -- apply LinearMap.ext; intro x
-  -- simp
-  -- generalize consume : (mula (incl0 x)) = cons
-  -- rw [incl_proj_comp_id' (i + 1) cons]
 
 
-  simp [incl_proj_comp_id (i + 1)]
-  have : proj2 ∘ₗ mula ∘ₗ mula ∘ₗ incl0 = proj2 ∘ₗ (mula ∘ₗ mula) ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
-  rw [this, ← ma, ext_mul_a'_comp_zero, LinearMap.zero_comp, LinearMap.comp_zero]
+  rw [this]
+
+  rw [this ?_ (i + 1)]
+
+  -- rw [← i0, ext_inclusion, Submodule.subtype_apply]
+  -- nth_rw 2 [← ma]
+  -- rw [ext_mul_a']
+  -- rw [← p1, ext_proj]
+
+
+  -- have : (proj2 ∘ₗ mula ∘ₗ incl1) ∘ₗ proj1 ∘ₗ mula ∘ₗ incl0
+  --       = proj2 ∘ₗ mula ∘ₗ (incl1 ∘ₗ proj1) ∘ₗ mula ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
+  -- rw [this, ← i1, ← p1]
+
+
+  -- -- doing an ext proof is really annoying, so I tried avoiding it by showing the
+  -- -- composition is a linear map
+  -- -- however, i dont think it works because the map from ith power to ExtAlg to ith power is weird
+  -- -- this might be because of how `ext_inclusion` is defined.
+
+  -- -- apply LinearMap.ext; intro x
+  -- -- simp
+  -- -- generalize consume : (mula (incl0 x)) = cons
+  -- -- rw [incl_proj_comp_id' (i + 1) cons]
+
+
+
+  -- simp [incl_proj_comp_id (i + 1)]
+  -- have : proj2 ∘ₗ mula ∘ₗ mula ∘ₗ incl0 = proj2 ∘ₗ (mula ∘ₗ mula) ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
+  -- rw [this, ← ma, ext_mul_a'_comp_zero, LinearMap.zero_comp, LinearMap.comp_zero]
+
+  sorry
 
 
 noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
