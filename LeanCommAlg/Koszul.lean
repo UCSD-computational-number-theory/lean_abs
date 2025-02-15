@@ -36,12 +36,12 @@ def mulRight (b : A) : A →ₗ[R] A :=
   map_smul' := λ m x => by exact smul_mul_assoc m x b }
 
 --lemma linear_of_ext_mul
-def ext_mul_a' (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
+def ext_mul_a (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
   mulRight (ExteriorAlgebra.ι R a)
 
 #check ⋀[R]^2 M
 
-noncomputable def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
+def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
   (⋀[R]^i M).subtype
 
 variable (fds : ExteriorAlgebra R M)
@@ -49,7 +49,7 @@ variable (fds : ExteriorAlgebra R M)
 
 -- no clue why this is needed, but it makes it work
 variable [NonUnitalSemiring (DirectSum ℕ fun i ↦ ↥(⋀[R]^i M))]
-noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := {
+def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := {
   toFun := fun a => (
     (ExteriorAlgebra.gradedAlgebra R M).decompose' a) i,
   map_add' := λ x y => by simp,
@@ -59,30 +59,16 @@ noncomputable def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M 
 }
 omit [NonUnitalSemiring (DirectSum ℕ fun i ↦ ↥(⋀[R]^i M))]
 
-noncomputable def diff_map (i j : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^j M :=
-  (ext_proj j) ∘ₗ (ext_mul_a' a) ∘ₗ (ext_inclusion i)
+def diff_map (i j : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^j M :=
+  (ext_proj j) ∘ₗ (ext_mul_a a) ∘ₗ (ext_inclusion i)
 
-lemma ext_power_0_is_base : (⋀[R]^0 M) = Submodule.span R {1} := by
-  simp_all; exact Submodule.one_eq_span
-
-lemma ext_power_1_is_self : (⋀[R]^1 M) = Submodule.span R (Set.range (ExteriorAlgebra.ι R)) := by
-  simp_all
-  ext x; constructor;
-  . rintro ⟨_, h⟩; subst h
-    apply (SetLike.mem_of_subset Submodule.subset_span ?_)
-    simp_all only [Set.mem_range, ι_inj, exists_eq]
-  . intro hx
-    simp_all [Submodule.span, Set.range]
-    exact LinearMap.mem_range.mp (hx (LinearMap.range (ι R)) fun ⦃a⦄ a ↦ a)
-
-@[simp] lemma ext_mul_a'_comp_zero (a : M) :
-    (ext_mul_a' a) ∘ₗ (ext_mul_a' a) = (0 : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M) := by
-  rw [ext_mul_a', mulRight]; apply LinearMap.ext
+@[simp] lemma ext_mul_a_comp_zero (a : M) :
+    (ext_mul_a a) ∘ₗ (ext_mul_a a) = (0 : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M) := by
+  rw [ext_mul_a, mulRight]; apply LinearMap.ext
   intro x
   simp_all only [LinearMap.coe_comp, LinearMap.coe_mk, AddHom.coe_mk, Function.comp_apply, LinearMap.zero_apply]
   rw [mul_assoc, ExteriorAlgebra.ι_sq_zero, mul_zero]
 
--- this is probably will not be used
 lemma proj_incl_comp_id (i : ℕ) :
     (ext_proj i : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M) ∘ₗ (ext_inclusion i : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M) = LinearMap.id := by
   apply LinearMap.ext
@@ -90,83 +76,31 @@ lemma proj_incl_comp_id (i : ℕ) :
   simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
   simp [ext_inclusion, ext_proj]
 
-theorem wedge_pass (i : ℕ) (a : M) : x ∈ ⋀[R]^i M → (ι R a) * x ∈ ⋀[R]^(i + 1) M := by
-  intro h
+lemma incl_proj_comp_preserves {i : ℕ} {x : ExteriorAlgebra R M} (hx : x ∈ (⋀[R]^i M)) :
+    ext_inclusion i (ext_proj i x) = x := by
+  dsimp [ext_inclusion, ext_proj]
+  exact DirectSum.decompose_of_mem_same _ hx
 
-  sorry
-
-@[simp] lemma incl_proj_comp_id' (i : ℕ) (x : ⋀[R]^i M) :
-    ext_inclusion i (ext_proj i x) = x.val := by
-  simp_all [ext_inclusion, ext_proj]
-
-
-
--- this is required for the proof to work
--- lemma incl_proj_comp_id (i : ℕ) (hy : y ∈ ⋀[R]^i M) :
---     (ext_inclusion i : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M) ∘ₗ (ext_proj i : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M) = LinearMap.id := by
-
---   apply LinearMap.ext; intro x
---   rw [LinearMap.comp_apply (ext_inclusion i) (ext_proj i) x]
---   simp_all only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
---   unfold ext_inclusion ext_proj
---   apply DirectSum.decompose_of_mem_same (fun i ↦ ⋀[R]^i M) ?_
---   simp_all
-
---   sorry
-
+lemma ext_mul_a_inc_grade (i : ℕ) (x : ⋀[R]^i M) :
+    (ext_mul_a m) (x : ExteriorAlgebra R M) ∈ (⋀[R]^(i + 1) M) := by
+  dsimp [ext_mul_a, mulRight]
+  obtain ⟨_, hx⟩ := x
+  apply (ExteriorAlgebra.gradedAlgebra R M).mul_mem hx ?_
+  simp_all only [pow_one, LinearMap.mem_range, ι_inj, exists_eq]
 
 theorem koszul_d_squared_zero (i : ℕ) (m : M) :
     (diff_map (i + 1) (i + 2) m) ∘ₗ (diff_map i (i + 1) m) = (0 : ⋀[R]^i M →ₗ[R] ⋀[R]^(i + 2) M) := by
   simp [diff_map]
-
-  generalize p1 : (ext_proj (R := R) (M := M) (i + 1)) = proj1
-  generalize p2 : (ext_proj (R := R) (M := M) (i + 2)) = proj2
-  generalize ma : (ext_mul_a' (R := R) (M := M) m) = mula
-  generalize i0 : (ext_inclusion (R := R) (M := M) i) = incl0
-  generalize i1 : (ext_inclusion (R := R) (M := M) (i + 1)) = incl1
-
   apply LinearMap.ext; intro x
   simp [LinearMap.comp_apply]
-  rw [← p1, ext_proj]; simp [LinearMap.mk]
-  rw [← i1, ext_inclusion]
-  refine Submodule.coe_eq_zero.mp ?_
-
-
-
-
-  rw [this]
-
-  rw [this ?_ (i + 1)]
-
-  -- rw [← i0, ext_inclusion, Submodule.subtype_apply]
-  -- nth_rw 2 [← ma]
-  -- rw [ext_mul_a']
-  -- rw [← p1, ext_proj]
-
-
-  -- have : (proj2 ∘ₗ mula ∘ₗ incl1) ∘ₗ proj1 ∘ₗ mula ∘ₗ incl0
-  --       = proj2 ∘ₗ mula ∘ₗ (incl1 ∘ₗ proj1) ∘ₗ mula ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
-  -- rw [this, ← i1, ← p1]
-
-
-  -- -- doing an ext proof is really annoying, so I tried avoiding it by showing the
-  -- -- composition is a linear map
-  -- -- however, i dont think it works because the map from ith power to ExtAlg to ith power is weird
-  -- -- this might be because of how `ext_inclusion` is defined.
-
-  -- -- apply LinearMap.ext; intro x
-  -- -- simp
-  -- -- generalize consume : (mula (incl0 x)) = cons
-  -- -- rw [incl_proj_comp_id' (i + 1) cons]
-
-
-
-  -- simp [incl_proj_comp_id (i + 1)]
-  -- have : proj2 ∘ₗ mula ∘ₗ mula ∘ₗ incl0 = proj2 ∘ₗ (mula ∘ₗ mula) ∘ₗ incl0 := LinearMap.comp_assoc _ _ _
-  -- rw [this, ← ma, ext_mul_a'_comp_zero, LinearMap.zero_comp, LinearMap.comp_zero]
-
-  sorry
-
+  have pres : (ext_mul_a m) (x : ExteriorAlgebra R M) ∈ (⋀[R]^(i + 1) M) := ext_mul_a_inc_grade i x
+  rw [incl_proj_comp_preserves]
+  have sq_zero (y : ExteriorAlgebra R M) :
+      (ext_mul_a m ((ext_mul_a m) y)) = (0 : ExteriorAlgebra R M) := by
+    simp_all [ext_mul_a, mulRight]
+    rw [mul_assoc, ExteriorAlgebra.ι_sq_zero, mul_zero]
+  simp_all only [map_zero]
+  exact pres
 
 noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
   X := (fun i => of R (⋀[R]^i M)),
