@@ -15,20 +15,16 @@ import Mathlib.Algebra.DirectSum.Module
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Subobject.Limits
 
-open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
-
 infixr:20 "<∘ₗ>" => LinearMap.comp
 
 variable {A : Type*} [Semiring A]
 variable {R : Type*} [CommRing R] [Algebra R A]
 variable {M : Type*} [AddCommGroup M] [Module R M]
 
-open ExteriorAlgebra
-
--- Koszul complex
+-- Koszul Complex
 
 #check ModuleCat R -- category of R-mod
-open ModuleCat
+open ModuleCat ExteriorAlgebra CategoryTheory
 
 def mulRight (b : A) : A →ₗ[R] A :=
 { toFun := λ a => a * b,
@@ -44,11 +40,6 @@ def ext_mul_a (a : M) : ExteriorAlgebra R M →ₗ[R] ExteriorAlgebra R M :=
 def ext_inclusion (i : ℕ) : ⋀[R]^i M →ₗ[R] ExteriorAlgebra R M :=
   (⋀[R]^i M).subtype
 
-variable (fds : ExteriorAlgebra R M)
-#check ((ExteriorAlgebra.gradedAlgebra R M).decompose' fds 1)
-
--- no clue why this is needed, but it makes it work
-variable [NonUnitalSemiring (DirectSum ℕ fun i ↦ ↥(⋀[R]^i M))]
 def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := {
   toFun := fun a => (
     (ExteriorAlgebra.gradedAlgebra R M).decompose' a) i,
@@ -57,7 +48,6 @@ def ext_proj (i : ℕ) : ExteriorAlgebra R M →ₗ[R] ⋀[R]^i M := {
     simp_all only [DirectSum.Decomposition.decompose'_eq, DirectSum.decompose_smul, RingHom.id_apply]
     rfl
 }
-omit [NonUnitalSemiring (DirectSum ℕ fun i ↦ ↥(⋀[R]^i M))]
 
 def diff_map (i j : ℕ) (a : M) : ⋀[R]^i M →ₗ[R] ⋀[R]^j M :=
   (ext_proj j) ∘ₗ (ext_mul_a a) ∘ₗ (ext_inclusion i)
