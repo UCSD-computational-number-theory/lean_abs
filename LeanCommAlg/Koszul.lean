@@ -5,15 +5,18 @@ import Mathlib.LinearAlgebra.ExteriorAlgebra.Grading
 import Mathlib.LinearAlgebra.ExteriorPower.Basic
 import Mathlib.LinearAlgebra.FreeModule.Basic
 import Mathlib.LinearAlgebra.Span.Defs
+import Mathlib.LinearAlgebra.Dual
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Algebra.Group.Submonoid.Defs
 import Mathlib.Algebra.Homology.HomologicalComplex
 import Mathlib.Algebra.Homology.ComplexShape
 import Mathlib.Algebra.Homology.ShortComplex.Basic
+import Mathlib.Algebra.Homology.Opposite
 import Mathlib.Algebra.DirectSum.Basic
 import Mathlib.Algebra.DirectSum.Module
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Subobject.Limits
+
 
 infixr:20 "<∘ₗ>" => LinearMap.comp
 
@@ -92,7 +95,7 @@ theorem koszul_d_squared_zero (i : ℕ) (m : M) :
   simp_all only [map_zero]
   exact pres
 
-noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
+def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
   X := (fun i => of R (⋀[R]^i M)),
   d := fun i j => if i + 1 == j then ofHom (diff_map i j a) else 0,
   shape := fun i j h => by simp_all,
@@ -105,4 +108,29 @@ noncomputable def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat
     have : i + 1 + 1 = i + 2 := rfl; rw [this]; clear this
     rw [koszul_d_squared_zero i a]
     rfl
+}
+
+-- Self-duality of the Koszul Complex
+variable {E : Type*} [AddCommGroup E] [Module R E] [Module.Free R E]
+
+def aux_KoszulComplex (e : E) : CochainComplex (ModuleCat R) ℕ := KoszulComplex e
+
+
+def DualKoszulComplex (e : E) : ChainComplex (ModuleCat R) ℕ := {
+  X := (fun i => of R (⋀[R]^i M)),
+  d := fun i j => if i == j + 1 then ofHom (diff_map i j e) else 0,
+  shape := fun i j h => by
+    simp_all
+    sorry
+  ,
+  d_comp_d' := by
+    intro i _ _ hij hjk
+    simp at hij hjk; subst hij hjk; simp
+    have conv (j : ℕ) (a : ⋀[R]^j M →ₗ[R] ⋀[R]^(j + 1) M) (b : ⋀[R]^(j + 1) M →ₗ[R] ⋀[R]^(j + 2) M) :
+        ofHom a ≫ ofHom b = ofHom (b ∘ₗ a) := rfl
+    -- rw [conv]
+    sorry
+    -- have : i + 1 + 1 = i + 2 := rfl; rw [this]; clear this
+    -- rw [koszul_d_squared_zero i a]
+    -- rfl
 }
