@@ -16,7 +16,7 @@ import Mathlib.Algebra.DirectSum.Basic
 import Mathlib.Algebra.DirectSum.Module
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Subobject.Limits
-
+import Mathlib.CategoryTheory.Functor.Hom
 
 infixr:20 "<∘ₗ>" => LinearMap.comp
 
@@ -81,6 +81,10 @@ lemma ext_mul_a_inc_grade (i : ℕ) (x : ⋀[R]^i M) :
   apply (ExteriorAlgebra.gradedAlgebra R M).mul_mem hx ?_
   simp_all only [pow_one, LinearMap.mem_range, ι_inj, exists_eq]
 
+lemma ext_mul_graded (hx : x ∈ ⋀[R]^i M) (hy : y ∈ ⋀[R]^j M) :
+    (x * y : ExteriorAlgebra R M) ∈ ⋀[R]^(i + j) M :=
+  (ExteriorAlgebra.gradedAlgebra R M).mul_mem hx hy
+
 theorem koszul_d_squared_zero (i : ℕ) (m : M) :
     (diff_map (i + 1) (i + 2) m) ∘ₗ (diff_map i (i + 1) m) = (0 : ⋀[R]^i M →ₗ[R] ⋀[R]^(i + 2) M) := by
   simp [diff_map]
@@ -111,9 +115,58 @@ def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
 }
 
 -- Self-duality of the Koszul Complex
-variable {E : Type*} [AddCommGroup E] [Module R E] [Module.Free R E]
+variable {E : Type*} [AddCommGroup E] [Module R E] [Module.Free R E] [Module.Finite R E]
 
+noncomputable def rank_E : ℕ := (Module.rank R E).toNat
 def aux_KoszulComplex (e : E) : CochainComplex (ModuleCat R) ℕ := KoszulComplex e
+
+-- im not sure how to "take the dual"
+-- i know you have to do `Hom(-, R)` but i dont know how to do that in lean
+-- hence, the definition is not complete
+#check Module.Dual R (⋀[R]^2 E)
+
+#check (Module.Free R E)
+
+-- Aluffi Lemma 8.4.3
+lemma rank_free_wedge :
+    (Module.rank R (⋀[R]^ℓ E)).toNat = Nat.choose ((Module.rank R E).toNat) ℓ := by
+  sorry
+
+
+noncomputable def dual_is_rank_minus_power (i : ℕ) :
+    (⋀[R]^i E) ≃ₗ[R] Module.Dual R (⋀[R]^((Module.rank R E).toNat - i) E)  := by
+  generalize rankh : (Module.rank R E).toNat = r
+  have E_basis := Module.Free.chooseBasis R E
+  -- need to get some a ∈ ⋀[R]^i E
+  -- need to get some b ∈ ⋀[R]^(r - i) E
+  -- multiply them together
+  -- show the result is in ⋀[R]^r E ≃ R
+  -- so a ^ b = r
+  unfold Module.Dual
+
+
+  apply LinearEquiv.ofBijective
+  . case hf =>
+
+    sorry
+  . case f =>
+    apply LinearMap.mk
+    . case _ =>
+      intro m x
+
+
+    sorry
+
+
+
+
+noncomputable def dual_ext_comm (j : ℕ) :
+    Module.Dual R (⋀[R]^j E) ≃ₗ[R] ⋀[R]^j (Module.Dual R E) := by
+  sorry
+
+def dual_rank_comm (i : ℕ) :
+    (⋀[R]^i E) → ⋀[R]^((Module.rank R E).toNat - i) (Module.Dual R E) := by
+  sorry
 
 
 def DualKoszulComplex (e : E) : ChainComplex (ModuleCat R) ℕ := {
