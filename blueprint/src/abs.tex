@@ -130,6 +130,7 @@ The following lemma is used by user6:
 \begin{definition}
   \label{def:projdim}
   \uses{def:length_of_resl}
+  \leanok
   Let $M$ be an $R$-module. 
   Then $\projdim M$ is the minimum 
   length of a projective resolution of $M$.
@@ -561,6 +562,7 @@ Other dimension theory necessary? Probably?
 \begin{definition}
   \label{def:weak_reg_seq}
   \uses{def:reg_elt}
+  \leanok
   Let $M$ be an $R$-module.
   Then a weak $M$-regular sequence
   is a sequence $x_1, \ldots, x_n$ 
@@ -576,6 +578,7 @@ Other dimension theory necessary? Probably?
 \begin{definition}
   \label{def:reg_seq}
   \uses{def:weak_reg_seq}
+  \leanok
   Let $M$ be an $R$-module.
   An $M$-regular sequence is a weak $M$-regular sequence
   such that $M / (x_1, \ldots, x_n) M \neq 0$, that is $IM \neq M$.
@@ -874,6 +877,7 @@ Actually maybe we don't need depth??
 \begin{definition}
   \label{def:depth}
 	\uses{def:weak_reg_seq}
+	\leanok
 	Let $M$ be an $A$-module, $I \subset A$ an ideal, The depth of $M$ with respect to $I$, denoted $\depth_I M$, is the supremum of the length of $M$-regular sequences contained in $I$ (so $IM \neq M$ it's weakly regular), or $\infty$ otherwise.
 	If $A$ is a local ring with maximal ideal $\mathfrak{m}$, denote $\depth M := \depth_\mathfrak{m}M$.
 \end{definition}
