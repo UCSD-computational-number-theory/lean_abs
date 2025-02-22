@@ -21,8 +21,8 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 \end{proposition}
 
 
-\begin{definition}[koszul_complex]
-	\label{def:koszul_complex}
+\begin{definition}[KoszulComplex]
+	\label{def:KoszulComplex}
 	\leanok
 	\uses{def:ExteriorAlgebra}
 	Let $R$ be a (Noetherian?) ring, $M$ be an (finitely generated?) $R$-module and $a \in M$.
@@ -36,8 +36,9 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 \end{definition}
 
 \begin{definition}[Dual Koszul complex]
-	\label{def:koszul_complex_dual}
-	\uses{def:koszul_complex}
+	\label{def:DualKoszulComplex}
+	% \leanok
+	\uses{def:KoszulComplex}
 	If $M \cong R^m$ is a free $R$-module, then applying the contravariant functor $\operatorname{Hom}_R(\ , R)$ gives us an isomorphic chain complex 
 	$$K_{\bullet}(a) :\begin{tikzcd}
 	\bigwedge^{i+1}_R R^m \arrow[r, "d_{i+1}"] & \bigwedge^i_R R^m \arrow[r, "d_i"] & \bigwedge^{i-1}_R R^m \arrow[r] & \dots R^m \arrow[r, "d_1"] & R \arrow[r] & 0
@@ -53,7 +54,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 
 \begin{lemma}
 	\label{lem:koszul_of_length_2}
-	\uses{def:koszul_complex_dual}
+	\uses{def:DualKoszulComplex}
 	$K(x)$ is exact exept for the rightmost side iff $x$ is regular.
 \end{lemma}
 
@@ -127,13 +128,13 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 \end{corollary}
 
 \begin{lemma}
-	\label{thm:koszul_complex_res_quotient_ring}
+	\label{thm:KoszulComplex_res_quotient_ring}
 	\uses{def:free_resl}
 \end{lemma}
 
 \begin{lemma}
 	\label{lem:tor_measures_koszul_homology}
-	\uses{thm:koszul_complex_res_quotient_ring}
+	\uses{thm:KoszulComplex_res_quotient_ring}
 	$$H_i(K(a) \otimes M) \cong \tor_i^R (R/(a), M)$$
 \end{lemma}
 
@@ -165,7 +166,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 
 \begin{lemma}
 	\label{lem:koszul_homotopy}
-	\uses{def:koszul_complex_dual}
+	\uses{def:DualKoszulComplex}
 \end{lemma}
 
 \begin{proposition}

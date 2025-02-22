@@ -106,84 +106,31 @@ def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
   d_comp_d' := by
     intro i _ _ hij hjk
     simp at hij hjk; subst hij hjk; simp
-    have conv (j : ℕ) (a : ⋀[R]^j M →ₗ[R] ⋀[R]^(j + 1) M) (b : ⋀[R]^(j + 1) M →ₗ[R] ⋀[R]^(j + 2) M) :
-        ofHom a ≫ ofHom b = ofHom (b ∘ₗ a) := rfl
-    rw [conv]
-    have : i + 1 + 1 = i + 2 := rfl; rw [this]; clear this
+    rw [← @ofHom_comp]
+    have : i + 1 + 1 = i + 2 := rfl; rw [this];
     rw [koszul_d_squared_zero i a]
     rfl
 }
 
 -- Self-duality of the Koszul Complex
 variable {E : Type*} [AddCommGroup E] [Module R E] [Module.Free R E] [Module.Finite R E]
+variable [ CommMonoid (ExteriorAlgebra R E)]
 
-noncomputable def rank_E : ℕ := (Module.rank R E).toNat
-def aux_KoszulComplex (e : E) : CochainComplex (ModuleCat R) ℕ := KoszulComplex e
-
--- im not sure how to "take the dual"
--- i know you have to do `Hom(-, R)` but i dont know how to do that in lean
--- hence, the definition is not complete
 #check Module.Dual R (⋀[R]^2 E)
-
 #check (Module.Free R E)
-
--- Aluffi Lemma 8.4.3
-lemma rank_free_wedge :
-    (Module.rank R (⋀[R]^ℓ E)).toNat = Nat.choose ((Module.rank R E).toNat) ℓ := by
-  sorry
-
-
-noncomputable def dual_is_rank_minus_power (i : ℕ) :
-    (⋀[R]^i E) ≃ₗ[R] Module.Dual R (⋀[R]^((Module.rank R E).toNat - i) E)  := by
-  generalize rankh : (Module.rank R E).toNat = r
-  have E_basis := Module.Free.chooseBasis R E
-  -- need to get some a ∈ ⋀[R]^i E
-  -- need to get some b ∈ ⋀[R]^(r - i) E
-  -- multiply them together
-  -- show the result is in ⋀[R]^r E ≃ R
-  -- so a ^ b = r
-  unfold Module.Dual
-
-
-  apply LinearEquiv.ofBijective
-  . case hf =>
-
-    sorry
-  . case f =>
-    apply LinearMap.mk
-    . case _ =>
-      intro m x
-
-
-    sorry
-
-
-
-
-noncomputable def dual_ext_comm (j : ℕ) :
-    Module.Dual R (⋀[R]^j E) ≃ₗ[R] ⋀[R]^j (Module.Dual R E) := by
-  sorry
-
-def dual_rank_comm (i : ℕ) :
-    (⋀[R]^i E) → ⋀[R]^((Module.rank R E).toNat - i) (Module.Dual R E) := by
-  sorry
-
+#check exteriorPower.zeroEquiv
+#check exteriorPower.oneEquiv
 
 def DualKoszulComplex (e : E) : ChainComplex (ModuleCat R) ℕ := {
-  X := (fun i => of R (⋀[R]^i M)),
-  d := fun i j => if i == j + 1 then ofHom (diff_map i j e) else 0,
-  shape := fun i j h => by
-    simp_all
-    sorry
-  ,
+  X := fun i => of R (Module.Dual R (⋀[R]^i E)),
+  d := fun i j => if j + 1 == i then @ofHom R _ _ _ _ _ _ _ (LinearMap.dualMap (diff_map j i e)) else 0,
+  shape := fun i j h => by simp_all,
   d_comp_d' := by
-    intro i _ _ hij hjk
+    intro _ _ k hij hjk
     simp at hij hjk; subst hij hjk; simp
-    have conv (j : ℕ) (a : ⋀[R]^j M →ₗ[R] ⋀[R]^(j + 1) M) (b : ⋀[R]^(j + 1) M →ₗ[R] ⋀[R]^(j + 2) M) :
-        ofHom a ≫ ofHom b = ofHom (b ∘ₗ a) := rfl
-    -- rw [conv]
-    sorry
-    -- have : i + 1 + 1 = i + 2 := rfl; rw [this]; clear this
-    -- rw [koszul_d_squared_zero i a]
-    -- rfl
+    rw [← @ofHom_comp]
+    have : k + 1 + 1 = k + 2 := rfl; rw [this]; clear this
+    rw [LinearMap.dualMap_comp_dualMap, koszul_d_squared_zero k e]
+    rw [LinearMap.dualMap_eq_lcomp, LinearMap.lcomp, LinearMap.comp_zero]
+    rfl
 }
