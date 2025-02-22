@@ -35,15 +35,30 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 	It's indeed a complex as $d_a^2 = 0$.
 \end{definition}
 
-\begin{definition}[Dual Koszul complex]
+\begin{definition}[Dual Koszul Complex]
 	\label{def:DualKoszulComplex}
-	% \leanok
+	\leanok
+	The chain complex dual to koszul complex via the functor $\operatorname{Hom}(-,R)$ .
 	\uses{def:KoszulComplex}
+\end{definition}
+
+\begin{proposition}[Koszul Complex is Self-Dual]
+	\label{prop:free_koszul_is_iso_to_dual}
+	\uses{def:DualKoszulComplex}
 	If $M \cong R^m$ is a free $R$-module, then applying the contravariant functor $\operatorname{Hom}_R(\ , R)$ gives us an isomorphic chain complex 
 	$$K_{\bullet}(a) :\begin{tikzcd}
 	\bigwedge^{i+1}_R R^m \arrow[r, "d_{i+1}"] & \bigwedge^i_R R^m \arrow[r, "d_i"] & \bigwedge^{i-1}_R R^m \arrow[r] & \dots R^m \arrow[r, "d_1"] & R \arrow[r] & 0
 	\end{tikzcd}$$
-\end{definition}
+\end{proposition}
+
+\begin{proposition}[Differential of DualKoszul]
+	\label{prop:diff_of_dual_koszul}
+	\uses{def:DualKoszulComplex}
+	%If $M \cong R^m$ is a free $R$-module, then applying the contravariant functor $\operatorname{Hom}_R(\ , R)$ gives us an isomorphic chain complex 
+	Taking $\{e_1, \dots, e_m\}$ as the standard basis of $R^m$, we may write the differential of DualKoszul $K(a_1, \dots, a_m)$ as:
+	$$\bigwedge^{i+1}_R R^m \to \bigwedge^i_R R^m: \wedge \dots \wedge e_{j_{i+1}} \mapsto \sum_{k=1}^{i+1} (-1)^{i+k} a_{j_k} e_{j_{1}} \wedge \dots \wedge \widehat{e_{j_k}} \wedge \dots \wedge e_{j_{i+1}}$$
+	Where $\widehat{e_{j_k}}$ means the $j_k$-th term is removed, so that the image is in $\bigwedge^{i} R^m$.
+\end{proposition}
 
 \begin{definition}
 	\label{def:complex_tensor_product}
@@ -54,7 +69,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 
 \begin{lemma}
 	\label{lem:koszul_of_length_2}
-	\uses{def:DualKoszulComplex}
+	\uses{prop:diff_of_dual_koszul}
 	$K(x)$ is exact exept for the rightmost side iff $x$ is regular.
 \end{lemma}
 
@@ -115,7 +130,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 \end{theorem}
 
 \begin{lemma}
-	\label{lem:reg_in_jrad_iff_koszul_exact}
+	\label{lem:reg_in_jrad_iff_koszul_exact_at_one}
 	\uses{thm:reg_seq_implies_koszul_exact, lem:nakayama, def:reg_seq}
 	If $M$ is a finitely generated $R$-module and $a = (a_1, \dots, a_n)$ be a sequence in the Jacobson radical $J$ of $R$.
 	If $H_1(K(a) \otimes M) = 0$, then $a$ is $M$-regular.
@@ -200,7 +215,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 
 \begin{corollary}
 	\label{cor:koszul_min_resl_residue_iff_reg}
-	\uses{lem:tor_measures_koszul_homology, cor:reg_in_jrad_iff_koszul_exact, prop:loc_resl_min_iff_basis_to_gen}
+	\uses{lem:tor_measures_koszul_homology, lem:reg_in_jrad_iff_koszul_exact_at_one, prop:loc_resl_min_iff_basis_to_gen}
 	If $a_1, \dots, a_n$ is a regular sequence in $(R, \mathfrak{m})$, then the Koszul complex $K(a_1, \dots, a_n)$ is a minimal free resolution of $k = R/(a_1, \dots, a_n)$.
 \end{corollary}
 
