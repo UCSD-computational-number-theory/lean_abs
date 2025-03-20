@@ -5,7 +5,11 @@ import Mathlib.LinearAlgebra.ExteriorAlgebra.Grading
 import Mathlib.LinearAlgebra.ExteriorPower.Basic
 import Mathlib.LinearAlgebra.FreeModule.Basic
 import Mathlib.LinearAlgebra.Span.Defs
-import Mathlib.LinearAlgebra.Dual
+import Mathlib.LinearAlgebra.Dual.Defs
+import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.Basis.Basic
+import Mathlib.LinearAlgebra.TensorAlgebra.Basis
+import Mathlib.Algebra.Module.Defs
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Algebra.Group.Submonoid.Defs
 import Mathlib.Algebra.Homology.HomologicalComplex
@@ -134,3 +138,53 @@ def DualKoszulComplex (e : E) : ChainComplex (ModuleCat R) ℕ := {
     rw [LinearMap.dualMap_eq_lcomp, LinearMap.lcomp, LinearMap.comp_zero]
     rfl
 }
+
+-- dual
+-- abstract
+-- standard koszul complex
+
+-- [ ] ⋀[R]^i E ≃ free_module (Nat.choose rank_E i)
+-- [ ] Module.Dual R (free_module n) ≃ free_module n
+-- [X] n choose i = n choose (n - i)
+
+noncomputable def basisFin (n : ℕ) : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
+
+-- if `R^n` is a free R-Module, then `⋀[R]^i R^n` is also a free R-Module
+#check TensorAlgebra.instModuleFree
+instance exteriorAlgebra_free :
+    Module.Free R (ExteriorAlgebra R (Fin n → R)) := by sorry
+
+theorem exteriorPower_free (n i : ℕ) :
+    Module.Free R (⋀[R]^i (Fin n → R)) := by sorry
+
+noncomputable def exteriorBasis (i n : ℕ) :
+    Basis (Fin (Nat.choose n i)) R (ExteriorAlgebra.exteriorPower R i (Fin n → R)) := sorry
+
+-- Aluffi Chapter 8, Lemma 4.3
+noncomputable def exterior_power_Rn_free (n i : ℕ) (h : i ≤ n) :
+    (⋀[R]^i (Fin n → R)) ≃ₗ[R] (Fin (n.choose i) → R) := by
+  have b_ni : Basis (Fin (n.choose i)) R (Fin (n.choose i) → R) := Pi.basisFun R (Fin (n.choose i))
+  have eq : ⋀[R]^0 (Fin n → R) ≃ₗ[R] R := exteriorPower.zeroEquiv R (Fin n → R)
+  have free_nCi : Module.Free R (Fin (n.choose i) → R) := Module.Free.of_basis b_ni
+  sorry
+
+
+variable [Fintype (Fin k → R)] [DecidableEq (Fin k → R)] [Module R (Fin k → R)]
+
+
+/-- The isomorphism between the dual of `Fin k → R` and `Fin k → R`. -/
+def free_iso_dual_free (k : ℕ) :
+    Module.Dual R (Fin k → R) ≃ₗ[R] (Fin k → R) :=
+  (LinearEquiv.piRing R R (Fin k) R)
+
+example (k : ℕ) :
+    Module.rank R (Module.Dual R (Fin k → R)) = Module.rank R (Fin k → R) :=
+  LinearEquiv.rank_eq (free_iso_dual_free k)
+
+lemma dual_rank_is_rank (k : ℕ) :
+    Module.rank R (Module.Dual R (Fin k → R)) = Module.rank R (Fin k → R) :=
+  LinearEquiv.rank_eq (LinearEquiv.piRing R R (Fin k) R)
+
+@[simp]
+lemma choose_symm (n i : ℕ) (h : i ≤ n) :
+    Nat.choose n i = Nat.choose n (n - i) := Eq.symm (Nat.choose_symm h)

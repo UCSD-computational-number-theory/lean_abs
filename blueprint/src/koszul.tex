@@ -53,7 +53,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 
 \begin{proposition}[Differential of DualKoszul]
 	\label{prop:diff_of_dual_koszul}
-	\uses{def:DualKoszulComplex}
+	\uses{def:DualKoszulComplex, prop:free_koszul_is_iso_to_dual}
 	%If $M \cong R^m$ is a free $R$-module, then applying the contravariant functor $\operatorname{Hom}_R(\ , R)$ gives us an isomorphic chain complex 
 	Taking $\{e_1, \dots, e_m\}$ as the standard basis of $R^m$, we may write the differential of DualKoszul $K(a_1, \dots, a_m)$ as:
 	$$\bigwedge^{i+1}_R R^m \to \bigwedge^i_R R^m: \wedge \dots \wedge e_{j_{i+1}} \mapsto \sum_{k=1}^{i+1} (-1)^{i+k} a_{j_k} e_{j_{1}} \wedge \dots \wedge \widehat{e_{j_k}} \wedge \dots \wedge e_{j_{i+1}}$$
@@ -155,7 +155,7 @@ All rings are assumed to be unital, commutative and Noetherian without specify.
 
 \begin{lemma}
 	\label{lem:koszul_homology_mesures_depth}
-	\uses{def:depth}
+	\uses{def:depth, prop:diff_of_dual_koszul}
 	Let $a = (a_1, \dots, a_n)$ and $I = \la a_1, \dots, a_n\ra$ then
 	$$\depth_I(M) = n - \max\{i \mid H_i(K(a) \otimes M) \neq 0\}$$
 \end{lemma}
