@@ -117,7 +117,7 @@ def KoszulComplex (a : M) [Module R M] : CochainComplex (ModuleCat R) ℕ := {
 }
 
 -- Self-duality of the Koszul Complex
-variable {E : Type*} [AddCommGroup E] [Module R E] [Module.Free R E] [Module.Finite R E]
+variable {E : Type*} [AddCommGroup E] [Module R E] [Module.Finite R E]
 variable [ CommMonoid (ExteriorAlgebra R E)]
 
 #check Module.Dual R (⋀[R]^2 E)
@@ -147,18 +147,72 @@ def DualKoszulComplex (e : E) : ChainComplex (ModuleCat R) ℕ := {
 -- [ ] Module.Dual R (free_module n) ≃ free_module n
 -- [X] n choose i = n choose (n - i)
 
-noncomputable def basisFin (n : ℕ) : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
+instance simple_Free_is_FG : Module.Finite R (Fin n → R) := Module.Finite.pi
+
+instance ExteriorAlgebraFinite [E_finite : Module.Finite R E] :
+    Module.Finite R (ExteriorAlgebra R E) := by
+  refine Module.finite_def.mpr ?_
+  refine Submodule.fg_def.mpr ?_
+
+  sorry
+
+-- If [Module.Finite R M], then [Module.Finite R (⋀[R]^i M)]
+instance exterior_power_finite (i : ℕ) [E_finite : Module.Finite R E] :
+    Module.Finite R (⋀[R]^i E) := by
+  obtain ⟨⟨E_gen, E_gen_span⟩⟩ := E_finite
+  -- Then any tensor power ⊗[R]^i M is finite
+
+
+  -- finite means there is a Finset that spans the module M
+  apply Module.Finite.iff_fg.mpr
+  refine Submodule.fg_iff_exists_fin_generating_family.mpr ?_
+  use i
+  rw [← ιMulti_span_fixedDegree]
+
+  sorry
+
+-- Conrad Theorem 4.1
+-- If M has a d-element spanning set for d ≥ 1, then ⋀[R]^k Rᵈ = 0 for k > d
+theorem zero_iff_less_generators (d : ℕ) (h : d ≥ 1) (k : ℕ) (hk : k > d) :
+    ⋀[R]^k (Fin d → R) = 0 := by
+
+
+  sorry
+
+
+-- if `R^n` is a free R-Module, then `⋀[R] R^n` is also a free R-Module
+#check exteriorPower.ιMulti_span
+#check exteriorPower.ιMulti
+#check exteriorPower.ιMulti_span_fixedDegree
+theorem exteriorAlgebra_free :
+    Module.Free R (ExteriorAlgebra R (Fin n → R)) := by
+  let b : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
+  apply @Module.Free.of_basis R _ _ _ _ ℕ
+  refine { repr := ?_ }
+
+  sorry
 
 -- if `R^n` is a free R-Module, then `⋀[R]^i R^n` is also a free R-Module
-#check TensorAlgebra.instModuleFree
-instance exteriorAlgebra_free :
-    Module.Free R (ExteriorAlgebra R (Fin n → R)) := by sorry
-
 theorem exteriorPower_free (n i : ℕ) :
-    Module.Free R (⋀[R]^i (Fin n → R)) := by sorry
+    Module.Free R (⋀[R]^i (Fin n → R)) := by
+  let b : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
+  apply @Module.Free.of_basis R _ _ _ _ (Fin n)
+  rw [← exteriorPower.ιMulti_span_fixedDegree]
 
+  sorry
+
+-- then we have a basis for `⋀[R]^i R^n`
 noncomputable def exteriorBasis (i n : ℕ) :
-    Basis (Fin (Nat.choose n i)) R (ExteriorAlgebra.exteriorPower R i (Fin n → R)) := sorry
+    Basis (Fin (Nat.choose n i)) R (ExteriorAlgebra.exteriorPower R i (Fin n → R)) := by
+  sorry
+
+theorem ext_square_span :
+    Module.rank R (⋀[R]^2 (Fin 3 → R)) = 3 := by
+  have fin_basis : Basis (Fin 3) R (Fin 3 → R) := Pi.basisFun R (Fin 3)
+  -- wts fin_basis = {e_1, e_2, e_3}
+  -- the basis of the exterior power is {e_1 ∧ e_2, e_1 ∧ e_3, e_2 ∧ e_3}
+
+  sorry
 
 -- Aluffi Chapter 8, Lemma 4.3
 noncomputable def exterior_power_Rn_free (n i : ℕ) (h : i ≤ n) :
@@ -166,6 +220,8 @@ noncomputable def exterior_power_Rn_free (n i : ℕ) (h : i ≤ n) :
   have b_ni : Basis (Fin (n.choose i)) R (Fin (n.choose i) → R) := Pi.basisFun R (Fin (n.choose i))
   have eq : ⋀[R]^0 (Fin n → R) ≃ₗ[R] R := exteriorPower.zeroEquiv R (Fin n → R)
   have free_nCi : Module.Free R (Fin (n.choose i) → R) := Module.Free.of_basis b_ni
+
+
   sorry
 
 
