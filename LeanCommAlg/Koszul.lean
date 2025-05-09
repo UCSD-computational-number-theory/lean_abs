@@ -244,3 +244,5 @@ lemma dual_rank_is_rank (k : ℕ) :
 @[simp]
 lemma choose_symm (n i : ℕ) (h : i ≤ n) :
     Nat.choose n i = Nat.choose n (n - i) := Eq.symm (Nat.choose_symm h)
+
+
