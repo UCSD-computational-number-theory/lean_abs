@@ -24,14 +24,14 @@ variable {P : Type*} [AddCommGroup P] [Module R P]
 variable {ι ι' ι'' : Type*} [Fintype ι]
 
 
-/-- A symmetric map from `ι → M` to `N`
-is a multilinear map that is invariant under permutation of its arguments. -/
+/-- A symmetric map from `ι → M` to `N` is a multilinear map that is
+invariant under permutation of its arguments. -/
 structure SymmetricMap extends MultilinearMap R (fun _ : ι => M) N where
   /-- The map is symmetric: for any permutation `e` of `v`, `f v = f e v`. -/
   map_eq_perm' : ∀ (v : ι → M) (e : Perm ι), toFun v = toFun (v ∘ e)
 
-/-- A symmetric map from `ι → M` to `N`
-is a multilinear map that is invariant under permutation of its arguments. -/
+/-- A skew symmetric map from `ι → M` to `N` is a multilinear map that is
+invariant under even permutations and changes sign under odd permutations of its arguments. -/
 structure SkewSymmetricMap extends MultilinearMap R (fun _ : ι => M) N where
   /-- The map is symmetric: for any permutation `e` of `v`, `f v = f e v`. -/
   map_eq_perm_sign' : ∀ (v : ι → M) (e : Perm ι), (Perm.sign e) • toFun v = toFun (v ∘ e)
