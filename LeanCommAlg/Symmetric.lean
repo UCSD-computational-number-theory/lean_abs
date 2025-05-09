@@ -13,7 +13,7 @@ open Classical Equiv Perm Algebra DirectSum Function
 
 #check Perm
 
-variable {R : Type*} [Semiring R]
+variable {R : Type*} [CommRing R]
 variable {M : Type*} [AddCommGroup M] [Module R M]
 variable {N : Type*} [AddCommGroup N] [Module R N]
 variable {P : Type*} [AddCommGroup P] [Module R P]
@@ -33,5 +33,5 @@ structure SymmetricMap extends MultilinearMap R (fun _ : ι => M) N where
 /-- A skew symmetric map from `ι → M` to `N` is a multilinear map that is
 invariant under even permutations and changes sign under odd permutations of its arguments. -/
 structure SkewSymmetricMap extends MultilinearMap R (fun _ : ι => M) N where
-  /-- The map is symmetric: for any permutation `e` of `v`, `f v = f e v`. -/
+  /-- The map is skew symmetric: for any permutation `e` of `v`, `sgn(e) f v = f e v`. -/
   map_eq_perm_sign' : ∀ (v : ι → M) (e : Perm ι), (Perm.sign e) • toFun v = toFun (v ∘ e)
