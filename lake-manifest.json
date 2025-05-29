@@ -15,7 +15,11 @@
    "type": "git",
    "subDir": null,
    "scope": "",
+<<<<<<< HEAD
    "rev": "684599a977356e5936e636eae181149043f488d9",
+=======
+   "rev": "fc7ec703b36bc6ddf510ff84b58265318091f439",
+>>>>>>> 26d077b325aed50fd3bf872751a5dd6a31da8e9c
    "name": "mathlib",
    "manifestFile": "lake-manifest.json",
    "inputRev": null,
@@ -35,7 +39,7 @@
    "type": "git",
    "subDir": null,
    "scope": "leanprover-community",
-   "rev": "8d29bc2c3ebe1f863c2f02df816b4f3dd1b65226",
+   "rev": "25078369972d295301f5a1e53c3e5850cf6d9d4c",
    "name": "LeanSearchClient",
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
