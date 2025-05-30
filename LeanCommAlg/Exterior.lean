@@ -19,6 +19,7 @@ import Mathlib.Algebra.DirectSum.Module
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.Order.Extension.Well
 
+open Classical
 
 infixr:20 "<∘ₗ>" => LinearMap.comp
 
@@ -135,7 +136,12 @@ noncomputable def basisExteriorPower {I : Type*} [LinearOrder I] (b : Basis I R 
 /-- If `M` is a free module, then so is its `n`th exterior power. -/
 instance instFree [hfree : Module.Free R M] : Module.Free R (⋀[R]^n M) := by
   have ⟨I, b⟩ := hfree.exists_basis
-  letI : LinearOrder I := IsWellFounded.wellOrderExtension emptyWf.wf
+  -- letI : LinearOrder I := IsWellFounded.wellOrderExtension (@WellFoundedRelation.emptyWf I)
+
+  letI : LinearOrder I := by
+    apply IsWellFounded.wellOrderExtension emptyWf.rel
+
+
   apply Module.Free.of_basis (basisExteriorPower b)
 
 
@@ -203,55 +209,55 @@ theorem zero_iff_less_generators (d : ℕ) (h : d ≥ 1) (k : ℕ) (hk : k > d) 
   sorry
 
 
--- if `R^n` is a free R-Module, then `⋀[R] R^n` is also a free R-Module
-#check exteriorPower.ιMulti_span
-#check exteriorPower.ιMulti
-#check exteriorPower.ιMulti_span_fixedDegree
-theorem exteriorAlgebra_free :
-    Module.Free R (ExteriorAlgebra R (Fin n → R)) := by
-  let b : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
-  apply @Module.Free.of_basis R _ _ _ _ ℕ
-  refine { repr := ?_ }
+-- -- if `R^n` is a free R-Module, then `⋀[R] R^n` is also a free R-Module
+-- #check exteriorPower.ιMulti_span
+-- #check exteriorPower.ιMulti
+-- #check exteriorPower.ιMulti_span_fixedDegree
+-- theorem exteriorAlgebra_free :
+--     Module.Free R (ExteriorAlgebra R (Fin n → R)) := by
+--   let b : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
+--   apply @Module.Free.of_basis R _ _ _ _ ℕ
+--   refine { repr := ?_ }
 
-  sorry
+--   sorry
 
--- if `R^n` is a free R-Module, then `⋀[R]^i R^n` is also a free R-Module
-theorem exteriorPower_free (n i : ℕ) :
-    Module.Free R (⋀[R]^i (Fin n → R)) := by
-  let b : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
-  apply @Module.Free.of_basis R _ _ _ _ (Fin n)
-  rw [← exteriorPower.ιMulti_span_fixedDegree]
-  sorry
+-- -- if `R^n` is a free R-Module, then `⋀[R]^i R^n` is also a free R-Module
+-- theorem exteriorPower_free (n i : ℕ) :
+--     Module.Free R (⋀[R]^i (Fin n → R)) := by
+--   let b : Basis (Fin n) R (Fin n → R) := Pi.basisFun R (Fin n)
+--   apply @Module.Free.of_basis R _ _ _ _ (Fin n)
+--   rw [← exteriorPower.ιMulti_span_fixedDegree]
+--   sorry
 
--- then we have a basis for `⋀[R]^i R^n`
-noncomputable def exteriorBasis (i n : ℕ) :
-    Basis (Fin (Nat.choose n i)) R (ExteriorAlgebra.exteriorPower R i (Fin n → R)) := by
-  sorry
+-- -- then we have a basis for `⋀[R]^i R^n`
+-- noncomputable def exteriorBasis (i n : ℕ) :
+--     Basis (Fin (Nat.choose n i)) R (ExteriorAlgebra.exteriorPower R i (Fin n → R)) := by
+--   sorry
 
-theorem ext_square_span :
-    Module.rank R (⋀[R]^2 (Fin 3 → R)) = 3 := by
-  have fin_basis : Basis (Fin 3) R (Fin 3 → R) := Pi.basisFun R (Fin 3)
-  -- wts fin_basis = {e_1, e_2, e_3}
-  -- the basis of the exterior power is {e_1 ∧ e_2, e_1 ∧ e_3, e_2 ∧ e_3}
+-- theorem ext_square_span :
+--     Module.rank R (⋀[R]^2 (Fin 3 → R)) = 3 := by
+--   have fin_basis : Basis (Fin 3) R (Fin 3 → R) := Pi.basisFun R (Fin 3)
+--   -- wts fin_basis = {e_1, e_2, e_3}
+--   -- the basis of the exterior power is {e_1 ∧ e_2, e_1 ∧ e_3, e_2 ∧ e_3}
 
-  sorry
+--   sorry
 
--- Aluffi Chapter 8, Lemma 4.3
-noncomputable def exterior_power_Rn_free (n i : ℕ) (h : i ≤ n) :
-    (⋀[R]^i (Fin n → R)) ≃ₗ[R] (Fin (n.choose i) → R) := by
-  have b_ni : Basis (Fin (n.choose i)) R (Fin (n.choose i) → R) := Pi.basisFun R (Fin (n.choose i))
-  have eq : ⋀[R]^0 (Fin n → R) ≃ₗ[R] R := exteriorPower.zeroEquiv R (Fin n → R)
-  have free_nCi : Module.Free R (Fin (n.choose i) → R) := Module.Free.of_basis b_ni
+-- -- Aluffi Chapter 8, Lemma 4.3
+-- noncomputable def exterior_power_Rn_free (n i : ℕ) (h : i ≤ n) :
+--     (⋀[R]^i (Fin n → R)) ≃ₗ[R] (Fin (n.choose i) → R) := by
+--   have b_ni : Basis (Fin (n.choose i)) R (Fin (n.choose i) → R) := Pi.basisFun R (Fin (n.choose i))
+--   have eq : ⋀[R]^0 (Fin n → R) ≃ₗ[R] R := exteriorPower.zeroEquiv R (Fin n → R)
+--   have free_nCi : Module.Free R (Fin (n.choose i) → R) := Module.Free.of_basis b_ni
 
 
-  sorry
+--   sorry
 
-def k : ℕ := sorry
-def n : ℕ := sorry
-#check @exteriorPower.alternatingMapLinearEquiv R _ k (Fin n → R) (Fin (Nat.choose n k) → R) _ _ _ _
+-- def k : ℕ := sorry
+-- def n : ℕ := sorry
+-- #check @exteriorPower.alternatingMapLinearEquiv R _ k (Fin n → R) (Fin (Nat.choose n k) → R) _ _ _ _
 
-variable [Fintype (Fin k → R)] [DecidableEq (Fin k → R)] [Module R (Fin k → R)]
+-- variable [Fintype (Fin k → R)] [DecidableEq (Fin k → R)] [Module R (Fin k → R)]
 
-@[simp]
-lemma choose_symm (n i : ℕ) (h : i ≤ n) :
-    Nat.choose n i = Nat.choose n (n - i) := Eq.symm (Nat.choose_symm h)
+-- @[simp]
+-- lemma choose_symm (n i : ℕ) (h : i ≤ n) :
+--     Nat.choose n i = Nat.choose n (n - i) := Eq.symm (Nat.choose_symm h)
