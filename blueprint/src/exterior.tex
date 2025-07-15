@@ -1,0 +1,60 @@
+
+\subsection{Exterior powers}
+
+\begin{theorem}
+    \label{thm:exterior_power_univ_property}
+\end{theorem}
+
+\begin{lemma}
+    \label{lem:alternating_multilinear_is_skew_symmetric}
+    Should be AlternatingMap.map\_perm in mathlib
+\end{lemma}
+
+\begin{corollary}
+    \label{cor:skew_symmetric_iff}
+    \uses{lem:alternating_multilinear_is_skew_symmetric}
+    Corollary 2.9
+\end{corollary}
+
+\begin{lemma}
+    \label{lem:spans_exterior_power}
+    The set $\{e_{i_1} \wedge \dots \wedge e_{i_k} : 1 \leq i_1 < \dots i_k \leq d\}$ spans $\bigwedge^k M$.
+\end{lemma}
+
+\begin{proof}
+    
+\end{proof}
+
+\begin{lemma}
+    \label{lem:multilinear_to_tensor_is_alternating}
+    \uses{cor:skew_symmetric_iff}
+    For $k \geq 1$, the function $M^k \to M^{\otimes k}$ given by 
+    \[(m_1, \dots, m_k) \mapsto \sum_{\sigma \in S_k}^{} (\operatorname{sign} \sigma) m_{\sigma(1)} \otimes \dots \otimes m_{\sigma(k)} \]
+    is multilinear and alterating.
+\end{lemma}
+
+\begin{lemma}
+    \label{lem:hom_exterior_power_to_tensor_inj}
+    \uses{lem:multilinear_to_tensor_is_alternating, thm:exterior_power_univ_property}
+    $\bigwedge^k M \to M^{\otimes k}$ has trivial kernel.
+\end{lemma}
+
+\begin{proof}
+    
+\end{proof}
+
+\begin{lemma}
+    \label{lem:lin_indep_exterior_power}
+    \uses{lem:hom_exterior_power_to_tensor_inj}
+    The set $\{e_{i_1} \wedge \dots \wedge e_{i_k} : 1 \leq i_1 < \dots i_k \leq d\}$ is linearly independent in $\bigwedge^k M$.
+\end{lemma}
+
+\begin{theorem}
+    \label{thm:exterior_power_basis_if_finite_free_module}
+    \uses{lem:spans_exterior_power, lem:lin_indep_exterior_power}
+    If $M$ is a finite free module of rank $d$ and $k \leq d$ then $\bigwedge^k M$ is free of rank $\binom{d}{k}$: for a basis $e_1, \dots, e_d$ of $M$, the $\binom{d}{k}$ elementary wedge products 
+    \[
+        e_{i_1} \wedge \dots \wedge e_{i_k} : 1 \leq i_1 < \dots i_k \leq d
+    \]
+    are a basis of $\bigwedge^k M$.
+\end{theorem}
