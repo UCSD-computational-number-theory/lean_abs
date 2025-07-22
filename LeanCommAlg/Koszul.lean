@@ -129,11 +129,10 @@ def DualKoszulComplex (e : E) : ChainComplex (ModuleCat R) ℕ := {
     rw [← @ofHom_comp]
     have : k + 1 + 1 = k + 2 := rfl; rw [this]; clear this
     rw [LinearMap.dualMap_comp_dualMap, koszul_d_squared_zero k e]
-    rw [LinearMap.dualMap_eq_lcomp, LinearMap.lcomp, LinearMap.comp_zero]
-    rfl
+    ext x1 x2
+    simp_all only [hom_ofHom, LinearMap.compAlternatingMap_apply, LinearMap.dualMap_apply, LinearMap.zero_apply,
+      map_zero, hom_zero, LinearMap.zero_compAlternatingMap, AlternatingMap.zero_apply]
 }
-<<<<<<< HEAD
-=======
 
 -- dual
 -- abstract
@@ -240,6 +239,3 @@ lemma dual_rank_is_rank (k : ℕ) :
 @[simp]
 lemma choose_symm (n i : ℕ) (h : i ≤ n) :
     Nat.choose n i = Nat.choose n (n - i) := Eq.symm (Nat.choose_symm h)
-
-
->>>>>>> 26d077b325aed50fd3bf872751a5dd6a31da8e9c
