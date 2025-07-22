@@ -4,3 +4,7 @@
 *.fls
 blueprint/web/
 blueprint/src/web.paux
+blueprint/src/print.pdf
+blueprint/src/print.synctex.gz
+
+print
